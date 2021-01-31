@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "848203524236",
+    "project_id": "fb4-app-push",
+    "storage_bucket": "fb4-app-push.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:848203524236:android:6537f1144094c9cce273a9",
+        "android_client_info": {
+          "package_name": "com.example.fb4_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "848203524236-mdhjk2ons5b9us2iuh85pvgsdujh9hir.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDv6FD-oJF7V6AYpYn0EAhqJ3ZOfJv1cA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "848203524236-mdhjk2ons5b9us2iuh85pvgsdujh9hir.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
