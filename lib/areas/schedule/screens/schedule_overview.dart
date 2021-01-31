@@ -112,8 +112,8 @@ class ScheduleOverviewState extends State<ScheduleOverview> {
                 });
                 return Column(
                   children: [
-                    Expanded(
-                      flex: 1,
+                    SizedBox(
+                      height: 35,
                       child: ValueListenableBuilder(
                         valueListenable: controllerPageNotifier,
                         builder: (context, value, _) =>
