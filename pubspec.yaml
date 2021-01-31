@@ -29,6 +29,9 @@ dependencies:
   equatable: ^0.6.1
   xml: ^4.5.1
   intl: ^0.16.1
+  firebase_messaging: ^7.0.3
+  scrollable_positioned_list: ^0.1.9
+  json_store: ^1.2.0
 
 
   # The following adds the Cupertino Icons font to your application.

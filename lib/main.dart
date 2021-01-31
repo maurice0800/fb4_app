@@ -4,6 +4,8 @@ import 'package:fb4_app/areas/news/screens/news_overview.dart';
 import 'package:fb4_app/areas/schedule/bloc/schedule_item_bloc.dart';
 import 'package:fb4_app/areas/schedule/repositories/schedule_repository.dart';
 import 'package:fb4_app/areas/schedule/screens/schedule_overview.dart';
+import 'package:fb4_app/utils/plugins/push_notification_manager.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,9 +13,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'areas/canteen/screens/canteen_overview.dart';
 import 'areas/news/bloc/news_item_bloc.dart';
 
-void main() {
-  var x = ScheduleRepository().getScheduleItems();
+void main() async {
   runApp(FB4App());
+  await PushNotificationsManager().init();
 }
 
 class FB4App extends StatelessWidget {
@@ -26,7 +28,7 @@ class FB4App extends StatelessWidget {
             brightness: Brightness.light,
             primaryColor: CupertinoColors.activeOrange,
             textTheme: CupertinoTextThemeData(
-                textStyle: TextStyle(color: CupertinoColors.black),
+                textStyle: TextStyle(color: CupertinoColors.white),
                 primaryColor: CupertinoColors.black,
                 navTitleTextStyle: TextStyle(
                     color: CupertinoColors.black,

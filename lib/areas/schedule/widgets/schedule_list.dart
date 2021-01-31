@@ -15,14 +15,6 @@ class ScheduleList extends StatelessWidget {
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              weekday,
-              style: TextStyle(
-                  color: CupertinoTheme.of(context).textTheme.textStyle.color,
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 10),
             Expanded(
               child: ListView.separated(
                 itemCount: items.length,
@@ -30,7 +22,7 @@ class ScheduleList extends StatelessWidget {
                 itemBuilder: (context, index) => ScheduleCard(
                   timeStart: items[index].timeBegin,
                   timeEnd: items[index].timeEnd,
-                  title: "${items[index].courseType} ${items[index].name}",
+                  title: "[${items[index].courseType}] ${items[index].name}",
                   group: "${items[index].studentSet}",
                   lecturer:
                       "${items[index].lecturerName} (${items[index].lecturerId})",

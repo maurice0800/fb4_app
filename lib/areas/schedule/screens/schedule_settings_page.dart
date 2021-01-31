@@ -28,6 +28,8 @@ class _ScheduleSettingsPageState extends State<ScheduleSettingsPage> {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
+          heroTag: 'scheduleSettingsPageNavBar',
+          transitionBetweenRoutes: false,
           actionsForegroundColor: CupertinoColors.white,
           middle: Text("Einstellungen",
               style: CupertinoTheme.of(context).textTheme.navTitleTextStyle),
