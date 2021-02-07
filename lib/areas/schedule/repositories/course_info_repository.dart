@@ -11,7 +11,6 @@ class CourseInfoRepository {
         .then((result) {
       if (result.statusCode == 200) {
         var data = jsonDecode(result.body) as Map;
-        var xd = data.values.toList();
         return data.values
             .map<CourseInfo>((item) => CourseInfo.fromJson(item))
             .toList();

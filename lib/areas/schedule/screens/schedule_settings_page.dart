@@ -1,9 +1,9 @@
 import 'package:fb4_app/areas/schedule/bloc/course_info_bloc.dart';
 import 'package:fb4_app/areas/schedule/models/schedule_settings.dart';
-import 'package:fb4_app/areas/schedule/repositories/course_info_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_cupertino_settings/flutter_cupertino_settings.dart';
+import 'package:json_store/json_store.dart';
 
 class ScheduleSettingsPage extends StatefulWidget {
   final ScheduleSettings settings;
@@ -32,7 +32,7 @@ class _ScheduleSettingsPageState extends State<ScheduleSettingsPage> {
           transitionBetweenRoutes: false,
           actionsForegroundColor: CupertinoColors.white,
           middle: Text("Einstellungen",
-              style: CupertinoTheme.of(context).textTheme.navTitleTextStyle),
+              style: TextStyle(color: CupertinoColors.white)),
           backgroundColor: CupertinoTheme.of(context).primaryColor,
         ),
         child: BlocBuilder<CourseInfoBloc, CourseInfoState>(
@@ -41,13 +41,14 @@ class _ScheduleSettingsPageState extends State<ScheduleSettingsPage> {
             return Center(child: CupertinoActivityIndicator());
           } else if (state is CourseInfoLoaded) {
             return CupertinoSettings(items: <Widget>[
-              CSControl(
-                nameWidget: Text("Studiengang"),
-                contentWidget: Text("Duali"),
-              )
+              CSButton(CSButtonType.DESTRUCTIVE, "Alle Einträge löschen", () {
+                JsonStore().deleteItem("schedule_items");
+              })
             ]);
           } else if (state is CourseInfoError) {
             return Center(child: Text(state.message));
+          } else {
+            throw Exception("BLoC is in invalid state.");
           }
         }));
   }

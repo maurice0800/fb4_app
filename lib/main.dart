@@ -4,11 +4,13 @@ import 'package:fb4_app/areas/news/screens/news_overview.dart';
 import 'package:fb4_app/areas/schedule/bloc/schedule_item_bloc.dart';
 import 'package:fb4_app/areas/schedule/repositories/schedule_repository.dart';
 import 'package:fb4_app/areas/schedule/screens/schedule_overview.dart';
+import 'package:fb4_app/areas/ticket/screens/ticket_viewer_page.dart';
 import 'package:fb4_app/utils/plugins/push_notification_manager.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:json_store/json_store.dart';
 
 import 'areas/canteen/screens/canteen_overview.dart';
 import 'areas/news/bloc/news_item_bloc.dart';
@@ -82,8 +84,12 @@ class FB4App extends StatelessWidget {
                 );
               case 2:
                 return CanteenOverview();
+              case 3:
+                return TicketViewerPage();
               case 4:
                 return MoreList();
+              default:
+                throw Exception("User tried to open an invalid page.");
             }
           },
         ));
