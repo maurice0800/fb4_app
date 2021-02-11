@@ -59,113 +59,118 @@ class ScheduleOverviewState extends State<ScheduleOverview> {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
         navigationBar: buildNavigationBar(),
-        child: Container(
-          child: BlocBuilder<ScheduleItemBloc, ScheduleItemState>(
-            builder: (context, state) {
-              if (state is ScheduleItemLoadingState ||
-                  state is ScheduleItemInitialState) {
-                return Center(child: CircularProgressIndicator());
-              } else if (state is ScheduleItemLoadedState) {
-                WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                  pageViewController.position.addListener(() {
-                    scrollDirectionListener();
+        child: SafeArea(
+          child: Container(
+            child: BlocBuilder<ScheduleItemBloc, ScheduleItemState>(
+              builder: (context, state) {
+                if (state is ScheduleItemLoadingState ||
+                    state is ScheduleItemInitialState) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (state is ScheduleItemLoadedState) {
+                  WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                    pageViewController.position.addListener(() {
+                      scrollDirectionListener();
+                    });
                   });
-                });
-                return Column(
-                  children: [
-                    SizedBox(
-                      height: 35,
-                      child: ValueListenableBuilder(
-                        valueListenable: controllerPageNotifier,
-                        builder: (context, value, _) =>
-                            ScrollablePositionedList.separated(
-                          itemCount: weekdays.length,
-                          itemScrollController: itemScrollController,
-                          separatorBuilder: (context, index) => SizedBox(),
-                          itemBuilder: (context, index) => Padding(
-                            padding: const EdgeInsets.only(
-                                left: 10.0, top: 8.0, right: 10.0),
-                            child: GestureDetector(
-                              onTap: () => scrollClickedPageIntoView(index),
-                              child: Text(weekdays[index],
-                                  style: TextStyle(
-                                      color:
-                                          index == controllerPageNotifier.value
-                                              ? CupertinoColors.black
-                                              : CupertinoColors.systemGrey,
-                                      fontSize: 23,
-                                      fontWeight: FontWeight.w700)),
+                  return Column(
+                    children: [
+                      SizedBox(
+                        height: 35,
+                        child: ValueListenableBuilder(
+                          valueListenable: controllerPageNotifier,
+                          builder: (context, value, _) =>
+                              ScrollablePositionedList.separated(
+                            itemCount: weekdays.length,
+                            itemScrollController: itemScrollController,
+                            separatorBuilder: (context, index) => SizedBox(),
+                            itemBuilder: (context, index) => Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 10.0, top: 8.0, right: 10.0),
+                              child: GestureDetector(
+                                onTap: () => scrollClickedPageIntoView(index),
+                                child: Text(weekdays[index],
+                                    style: TextStyle(
+                                        color: index ==
+                                                controllerPageNotifier.value
+                                            ? CupertinoTheme.of(context)
+                                                .textTheme
+                                                .textStyle
+                                                .color
+                                            : CupertinoColors.systemGrey,
+                                        fontSize: 23,
+                                        fontWeight: FontWeight.w700)),
+                              ),
                             ),
+                            scrollDirection: Axis.horizontal,
                           ),
-                          scrollDirection: Axis.horizontal,
                         ),
                       ),
+                      Expanded(
+                        flex: 18,
+                        child: PageView(
+                            controller: pageViewController,
+                            children: <Widget>[
+                              ScheduleList(
+                                  editMode: editMode,
+                                  controller: scheduleListController,
+                                  items: state.scheduleItems
+                                      .where((element) =>
+                                          element.weekday ==
+                                          ApiConstants.shortMonday)
+                                      .toList()),
+                              ScheduleList(
+                                  editMode: editMode,
+                                  controller: scheduleListController,
+                                  items: state.scheduleItems
+                                      .where((element) =>
+                                          element.weekday ==
+                                          ApiConstants.shortTuesday)
+                                      .toList()),
+                              ScheduleList(
+                                  editMode: editMode,
+                                  controller: scheduleListController,
+                                  items: state.scheduleItems
+                                      .where((element) =>
+                                          element.weekday ==
+                                          ApiConstants.shortWednesday)
+                                      .toList()),
+                              ScheduleList(
+                                  editMode: editMode,
+                                  controller: scheduleListController,
+                                  items: state.scheduleItems
+                                      .where((element) =>
+                                          element.weekday ==
+                                          ApiConstants.shortThursday)
+                                      .toList()),
+                              ScheduleList(
+                                  editMode: editMode,
+                                  controller: scheduleListController,
+                                  items: state.scheduleItems
+                                      .where((element) =>
+                                          element.weekday ==
+                                          ApiConstants.shortFriday)
+                                      .toList()),
+                            ]),
+                      ),
+                    ],
+                  );
+                } else if (state is ScheduleItemErrorState) {
+                  return Center(child: Text(state.message));
+                } else if (state is ScheduleItemsEmptyState) {
+                  return Center(
+                    child: Text(
+                      "Noch kein Stundenplan angelegt. Lege deinen ersten Stundenplan an, indem du auf das Plus-Symbol tippst!",
+                      style: TextStyle(
+                        color: CupertinoColors.black,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    Expanded(
-                      flex: 18,
-                      child: PageView(
-                          controller: pageViewController,
-                          children: <Widget>[
-                            ScheduleList(
-                                editMode: editMode,
-                                controller: scheduleListController,
-                                items: state.scheduleItems
-                                    .where((element) =>
-                                        element.weekday ==
-                                        ApiConstants.shortMonday)
-                                    .toList()),
-                            ScheduleList(
-                                editMode: editMode,
-                                controller: scheduleListController,
-                                items: state.scheduleItems
-                                    .where((element) =>
-                                        element.weekday ==
-                                        ApiConstants.shortTuesday)
-                                    .toList()),
-                            ScheduleList(
-                                editMode: editMode,
-                                controller: scheduleListController,
-                                items: state.scheduleItems
-                                    .where((element) =>
-                                        element.weekday ==
-                                        ApiConstants.shortWednesday)
-                                    .toList()),
-                            ScheduleList(
-                                editMode: editMode,
-                                controller: scheduleListController,
-                                items: state.scheduleItems
-                                    .where((element) =>
-                                        element.weekday ==
-                                        ApiConstants.shortThursday)
-                                    .toList()),
-                            ScheduleList(
-                                editMode: editMode,
-                                controller: scheduleListController,
-                                items: state.scheduleItems
-                                    .where((element) =>
-                                        element.weekday ==
-                                        ApiConstants.shortFriday)
-                                    .toList()),
-                          ]),
-                    ),
-                  ],
-                );
-              } else if (state is ScheduleItemErrorState) {
-                return Center(child: Text(state.message));
-              } else if (state is ScheduleItemsEmptyState) {
-                return Center(
-                  child: Text(
-                    "Noch kein Stundenplan angelegt. Lege deinen ersten Stundenplan an, indem du auf das Plus-Symbol tippst!",
-                    style: TextStyle(
-                      color: CupertinoColors.black,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                );
-              } else {
-                throw Exception("BLoC is in invalid state");
-              }
-            },
+                  );
+                } else {
+                  throw Exception("BLoC is in invalid state");
+                }
+              },
+            ),
           ),
         ));
   }
@@ -236,10 +241,10 @@ class ScheduleOverviewState extends State<ScheduleOverview> {
 
   Widget buildNavigationBar() {
     return CupertinoNavigationBar(
-      backgroundColor: CupertinoColors.activeOrange,
+      backgroundColor: CupertinoTheme.of(context).primaryContrastingColor,
       transitionBetweenRoutes: false,
       middle: Text("Stundenplan",
-          style: CupertinoTheme.of(context).textTheme.textStyle),
+          style: CupertinoTheme.of(context).textTheme.navTitleTextStyle),
       trailing: editMode
           ? CupertinoButton(
               padding: EdgeInsets.zero,

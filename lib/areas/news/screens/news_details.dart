@@ -15,7 +15,7 @@ class NewsDetails extends StatelessWidget {
           transitionBetweenRoutes: false,
           middle: Text(
             "Newsdetails",
-            style: TextStyle(color: CupertinoColors.white),
+            style: CupertinoTheme.of(context).textTheme.navTitleTextStyle,
           ),
           trailing: GestureDetector(
               onTap: () {

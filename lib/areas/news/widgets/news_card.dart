@@ -61,39 +61,46 @@ class NewsCard extends StatelessWidget {
                   ));
       },
       child: Card(
+          color: CupertinoTheme.of(context).scaffoldBackgroundColor,
           child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(item.title,
-                softWrap: true,
-                maxLines: noWrap == false ? 3 : 999999,
-                style: TextStyle(fontWeight: FontWeight.bold)),
-            Divider(
-              color: CupertinoColors.activeOrange,
-              thickness: 2,
-            ),
-            Text(
-              item.description,
-              softWrap: true,
-              maxLines: noWrap == false ? 3 : 999999,
-              overflow: TextOverflow.ellipsis,
-            ),
-            Divider(
-              color: CupertinoColors.activeOrange,
-              thickness: 2,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Aktuelles"),
-                Text(DateFormat('dd.MM.yyyy HH:mm').format(item.pubDate)),
+                Text(item.title,
+                    softWrap: true,
+                    maxLines: noWrap == false ? 3 : 999999,
+                    style: TextStyle(fontWeight: FontWeight.bold)
+                        .merge(CupertinoTheme.of(context).textTheme.textStyle)),
+                Divider(
+                  color: CupertinoColors.activeOrange,
+                  thickness: 2,
+                ),
+                Text(
+                  item.description,
+                  softWrap: true,
+                  maxLines: noWrap == false ? 3 : 999999,
+                  overflow: TextOverflow.ellipsis,
+                  style: CupertinoTheme.of(context).textTheme.textStyle,
+                ),
+                Divider(
+                  color: CupertinoColors.activeOrange,
+                  thickness: 2,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Aktuelles",
+                        style: CupertinoTheme.of(context).textTheme.textStyle),
+                    Text(
+                      DateFormat('dd.MM.yyyy HH:mm').format(item.pubDate),
+                      style: CupertinoTheme.of(context).textTheme.textStyle,
+                    ),
+                  ],
+                )
               ],
-            )
-          ],
-        ),
-      )),
+            ),
+          )),
     );
   }
 }

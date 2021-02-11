@@ -9,7 +9,7 @@ class CanteenOverview extends StatelessWidget {
         child: Center(
       child: Text(
         "COMING SOON",
-        style: TextStyle(color: CupertinoColors.black),
+        style: CupertinoTheme.of(context).textTheme.textStyle,
       ),
     ));
   }

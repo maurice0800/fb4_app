@@ -12,7 +12,7 @@ class MoreList extends StatelessWidget {
         navigationBar: CupertinoNavigationBar(
           transitionBetweenRoutes: false,
           middle: Text("Mehr", style: TextStyle(color: CupertinoColors.white)),
-          backgroundColor: CupertinoTheme.of(context).primaryColor,
+          backgroundColor: CupertinoTheme.of(context).primaryContrastingColor,
         ),
         child: Container(
           child: CupertinoSettings(items: <Widget>[

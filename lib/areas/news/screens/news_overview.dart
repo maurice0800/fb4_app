@@ -24,8 +24,9 @@ class NewsOverviewState extends State<NewsOverview> {
     return CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
           transitionBetweenRoutes: false,
-          middle: Text("News", style: TextStyle(color: CupertinoColors.white)),
-          backgroundColor: CupertinoColors.activeOrange,
+          middle: Text("News",
+              style: CupertinoTheme.of(context).textTheme.navTitleTextStyle),
+          backgroundColor: CupertinoTheme.of(context).barBackgroundColor,
         ),
         child: BlocBuilder<NewsItemBloc, NewsItemState>(
           builder: (context, state) {
@@ -45,6 +46,8 @@ class NewsOverviewState extends State<NewsOverview> {
               return Center(
                 child: Text(state.message),
               );
+            } else {
+              throw Exception("BLoC is in an invalid state.");
             }
           },
         ));

@@ -50,7 +50,7 @@ class TicketViewerPageState extends State<TicketViewerPage> {
                     ));
           },
         ),
-        backgroundColor: CupertinoColors.activeOrange,
+        backgroundColor: CupertinoTheme.of(context).primaryContrastingColor,
       ),
       child: SafeArea(
         child: buildTicketView(),
@@ -65,11 +65,12 @@ class TicketViewerPageState extends State<TicketViewerPage> {
         children: [
           Text(
             "Du hast noch kein Ticket ausgewählt.",
-            style: TextStyle(color: CupertinoColors.black),
+            style: CupertinoTheme.of(context).textTheme.textStyle,
           ),
           SizedBox(height: 20),
           CupertinoButton.filled(
-              child: Text("Ticket wählen"),
+              child: Text("Ticket wählen",
+                  style: TextStyle(color: CupertinoColors.white)),
               onPressed: () {
                 FilePicker.platform.pickFiles().then((result) => {
                       ticketBloc
