@@ -5,9 +5,12 @@ class CanteenOverview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SafeArea(
         child: Center(
-      child: Text("CANTEEN"),
+      child: Text(
+        "COMING SOON",
+        style: TextStyle(color: CupertinoColors.black),
+      ),
     ));
   }
 }
