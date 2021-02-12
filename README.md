@@ -1,16 +1,9 @@
-# fb4_app
+# FB4 App (iOS)
 
-A new Flutter project.
+Eine (inoffizielle) iOS App für Studenten des Fachbereiches 4 der FH Dortmund!
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Features
+- Verwaltung von Stundenplänen
+- Abrufen von News aus dem "Aktuelles Feed" (Push Notifications in Arbeit)
+- Semesterticket importieren für einen schnelleren Zugriff
+- Speisepläne der Mensa anzeigen (Noch in Arbeit)
