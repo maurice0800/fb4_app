@@ -7,6 +7,7 @@ import 'package:fb4_app/areas/schedule/screens/schedule_overview.dart';
 import 'package:fb4_app/areas/ticket/screens/ticket_viewer_page.dart';
 import 'package:fb4_app/config/themes/dark_theme.dart';
 import 'package:fb4_app/utils/plugins/push_notification_manager.dart';
+import 'package:fb4_app/utils/ui/icons/fb4app_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -41,7 +42,10 @@ class FB4App extends StatelessWidget {
             BottomNavigationBarItem(
                 icon: Icon(CupertinoIcons.news), label: 'News'),
             BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.bitcoin_circle), label: 'Mensa'),
+                icon: Padding(
+                    padding: const EdgeInsets.only(top: 6.0),
+                    child: Icon(FB4Icons.food, size: 25)),
+                label: 'Mensa'),
             BottomNavigationBarItem(
                 icon: Icon(CupertinoIcons.ticket), label: 'Semesterticket'),
             BottomNavigationBarItem(

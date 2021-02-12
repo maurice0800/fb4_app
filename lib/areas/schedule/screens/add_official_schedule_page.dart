@@ -134,19 +134,15 @@ class _AddOfficialSchedulePageState extends State<AddOfficialSchedulePage> {
                       });
                       Navigator.of(context).pop();
                     }),
-                    child: Flexible(
-                      child: CSControl(
-                        nameWidget: Text("Studiengang"),
-                        contentWidget: Padding(
-                          padding: const EdgeInsets.only(left: 80.0),
-                          child: Flexible(
-                            child: Text(
-                              selectedCourse != null
-                                  ? selectedCourse.name
-                                  : "Auswählen...",
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
+                    child: CSControl(
+                      nameWidget: Text("Studiengang"),
+                      contentWidget: Padding(
+                        padding: const EdgeInsets.only(left: 80.0),
+                        child: Text(
+                          selectedCourse != null
+                              ? selectedCourse.name
+                              : "Auswählen...",
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ),
