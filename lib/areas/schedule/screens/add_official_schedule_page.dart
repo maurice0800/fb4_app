@@ -97,8 +97,7 @@ class _AddOfficialSchedulePageState extends State<AddOfficialSchedulePage> {
     return CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
           middle: Text("Stundenplan hinzufügen",
-              style: TextStyle(color: CupertinoColors.white)),
-          backgroundColor: CupertinoColors.activeOrange,
+              style: CupertinoTheme.of(context).textTheme.navTitleTextStyle),
           trailing: CupertinoButton(
               padding: EdgeInsets.zero,
               onPressed: () {
@@ -108,80 +107,91 @@ class _AddOfficialSchedulePageState extends State<AddOfficialSchedulePage> {
                         selectedCourse.shortName, selectedSemester));
               },
               child: Icon(CupertinoIcons.check_mark,
-                  color: CupertinoColors.white)),
+                  color: CupertinoTheme.of(context)
+                      .textTheme
+                      .navTitleTextStyle
+                      .color)),
         ),
-        child: BlocBuilder<CourseInfoBloc, CourseInfoState>(
-            builder: (context, state) {
-          if (state is CourseInfoInitial || state is CourseInfoLoading) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (state is CourseInfoLoaded) {
-            return Column(children: [
-              GestureDetector(
-                onTap: () => showModalForSelection(
-                    "Studiengang wählen",
-                    state.courses,
-                    state.courses.map((course) => course.name).toList(),
-                    (course) {
-                  setState(() {
-                    selectedCourse = course;
-                  });
-                  Navigator.of(context).pop();
-                }),
-                child: Flexible(
-                  child: CSControl(
-                    nameWidget: Text("Studiengang"),
-                    contentWidget: Padding(
-                      padding: const EdgeInsets.only(left: 80.0),
-                      child: Flexible(
-                        child: Text(
-                          selectedCourse != null
-                              ? selectedCourse.name
-                              : "Auswählen...",
-                          overflow: TextOverflow.ellipsis,
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 16.0),
+            child: BlocBuilder<CourseInfoBloc, CourseInfoState>(
+                builder: (context, state) {
+              if (state is CourseInfoInitial || state is CourseInfoLoading) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (state is CourseInfoLoaded) {
+                return Column(children: [
+                  GestureDetector(
+                    onTap: () => showModalForSelection(
+                        "Studiengang wählen",
+                        state.courses,
+                        state.courses.map((course) => course.name).toList(),
+                        (course) {
+                      setState(() {
+                        selectedCourse = course;
+                      });
+                      Navigator.of(context).pop();
+                    }),
+                    child: Flexible(
+                      child: CSControl(
+                        nameWidget: Text("Studiengang"),
+                        contentWidget: Padding(
+                          padding: const EdgeInsets.only(left: 80.0),
+                          child: Flexible(
+                            child: Text(
+                              selectedCourse != null
+                                  ? selectedCourse.name
+                                  : "Auswählen...",
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () => showModalForSelection("Semester wählen",
-                    selectedCourse.grades, selectedCourse.grades, (semester) {
-                  setState(() {
-                    selectedSemester = semester;
-                  });
-                  Navigator.of(context).pop();
-                }),
-                child: CSControl(
-                  nameWidget: Text("Semester"),
-                  contentWidget: Text(selectedSemester.isNotEmpty
-                      ? selectedSemester
-                      : "Kein Kurs gewählt"),
-                ),
-              ),
-              GestureDetector(
-                onTap: () => showModalForSelection(
-                    "Gruppenbuchstabe wählen",
-                    AlphabetList.getAlphabet(),
-                    AlphabetList.getAlphabet(),
-                    (group) => {
-                          setState(() {
-                            selectedGroup = group;
-                          }),
-                          Navigator.pop(context)
-                        }),
-                child: CSControl(
-                  nameWidget: Text("Gruppenbuchstabe"),
-                  contentWidget: Text(
-                      selectedGroup != null ? selectedGroup : "Auswählen..."),
-                ),
-              )
-            ]);
-          } else {
-            throw Exception("BLoC is in invalid state.");
-          }
-        }));
+                  GestureDetector(
+                    onTap: () => showModalForSelection(
+                        "Semester wählen",
+                        selectedCourse.grades,
+                        selectedCourse.grades, (semester) {
+                      setState(() {
+                        selectedSemester = semester;
+                      });
+                      Navigator.of(context).pop();
+                    }),
+                    child: CSControl(
+                      nameWidget: Text("Semester"),
+                      contentWidget: Text(selectedSemester.isNotEmpty
+                          ? selectedSemester
+                          : "Kein Kurs gewählt"),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () => showModalForSelection(
+                        "Gruppenbuchstabe wählen",
+                        AlphabetList.getAlphabet(),
+                        AlphabetList.getAlphabet(),
+                        (group) => {
+                              setState(() {
+                                selectedGroup = group;
+                              }),
+                              Navigator.pop(context)
+                            }),
+                    child: CSControl(
+                      nameWidget: Text("Gruppenbuchstabe"),
+                      contentWidget: Text(selectedGroup != null
+                          ? selectedGroup
+                          : "Auswählen..."),
+                    ),
+                  )
+                ]);
+              } else {
+                throw Exception("BLoC is in invalid state.");
+              }
+            }),
+          ),
+        ));
   }
 }

@@ -1,16 +1,16 @@
+import 'package:fb4_app/config/themes/color_consts.dart';
 import 'package:flutter/cupertino.dart';
 
 class LightTheme {
   static CupertinoThemeData themeData = CupertinoThemeData(
       brightness: Brightness.light,
-      primaryColor: CupertinoColors.activeOrange,
+      primaryColor: ColorConsts.mainOrange,
       primaryContrastingColor: CupertinoColors.white,
-      barBackgroundColor: CupertinoColors.activeOrange,
       textTheme: CupertinoTextThemeData(
           textStyle: TextStyle(color: CupertinoColors.black),
-          primaryColor: CupertinoColors.white,
+          primaryColor: CupertinoColors.black,
           navTitleTextStyle: TextStyle(
-              color: CupertinoColors.white,
+              color: CupertinoColors.black,
               fontSize: 18,
               fontWeight: FontWeight.bold,
               background: null,

@@ -160,9 +160,7 @@ class ScheduleOverviewState extends State<ScheduleOverview> {
                   return Center(
                     child: Text(
                       "Noch kein Stundenplan angelegt. Lege deinen ersten Stundenplan an, indem du auf das Plus-Symbol tippst!",
-                      style: TextStyle(
-                        color: CupertinoColors.black,
-                      ),
+                      style: CupertinoTheme.of(context).textTheme.textStyle,
                       textAlign: TextAlign.center,
                     ),
                   );
@@ -210,11 +208,15 @@ class ScheduleOverviewState extends State<ScheduleOverview> {
     }
   }
 
-  void scrollClickedPageIntoView(index) {
+  void scrollClickedPageIntoView(index) async {
     pageViewController.animateToPage(index,
         curve: Curves.ease, duration: Duration(milliseconds: 100));
     itemScrollController.scrollTo(
         index: index, duration: Duration(milliseconds: 100));
+
+    // Wait for scroll to finish again...
+    await Future.delayed(Duration(milliseconds: 100));
+    controllerPageNotifier.value = index;
   }
 
   void handleItemSelected(ScheduleItem item) {
@@ -248,8 +250,11 @@ class ScheduleOverviewState extends State<ScheduleOverview> {
       trailing: editMode
           ? CupertinoButton(
               padding: EdgeInsets.zero,
-              child:
-                  Icon(CupertinoIcons.check_mark, color: CupertinoColors.white),
+              child: Icon(CupertinoIcons.check_mark,
+                  color: CupertinoTheme.of(context)
+                      .textTheme
+                      .navTitleTextStyle
+                      .color),
               onPressed: () {
                 setState(() {
                   editMode = false;
@@ -294,7 +299,11 @@ class ScheduleOverviewState extends State<ScheduleOverview> {
                               ],
                             ));
                   },
-                  child: Icon(CupertinoIcons.add, color: CupertinoColors.white),
+                  child: Icon(CupertinoIcons.add,
+                      color: CupertinoTheme.of(context)
+                          .textTheme
+                          .navTitleTextStyle
+                          .color),
                   padding: EdgeInsets.zero,
                 ),
                 CupertinoButton(
@@ -312,7 +321,10 @@ class ScheduleOverviewState extends State<ScheduleOverview> {
                             });
                   },
                   child: Icon(CupertinoIcons.ellipsis_vertical,
-                      color: CupertinoColors.white),
+                      color: CupertinoTheme.of(context)
+                          .textTheme
+                          .navTitleTextStyle
+                          .color),
                   padding: EdgeInsets.zero,
                 )
               ],

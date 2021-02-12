@@ -28,11 +28,12 @@ class TicketViewerPageState extends State<TicketViewerPage> {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         middle: Text("Semesterticket",
-            style: TextStyle(color: CupertinoColors.white)),
+            style: CupertinoTheme.of(context).textTheme.navTitleTextStyle),
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
           child: Icon(CupertinoIcons.ellipsis_vertical,
-              color: CupertinoColors.white),
+              color:
+                  CupertinoTheme.of(context).textTheme.navTitleTextStyle.color),
           onPressed: () {
             showCupertinoModalPopup(
                 context: context,

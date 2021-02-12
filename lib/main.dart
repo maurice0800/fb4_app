@@ -35,22 +35,18 @@ class FB4App extends StatelessWidget {
     return CupertinoApp(
         theme: darkMode ? DarkTheme.themeData : LightTheme.themeData,
         home: CupertinoTabScaffold(
-          tabBar: CupertinoTabBar(
-              backgroundColor:
-                  CupertinoTheme.of(context).scaffoldBackgroundColor,
-              currentIndex: 2,
-              items: [
-                BottomNavigationBarItem(
-                    icon: Icon(CupertinoIcons.calendar), label: 'Stundenplan'),
-                BottomNavigationBarItem(
-                    icon: Icon(CupertinoIcons.news), label: 'News'),
-                BottomNavigationBarItem(
-                    icon: Icon(CupertinoIcons.bitcoin_circle), label: 'Mensa'),
-                BottomNavigationBarItem(
-                    icon: Icon(CupertinoIcons.ticket), label: 'Semesterticket'),
-                BottomNavigationBarItem(
-                    icon: Icon(CupertinoIcons.ellipsis), label: 'Mehr'),
-              ]),
+          tabBar: CupertinoTabBar(currentIndex: 2, items: [
+            BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.calendar), label: 'Stundenplan'),
+            BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.news), label: 'News'),
+            BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.bitcoin_circle), label: 'Mensa'),
+            BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.ticket), label: 'Semesterticket'),
+            BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.ellipsis), label: 'Mehr'),
+          ]),
           tabBuilder: (context, index) {
             switch (index) {
               case 0:

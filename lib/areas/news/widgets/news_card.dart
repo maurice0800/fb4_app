@@ -1,4 +1,5 @@
 import 'package:fb4_app/areas/news/models/news_item.dart';
+import 'package:fb4_app/config/themes/color_consts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -61,7 +62,7 @@ class NewsCard extends StatelessWidget {
                   ));
       },
       child: Card(
-          color: CupertinoTheme.of(context).scaffoldBackgroundColor,
+          color: CupertinoTheme.of(context).primaryContrastingColor,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -73,7 +74,7 @@ class NewsCard extends StatelessWidget {
                     style: TextStyle(fontWeight: FontWeight.bold)
                         .merge(CupertinoTheme.of(context).textTheme.textStyle)),
                 Divider(
-                  color: CupertinoColors.activeOrange,
+                  color: ColorConsts.mainOrange,
                   thickness: 2,
                 ),
                 Text(
@@ -84,7 +85,7 @@ class NewsCard extends StatelessWidget {
                   style: CupertinoTheme.of(context).textTheme.textStyle,
                 ),
                 Divider(
-                  color: CupertinoColors.activeOrange,
+                  color: ColorConsts.mainOrange,
                   thickness: 2,
                 ),
                 Row(

@@ -32,8 +32,7 @@ class _ScheduleSettingsPageState extends State<ScheduleSettingsPage> {
           transitionBetweenRoutes: false,
           actionsForegroundColor: CupertinoColors.white,
           middle: Text("Einstellungen",
-              style: TextStyle(color: CupertinoColors.white)),
-          backgroundColor: CupertinoTheme.of(context).primaryColor,
+              style: CupertinoTheme.of(context).textTheme.navTitleTextStyle),
         ),
         child: BlocBuilder<CourseInfoBloc, CourseInfoState>(
             builder: (builder, state) {

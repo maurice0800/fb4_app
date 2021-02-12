@@ -26,7 +26,6 @@ class NewsOverviewState extends State<NewsOverview> {
           transitionBetweenRoutes: false,
           middle: Text("News",
               style: CupertinoTheme.of(context).textTheme.navTitleTextStyle),
-          backgroundColor: CupertinoTheme.of(context).barBackgroundColor,
         ),
         child: BlocBuilder<NewsItemBloc, NewsItemState>(
           builder: (context, state) {
