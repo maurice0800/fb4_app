@@ -30,6 +30,8 @@ class NewsCard extends StatelessWidget {
               pageBuilder: (context, animation, secondaryAnimation) => Align(
                     alignment: Alignment.center,
                     child: Dialog(
+                      backgroundColor:
+                          CupertinoTheme.of(context).primaryContrastingColor,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5.0)),
                       child: Column(
