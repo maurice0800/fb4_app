@@ -18,6 +18,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:json_store/json_store.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
+import '../../../app_constants.dart';
+
 class ScheduleOverview extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -32,16 +34,6 @@ class ScheduleOverviewState extends State<ScheduleOverview> {
   final ItemScrollController itemScrollController = ItemScrollController();
   ValueNotifier controllerPageNotifier = ValueNotifier(0);
   ScheduleListController scheduleListController;
-  final List<String> weekdays = [
-    "Montag",
-    "Dienstag",
-    "Mittwoch",
-    "Donnerstag",
-    "Freitag",
-
-    // This is not fancy, but the scrollview is behaving weirdly when the end of list is visible while scrolling
-    "                                                                       ",
-  ];
 
   ScheduleItemBloc scheduleItemBloc;
 
@@ -67,11 +59,6 @@ class ScheduleOverviewState extends State<ScheduleOverview> {
                     state is ScheduleItemInitialState) {
                   return Center(child: CircularProgressIndicator());
                 } else if (state is ScheduleItemLoadedState) {
-                  WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                    pageViewController.position.addListener(() {
-                      scrollDirectionListener();
-                    });
-                  });
                   return Column(
                     children: [
                       SizedBox(
@@ -80,7 +67,7 @@ class ScheduleOverviewState extends State<ScheduleOverview> {
                           valueListenable: controllerPageNotifier,
                           builder: (context, value, _) =>
                               ScrollablePositionedList.separated(
-                            itemCount: weekdays.length,
+                            itemCount: AppConstants.weekdays.length,
                             itemScrollController: itemScrollController,
                             separatorBuilder: (context, index) => SizedBox(),
                             itemBuilder: (context, index) => Padding(
@@ -88,7 +75,7 @@ class ScheduleOverviewState extends State<ScheduleOverview> {
                                   left: 10.0, top: 8.0, right: 10.0),
                               child: GestureDetector(
                                 onTap: () => scrollClickedPageIntoView(index),
-                                child: Text(weekdays[index],
+                                child: Text(AppConstants.weekdays[index],
                                     style: TextStyle(
                                         color: index ==
                                                 controllerPageNotifier.value
@@ -106,9 +93,9 @@ class ScheduleOverviewState extends State<ScheduleOverview> {
                         ),
                       ),
                       Expanded(
-                        flex: 18,
                         child: PageView(
                             controller: pageViewController,
+                            onPageChanged: handlePageChanged,
                             children: <Widget>[
                               ScheduleList(
                                   editMode: editMode,
@@ -173,50 +160,9 @@ class ScheduleOverviewState extends State<ScheduleOverview> {
         ));
   }
 
-  // This is not fancy but the listener fires one time for every PIXEL the page is moving. So we somehow have to prevent multiple re-renders for the same swipe.
-  void scrollDirectionListener() async {
-    if (pageViewController.position.userScrollDirection !=
-        currentScrollDirection) {
-      currentScrollDirection = pageViewController.position.userScrollDirection;
-      if (currentScrollDirection == ScrollDirection.reverse) {
-        var newIndex = pageViewController.page.ceil();
-
-        if (controllerPageNotifier.value != newIndex) {
-          itemScrollController.scrollTo(
-              index: newIndex, duration: Duration(milliseconds: 100));
-        }
-
-        controllerPageNotifier.value = newIndex;
-
-        // Wait for scroll to finish
-        await Future.delayed(Duration(milliseconds: 600));
-        currentScrollDirection = null;
-      } else {
-        var newIndex = pageViewController.page.floor();
-
-        if (controllerPageNotifier.value != newIndex) {
-          itemScrollController.scrollTo(
-              index: newIndex, duration: Duration(milliseconds: 100));
-        }
-
-        controllerPageNotifier.value = newIndex;
-
-        // Wait for scroll to finish
-        await Future.delayed(Duration(milliseconds: 600));
-        currentScrollDirection = null;
-      }
-    }
-  }
-
   void scrollClickedPageIntoView(index) async {
     pageViewController.animateToPage(index,
         curve: Curves.ease, duration: Duration(milliseconds: 100));
-    itemScrollController.scrollTo(
-        index: index, duration: Duration(milliseconds: 100));
-
-    // Wait for scroll to finish again...
-    await Future.delayed(Duration(milliseconds: 100));
-    controllerPageNotifier.value = index;
   }
 
   void handleItemSelected(ScheduleItem item) {
@@ -239,6 +185,15 @@ class ScheduleOverviewState extends State<ScheduleOverview> {
       scheduleItemBloc.add(
           FetchScheduleItemsFromServerEvent(result.shortName, result.semester));
     }
+  }
+
+  void handlePageChanged(int value) async {
+    controllerPageNotifier.value = value;
+
+    // For some reason we need this delay or it will scroll to the wrong position
+    await Future.delayed(Duration(milliseconds: 1));
+    itemScrollController.scrollTo(
+        index: value, duration: Duration(milliseconds: 50));
   }
 
   Widget buildNavigationBar() {

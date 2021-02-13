@@ -19,8 +19,8 @@ class NewsItemBloc extends Bloc<NewsItemEvent, NewsItemState> {
   ) async* {
     if (event is FetchNewsItemsEvent) {
       yield NewsItemLoading();
-      var x = await newsRepository.getNewsItems();
-      yield NewsItemLoaded(newsItems: x);
+      var items = await newsRepository.getNewsItems();
+      yield NewsItemLoaded(newsItems: items);
     }
   }
 }

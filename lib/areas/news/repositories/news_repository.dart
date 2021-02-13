@@ -13,6 +13,8 @@ class NewsRepository {
         return items
             .map<NewsItem>((element) => NewsItem.fromXmlElement(element))
             .toList();
+      } else {
+        throw Exception("Unexpected answer from API.");
       }
     });
   }
