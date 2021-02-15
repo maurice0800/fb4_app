@@ -1,15 +1,15 @@
 import 'package:quiver/core.dart';
 
 class ScheduleItem {
-  final String name;
-  final String courseType;
-  final String lecturerId;
-  final String lecturerName;
-  final String studentSet;
-  final String timeBegin;
-  final String timeEnd;
-  final String weekday;
-  final String roomId;
+  String name;
+  String courseType;
+  String lecturerId;
+  String lecturerName;
+  String studentSet;
+  String timeBegin;
+  String timeEnd;
+  String weekday;
+  String roomId;
 
   ScheduleItem(
       {this.name,
