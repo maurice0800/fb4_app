@@ -5,6 +5,7 @@ import 'package:fb4_app/areas/schedule/bloc/schedule_item_bloc.dart';
 import 'package:fb4_app/areas/schedule/repositories/schedule_repository.dart';
 import 'package:fb4_app/areas/schedule/screens/schedule_overview.dart';
 import 'package:fb4_app/areas/ticket/screens/ticket_viewer_page.dart';
+import 'package:fb4_app/areas/ticket/viewmodels/ticket_overview_viewmodel.dart';
 import 'package:fb4_app/config/themes/dark_theme.dart';
 import 'package:fb4_app/utils/plugins/push_notification_manager.dart';
 import 'package:fb4_app/utils/ui/icons/fb4app_icons.dart';
@@ -13,10 +14,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
 import 'areas/canteen/screens/canteen_overview.dart';
-import 'areas/news/bloc/news_item_bloc.dart';
-import 'package:fb4_app/areas/ticket/bloc/ticket_bloc.dart';
 
 import 'config/themes/light_theme.dart';
 
@@ -63,8 +63,8 @@ class FB4App extends StatelessWidget {
               case 2:
                 return CanteenOverview();
               case 3:
-                return BlocProvider(
-                    create: (context) => TicketBloc(),
+                return ChangeNotifierProvider(
+                    create: (context) => TicketOverviewViewModel()..init(),
                     child: TicketViewerPage());
               case 4:
                 return MoreList();

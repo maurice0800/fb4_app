@@ -1,110 +1,93 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fb4_app/areas/ticket/viewmodels/ticket_overview_viewmodel.dart';
 
-import 'dart:ui' as ui;
 import 'package:flutter/cupertino.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:provider/provider.dart';
 
-import '../bloc/ticket_bloc.dart';
-
-class TicketViewerPage extends StatefulWidget {
-  TicketViewerPage({Key key}) : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() => TicketViewerPageState();
-}
-
-class TicketViewerPageState extends State<TicketViewerPage> {
-  TicketBloc ticketBloc;
-
-  @override
-  void initState() {
-    super.initState();
-    ticketBloc = BlocProvider.of<TicketBloc>(context);
-    ticketBloc.init().then((_) => ticketBloc.add(GetTicketEvent()));
-  }
-
+class TicketViewerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         middle: Text("Semesterticket",
             style: CupertinoTheme.of(context).textTheme.navTitleTextStyle),
-        trailing: CupertinoButton(
-          padding: EdgeInsets.zero,
-          child: Icon(CupertinoIcons.ellipsis_vertical,
-              color:
-                  CupertinoTheme.of(context).textTheme.navTitleTextStyle.color),
-          onPressed: () {
-            showCupertinoModalPopup(
-                context: context,
-                builder: (context) => CupertinoActionSheet(
-                      actions: [
-                        CupertinoActionSheetAction(
-                          child: Text("Semesterticket löschen"),
-                          isDestructiveAction: true,
-                          onPressed: () {
-                            ticketBloc.add(DeleteTicketEvent());
-                            Navigator.pop(context);
-                          },
-                        )
-                      ],
-                    ));
-          },
+        trailing: Consumer<TicketOverviewViewModel>(
+          builder: (context, viewModel, child) => CupertinoButton(
+            padding: EdgeInsets.zero,
+            child: Icon(CupertinoIcons.ellipsis_vertical,
+                color: CupertinoTheme.of(context)
+                    .textTheme
+                    .navTitleTextStyle
+                    .color),
+            onPressed: () {
+              showCupertinoModalPopup(
+                  context: context,
+                  builder: (context) => CupertinoActionSheet(
+                        actions: [
+                          CupertinoActionSheetAction(
+                            child: Text("Semesterticket löschen"),
+                            isDestructiveAction: true,
+                            onPressed: () {
+                              viewModel.deleteTicket();
+                              Navigator.pop(context);
+                            },
+                          )
+                        ],
+                      ));
+            },
+          ),
         ),
         backgroundColor: CupertinoTheme.of(context).primaryContrastingColor,
       ),
       child: SafeArea(
-        child: buildTicketView(),
+        child: buildTicketView(context),
       ),
     );
   }
 
-  Widget buildSelectTicket() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            "Du hast noch kein Ticket ausgewählt.",
-            style: CupertinoTheme.of(context).textTheme.textStyle,
-          ),
-          SizedBox(height: 20),
-          CupertinoButton.filled(
-              child: Text("Ticket wählen",
-                  style: TextStyle(color: CupertinoColors.white)),
-              onPressed: () {
-                FilePicker.platform.pickFiles().then((result) => {
-                      ticketBloc
-                          .add(AddNewTicketEvent(result.files.first.path)),
-                    });
-              })
-        ],
-      ),
-    );
-  }
-
-  Widget buildTicketView() {
-    return BlocConsumer<TicketBloc, TicketBlocState>(
-      builder: (context, state) {
-        if (state is TicketLoadingState || state is TicketInitialState) {
-          return Center(child: CupertinoActivityIndicator());
-        } else if (state is TicketLoadedState) {
-          return Center(
-            child: InteractiveViewer(
-              child: Image.memory(state.imageBytes),
+  Widget buildSelectTicket(BuildContext context) {
+    return Consumer<TicketOverviewViewModel>(
+      builder: (context, viewModel, child) => Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Du hast noch kein Ticket ausgewählt.",
+              style: CupertinoTheme.of(context).textTheme.textStyle,
             ),
-          );
-        } else if (state is TicketNotFoundState) {
-          return buildSelectTicket();
-        } else {
-          throw Exception("Error while processing BLoC");
-        }
-      },
-      listener: (context, state) {
-        if (state is TicketSavedState || state is TicketDeletedState) {
-          ticketBloc.add(GetTicketEvent());
-        }
-      },
+            SizedBox(height: 20),
+            CupertinoButton.filled(
+                child: Text("Ticket wählen",
+                    style: TextStyle(color: CupertinoColors.white)),
+                onPressed: () {
+                  FilePicker.platform.pickFiles().then((result) => {
+                        viewModel.extractImageFromPdf(result.files.first.path),
+                      });
+                })
+          ],
+        ),
+      ),
     );
+  }
+
+  Widget buildTicketView(BuildContext context) {
+    return Consumer<TicketOverviewViewModel>(
+        builder: (context, viewModel, child) {
+      if (viewModel.isImageProcessing) {
+        return Center(
+          child: CupertinoActivityIndicator(),
+        );
+      }
+
+      if (viewModel.isImageAvailable) {
+        return Center(
+          child: InteractiveViewer(
+            child: Image.memory(viewModel.imageBytes),
+          ),
+        );
+      }
+
+      return buildSelectTicket(context);
+    });
   }
 }
