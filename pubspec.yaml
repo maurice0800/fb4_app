@@ -23,6 +23,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  provider: ^4.3.3
   flutter_bloc: ^6.0.0
   flutter_cupertino_settings: ^0.4.0
   http: ^0.12.0

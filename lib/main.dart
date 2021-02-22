@@ -59,11 +59,7 @@ class FB4App extends StatelessWidget {
                         ScheduleItemBloc(repository: ScheduleRepository()),
                     child: ScheduleOverview());
               case 1:
-                return BlocProvider(
-                  create: (context) =>
-                      NewsItemBloc(newsRepository: NewsRepository()),
-                  child: NewsOverview(),
-                );
+                return NewsOverview();
               case 2:
                 return CanteenOverview();
               case 3:
