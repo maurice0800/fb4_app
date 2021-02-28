@@ -4,4 +4,12 @@ class ApiConstants {
   static final String shortWednesday = "Wed";
   static final String shortThursday = "Thu";
   static final String shortFriday = "Fri";
+
+  static final List<String> weekDayList = [
+    shortMonday,
+    shortTuesday,
+    shortWednesday,
+    shortThursday,
+    shortFriday
+  ];
 }

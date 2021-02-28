@@ -71,3 +71,5 @@ lib/generated_plugin_registrant.dart
 ios/GoogleService-Info.plist
 
 ios/Runner.xcworkspace/contents.xcworkspacedata
+
+.vscode/

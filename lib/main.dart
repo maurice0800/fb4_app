@@ -4,6 +4,7 @@ import 'package:fb4_app/areas/news/screens/news_overview.dart';
 import 'package:fb4_app/areas/schedule/bloc/schedule_item_bloc.dart';
 import 'package:fb4_app/areas/schedule/repositories/schedule_repository.dart';
 import 'package:fb4_app/areas/schedule/screens/schedule_overview.dart';
+import 'package:fb4_app/areas/schedule/viewmodels/schedule_overview_viewmodel.dart';
 import 'package:fb4_app/areas/ticket/screens/ticket_viewer_page.dart';
 import 'package:fb4_app/areas/ticket/viewmodels/ticket_overview_viewmodel.dart';
 import 'package:fb4_app/config/themes/dark_theme.dart';
@@ -30,6 +31,8 @@ class FB4App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ScheduleOverviewViewModel().getScheduleListsFromCache();
+
     bool darkMode =
         SchedulerBinding.instance.window.platformBrightness == Brightness.dark;
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -54,18 +57,20 @@ class FB4App extends StatelessWidget {
           tabBuilder: (context, index) {
             switch (index) {
               case 0:
-                return BlocProvider(
-                    create: (BuildContext context) =>
-                        ScheduleItemBloc(repository: ScheduleRepository()),
-                    child: ScheduleOverview());
+                return ChangeNotifierProvider(
+                  create: (context) =>
+                      ScheduleOverviewViewModel()..getScheduleListsFromCache(),
+                  child: ScheduleOverview(),
+                );
               case 1:
                 return NewsOverview();
               case 2:
                 return CanteenOverview();
               case 3:
                 return ChangeNotifierProvider(
-                    create: (context) => TicketOverviewViewModel()..init(),
-                    child: TicketViewerPage());
+                  create: (context) => TicketOverviewViewModel()..init(),
+                  child: TicketViewerPage(),
+                );
               case 4:
                 return MoreList();
               default:

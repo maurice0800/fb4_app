@@ -1,11 +1,10 @@
-import 'package:fb4_app/areas/schedule/bloc/course_info_bloc.dart';
-import 'package:fb4_app/areas/schedule/models/course_info.dart';
 import 'package:fb4_app/areas/schedule/models/selected_course_info.dart';
+import 'package:fb4_app/areas/schedule/viewmodels/add_official_schedule_page_viewmodel.dart';
 import 'package:fb4_app/utils/helpers/alphabet_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_cupertino_settings/flutter_cupertino_settings.dart';
+import 'package:provider/provider.dart';
 
 class AddOfficialSchedulePage extends StatefulWidget {
   AddOfficialSchedulePage({Key key}) : super(key: key);
@@ -16,19 +15,6 @@ class AddOfficialSchedulePage extends StatefulWidget {
 }
 
 class _AddOfficialSchedulePageState extends State<AddOfficialSchedulePage> {
-  CourseInfoBloc courseInfoBloc;
-
-  CourseInfo selectedCourse;
-  String selectedGroup;
-  String selectedSemester = "";
-
-  @override
-  void initState() {
-    super.initState();
-    courseInfoBloc = BlocProvider.of<CourseInfoBloc>(context);
-    courseInfoBloc.add(FetchCourseInfoEvent());
-  }
-
   TextStyle dialogOptionStyle =
       TextStyle(fontSize: 18, fontWeight: FontWeight.w400);
 
@@ -101,10 +87,13 @@ class _AddOfficialSchedulePageState extends State<AddOfficialSchedulePage> {
           trailing: CupertinoButton(
               padding: EdgeInsets.zero,
               onPressed: () {
-                Navigator.pop(
+                var viewModel = Provider.of<AddOfficialSchedulePageViewModel>(
                     context,
-                    SelectedCourseInfo(
-                        selectedCourse.shortName, selectedSemester));
+                    listen: false);
+                Navigator.of(context).pop(SelectedCourseInfo(
+                    viewModel.selectedCourse.shortName,
+                    viewModel.selectedSemester,
+                    group: viewModel.selectedGroup));
               },
               child: Icon(CupertinoIcons.check_mark,
                   color: CupertinoTheme.of(context)
@@ -115,23 +104,17 @@ class _AddOfficialSchedulePageState extends State<AddOfficialSchedulePage> {
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(top: 16.0),
-            child: BlocBuilder<CourseInfoBloc, CourseInfoState>(
-                builder: (context, state) {
-              if (state is CourseInfoInitial || state is CourseInfoLoading) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (state is CourseInfoLoaded) {
+            child: Consumer<AddOfficialSchedulePageViewModel>(
+                builder: (context, viewModel, child) {
+              if (viewModel.courses.length > 0) {
                 return Column(children: [
                   GestureDetector(
                     onTap: () => showModalForSelection(
                         "Studiengang wählen",
-                        state.courses,
-                        state.courses.map((course) => course.name).toList(),
+                        viewModel.courses,
+                        viewModel.courses.map((course) => course.name).toList(),
                         (course) {
-                      setState(() {
-                        selectedCourse = course;
-                      });
+                      viewModel.selectedCourse = course;
                       Navigator.of(context).pop();
                     }),
                     child: CSControl(
@@ -139,8 +122,8 @@ class _AddOfficialSchedulePageState extends State<AddOfficialSchedulePage> {
                       contentWidget: Padding(
                         padding: const EdgeInsets.only(left: 80.0),
                         child: Text(
-                          selectedCourse != null
-                              ? selectedCourse.name
+                          viewModel.selectedCourse != null
+                              ? viewModel.selectedCourse.name
                               : "Auswählen...",
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -150,17 +133,17 @@ class _AddOfficialSchedulePageState extends State<AddOfficialSchedulePage> {
                   GestureDetector(
                     onTap: () => showModalForSelection(
                         "Semester wählen",
-                        selectedCourse.grades,
-                        selectedCourse.grades, (semester) {
+                        viewModel.selectedCourse.grades,
+                        viewModel.selectedCourse.grades, (semester) {
                       setState(() {
-                        selectedSemester = semester;
+                        viewModel.selectedSemester = semester;
                       });
                       Navigator.of(context).pop();
                     }),
                     child: CSControl(
                       nameWidget: Text("Semester"),
-                      contentWidget: Text(selectedSemester.isNotEmpty
-                          ? selectedSemester
+                      contentWidget: Text(viewModel.selectedSemester.isNotEmpty
+                          ? viewModel.selectedSemester
                           : "Kein Kurs gewählt"),
                     ),
                   ),
@@ -170,21 +153,19 @@ class _AddOfficialSchedulePageState extends State<AddOfficialSchedulePage> {
                         AlphabetList.getAlphabet(),
                         AlphabetList.getAlphabet(),
                         (group) => {
-                              setState(() {
-                                selectedGroup = group;
-                              }),
+                              viewModel.selectedGroup = group,
                               Navigator.pop(context)
                             }),
                     child: CSControl(
                       nameWidget: Text("Gruppenbuchstabe"),
-                      contentWidget: Text(selectedGroup != null
-                          ? selectedGroup
+                      contentWidget: Text(viewModel.selectedGroup != null
+                          ? viewModel.selectedGroup
                           : "Auswählen..."),
                     ),
                   )
                 ]);
               } else {
-                throw Exception("BLoC is in invalid state.");
+                return Center(child: CupertinoActivityIndicator());
               }
             }),
           ),

@@ -6,7 +6,7 @@ import 'package:xml/xml.dart';
 
 class NewsRepository {
   Future<List<NewsItem>> getNewsItems() async {
-    return http.get('http://www.inf.fh-dortmund.de/rss.php').then((result) {
+    return http.get('https://www.inf.fh-dortmund.de/rss.php').then((result) {
       if (result.statusCode == 200) {
         var document = XmlDocument.parse(result.body);
         var items = document.findAllElements('item');

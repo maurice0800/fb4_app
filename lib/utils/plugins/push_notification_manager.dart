@@ -13,7 +13,8 @@ class PushNotificationsManager {
 
   Future<void> init() async {
     if (!_initialized) {
-      _firebaseMessaging.requestNotificationPermissions();
+      _firebaseMessaging.requestNotificationPermissions(IosNotificationSettings(
+          alert: true, sound: true, badge: true, provisional: true));
 
       _firebaseMessaging.configure(
         onResume: (Map<String, dynamic> message) async {
