@@ -1,4 +1,4 @@
-package com.example.fb4_app
+package de.hemacode.fb4_app
 
 import io.flutter.embedding.android.FlutterActivity
 

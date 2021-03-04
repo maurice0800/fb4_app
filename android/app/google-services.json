@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:848203524236:android:6537f1144094c9cce273a9",
         "android_client_info": {
-          "package_name": "com.example.fb4_app"
+          "package_name": "de.hemacode.fb4_app"
         }
       },
       "oauth_client": [
