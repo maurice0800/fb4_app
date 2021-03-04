@@ -1,10 +1,5 @@
-import 'package:fb4_app/areas/schedule/bloc/course_info_bloc.dart';
-import 'package:fb4_app/areas/schedule/bloc/schedule_item_bloc.dart';
-import 'package:fb4_app/areas/schedule/bloc/schedule_item_event.dart';
-import 'package:fb4_app/areas/schedule/models/schedule_item.dart';
 import 'package:fb4_app/areas/schedule/models/schedule_list_controller.dart';
 import 'package:fb4_app/areas/schedule/models/selected_course_info.dart';
-import 'package:fb4_app/areas/schedule/repositories/course_info_repository.dart';
 import 'package:fb4_app/areas/schedule/screens/add_official_schedule_page.dart';
 import 'package:fb4_app/areas/schedule/screens/schedule_settings_page.dart';
 import 'package:fb4_app/areas/schedule/viewmodels/add_official_schedule_page_viewmodel.dart';
@@ -13,7 +8,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
@@ -33,18 +27,6 @@ class ScheduleOverviewState extends State<ScheduleOverview> {
   final ItemScrollController itemScrollController = ItemScrollController();
   ValueNotifier controllerPageNotifier = ValueNotifier(0);
   ScheduleListController scheduleListController;
-
-  ScheduleItemBloc scheduleItemBloc;
-
-  @override
-  void initState() {
-    super.initState();
-
-    // scheduleListController = ScheduleListController(
-    //     handleItemSelected, handleItemDeselected, handleItemRemoved, null);
-    // scheduleItemBloc = BlocProvider.of<ScheduleItemBloc>(context);
-    // scheduleItemBloc.add(FetchScheduleItemsFromLocalStorageEvent());
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -130,16 +112,6 @@ class ScheduleOverviewState extends State<ScheduleOverview> {
         curve: Curves.ease, duration: Duration(milliseconds: 100));
   }
 
-  void handleAddOfficialPageResult(SelectedCourseInfo result) {
-    if (result != null) {
-      setState(() {
-        editMode = true;
-      });
-      scheduleItemBloc.add(
-          FetchScheduleItemsFromServerEvent(result.shortName, result.semester));
-    }
-  }
-
   void handlePageChanged(int value) async {
     controllerPageNotifier.value = value;
 
@@ -210,17 +182,8 @@ class ScheduleOverviewState extends State<ScheduleOverview> {
                   ),
                   CupertinoButton(
                       onPressed: () {
-                        Navigator.of(context)
-                            .push(CupertinoPageRoute(
-                                builder: (context) => BlocProvider(
-                                    create: (BuildContext context) =>
-                                        CourseInfoBloc(
-                                            repository: CourseInfoRepository()),
-                                    child: ScheduleSettingsPage())))
-                            .then((_) => {
-                                  scheduleItemBloc.add(
-                                      FetchScheduleItemsFromLocalStorageEvent())
-                                });
+                        Navigator.of(context).push(CupertinoPageRoute(
+                            builder: (context) => ScheduleSettingsPage()));
                       },
                       child: Icon(CupertinoIcons.ellipsis_vertical,
                           color: CupertinoTheme.of(context)

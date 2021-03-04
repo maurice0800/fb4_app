@@ -4,7 +4,7 @@ class ScheduleListController {
   Function(ScheduleItem) onItemSelected;
   Function(ScheduleItem) onItemDeselected;
   Function(ScheduleItem) onItemRemoved;
-  List<ScheduleItem> selectedItems = List<ScheduleItem>();
+  List<ScheduleItem> selectedItems = [];
 
   ScheduleListController({this.onItemRemoved}) {
     onItemSelected = (item) => selectedItems.add(item);

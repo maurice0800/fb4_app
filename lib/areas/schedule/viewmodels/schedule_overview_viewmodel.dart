@@ -14,7 +14,7 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
   bool isLoading = false;
   ScheduleRepository repository = ScheduleRepository();
   ScheduleListController internalController = ScheduleListController();
-  List<ScheduleList> scheduleDays = List<ScheduleList>();
+  List<ScheduleList> scheduleDays = [];
 
   void getScheduleListsFromServer(SelectedCourseInfo info) {
     isLoading = true;

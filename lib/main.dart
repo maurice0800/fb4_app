@@ -1,8 +1,5 @@
 import 'package:fb4_app/areas/more/screens/more_list.dart';
-import 'package:fb4_app/areas/news/repositories/news_repository.dart';
 import 'package:fb4_app/areas/news/screens/news_overview.dart';
-import 'package:fb4_app/areas/schedule/bloc/schedule_item_bloc.dart';
-import 'package:fb4_app/areas/schedule/repositories/schedule_repository.dart';
 import 'package:fb4_app/areas/schedule/screens/schedule_overview.dart';
 import 'package:fb4_app/areas/schedule/viewmodels/schedule_overview_viewmodel.dart';
 import 'package:fb4_app/areas/ticket/screens/ticket_viewer_page.dart';
@@ -14,7 +11,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import 'areas/canteen/screens/canteen_overview.dart';
