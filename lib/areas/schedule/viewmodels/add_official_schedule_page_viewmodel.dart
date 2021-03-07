@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 
 class AddOfficialSchedulePageViewModel extends ChangeNotifier {
   CourseInfoRepository repository = CourseInfoRepository();
-  List<CourseInfo> courses = List<CourseInfo>();
+  List<CourseInfo> courses = [];
 
   CourseInfo _selectedCourse;
   String _selectedGroup;

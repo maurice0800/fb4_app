@@ -41,12 +41,11 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
 
   void getScheduleListsFromCache() {
     isLoading = true;
+    scheduleDays.clear();
     notifyListeners();
 
     jsonStore.getItem("schedule_items").then((itemsList) {
-      if (itemsList == null) {
-        return;
-      } else {
+      if (itemsList != null) {
         var scheduleItems = itemsList.values
             .map<ScheduleItem>((item) => ScheduleItem.fromJson(item))
             .toList();
@@ -60,10 +59,10 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
                   controller: internalController,
                   editMode: editMode,
                 ));
-
-        isLoading = false;
-        notifyListeners();
       }
+
+      isLoading = false;
+      notifyListeners();
     });
   }
 

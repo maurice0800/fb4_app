@@ -1,5 +1,6 @@
 import 'package:fb4_app/areas/more/screens/more_list.dart';
 import 'package:fb4_app/areas/news/screens/news_overview.dart';
+import 'package:fb4_app/areas/schedule/repositories/schedule_repository.dart';
 import 'package:fb4_app/areas/schedule/screens/schedule_overview.dart';
 import 'package:fb4_app/areas/schedule/viewmodels/schedule_overview_viewmodel.dart';
 import 'package:fb4_app/areas/ticket/screens/ticket_viewer_page.dart';
@@ -32,47 +33,45 @@ class FB4App extends StatelessWidget {
     bool darkMode =
         SchedulerBinding.instance.window.platformBrightness == Brightness.dark;
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-    return CupertinoApp(
-        theme: darkMode ? DarkTheme.themeData : LightTheme.themeData,
-        home: CupertinoTabScaffold(
-          tabBar: CupertinoTabBar(currentIndex: 2, items: [
-            BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.calendar), label: 'Stundenplan'),
-            BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.news), label: 'News'),
-            BottomNavigationBarItem(
-                icon: Padding(
-                    padding: const EdgeInsets.only(top: 6.0),
-                    child: Icon(FB4Icons.food, size: 25)),
-                label: 'Mensa'),
-            BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.ticket), label: 'Semesterticket'),
-            BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.ellipsis), label: 'Mehr'),
-          ]),
-          tabBuilder: (context, index) {
-            switch (index) {
-              case 0:
-                return ChangeNotifierProvider(
-                  create: (context) =>
-                      ScheduleOverviewViewModel()..getScheduleListsFromCache(),
-                  child: ScheduleOverview(),
-                );
-              case 1:
-                return NewsOverview();
-              case 2:
-                return CanteenOverview();
-              case 3:
-                return ChangeNotifierProvider(
-                  create: (context) => TicketOverviewViewModel()..init(),
-                  child: TicketViewerPage(),
-                );
-              case 4:
-                return MoreList();
-              default:
-                throw Exception("User tried to open an invalid page.");
-            }
-          },
-        ));
+    return ChangeNotifierProvider<ScheduleOverviewViewModel>(
+        create: (context) => ScheduleOverviewViewModel(),
+        child: CupertinoApp(
+            theme: darkMode ? DarkTheme.themeData : LightTheme.themeData,
+            home: CupertinoTabScaffold(
+              tabBar: CupertinoTabBar(currentIndex: 2, items: [
+                BottomNavigationBarItem(
+                    icon: Icon(CupertinoIcons.calendar), label: 'Stundenplan'),
+                BottomNavigationBarItem(
+                    icon: Icon(CupertinoIcons.news), label: 'News'),
+                BottomNavigationBarItem(
+                    icon: Padding(
+                        padding: const EdgeInsets.only(top: 6.0),
+                        child: Icon(FB4Icons.food, size: 25)),
+                    label: 'Mensa'),
+                BottomNavigationBarItem(
+                    icon: Icon(CupertinoIcons.ticket), label: 'Semesterticket'),
+                BottomNavigationBarItem(
+                    icon: Icon(CupertinoIcons.ellipsis), label: 'Mehr'),
+              ]),
+              tabBuilder: (context, index) {
+                switch (index) {
+                  case 0:
+                    return ScheduleOverview();
+                  case 1:
+                    return NewsOverview();
+                  case 2:
+                    return CanteenOverview();
+                  case 3:
+                    return ChangeNotifierProvider(
+                      create: (context) => TicketOverviewViewModel()..init(),
+                      child: TicketViewerPage(),
+                    );
+                  case 4:
+                    return MoreList();
+                  default:
+                    throw Exception("User tried to open an invalid page.");
+                }
+              },
+            )));
   }
 }

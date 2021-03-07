@@ -87,23 +87,13 @@ class ScheduleOverviewState extends State<ScheduleOverview> {
               child: CupertinoActivityIndicator(),
             );
           } else {
-            print("Missing state");
-            return Container();
+            return Center(
+                child: Text(
+              "Noch kein Stundenplan angelegt. Lege deinen ersten Stundenplan an, indem du auf das Plus-Symbol tippst!",
+              style: CupertinoTheme.of(context).textTheme.textStyle,
+              textAlign: TextAlign.center,
+            ));
           }
-          //   } else if (state is ScheduleItemErrorState) {
-          //     return Center(child: Text(state.message));
-          //   } else if (state is ScheduleItemsEmptyState) {
-          //     return Center(
-          //       child: Text(
-          //         "Noch kein Stundenplan angelegt. Lege deinen ersten Stundenplan an, indem du auf das Plus-Symbol tippst!",
-          //         style: CupertinoTheme.of(context).textTheme.textStyle,
-          //         textAlign: TextAlign.center,
-          //       ),
-          //     );
-          //   } else {
-          //     throw Exception("BLoC is in invalid state");
-          //   }
-          // },
         }))));
   }
 
@@ -159,12 +149,15 @@ class ScheduleOverviewState extends State<ScheduleOverview> {
                                                           child:
                                                               AddOfficialSchedulePage(),
                                                         )))
-                                            .then((SelectedCourseInfo result) =>
-                                                Provider.of<ScheduleOverviewViewModel>(
-                                                        context,
-                                                        listen: false)
-                                                    .getScheduleListsFromServer(
-                                                        result));
+                                            .then((SelectedCourseInfo result) {
+                                          if (result != null) {
+                                            Provider.of<ScheduleOverviewViewModel>(
+                                                    context,
+                                                    listen: false)
+                                                .getScheduleListsFromServer(
+                                                    result);
+                                          }
+                                        });
                                       },
                                       child: Text("Offizieller Stundenplan")),
                                   CupertinoActionSheetAction(
