@@ -16,6 +16,10 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
   ScheduleListController internalController = ScheduleListController();
   List<ScheduleList> scheduleDays = [];
 
+  ScheduleOverviewViewModel() {
+    getScheduleListsFromCache();
+  }
+
   void getScheduleListsFromServer(SelectedCourseInfo info) {
     isLoading = true;
     notifyListeners();
@@ -41,8 +45,8 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
 
   void getScheduleListsFromCache() {
     isLoading = true;
-    scheduleDays.clear();
     notifyListeners();
+    scheduleDays.clear();
 
     jsonStore.getItem("schedule_items").then((itemsList) {
       if (itemsList != null) {

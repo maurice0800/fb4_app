@@ -28,11 +28,11 @@ class FB4App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ScheduleOverviewViewModel().getScheduleListsFromCache();
-
     bool darkMode =
         SchedulerBinding.instance.window.platformBrightness == Brightness.dark;
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     return ChangeNotifierProvider<ScheduleOverviewViewModel>(
         create: (context) => ScheduleOverviewViewModel(),
         child: CupertinoApp(
