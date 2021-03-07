@@ -10,23 +10,27 @@ class AddOfficialSchedulePageViewModel extends ChangeNotifier {
   String _selectedGroup;
   String _selectedSemester = "";
 
+  TextEditingController courseController = TextEditingController();
+  TextEditingController semesterController = TextEditingController();
+  TextEditingController groupController = TextEditingController();
+
   set selectedCourse(CourseInfo info) {
     _selectedCourse = info;
-    notifyListeners();
+    courseController.text = info.name;
   }
 
   CourseInfo get selectedCourse => _selectedCourse;
 
   set selectedGroup(String group) {
     _selectedGroup = group;
-    notifyListeners();
+    groupController.text = group;
   }
 
   String get selectedGroup => _selectedGroup;
 
   set selectedSemester(String semester) {
     _selectedSemester = semester;
-    notifyListeners();
+    semesterController.text = semester;
   }
 
   String get selectedSemester => _selectedSemester;

@@ -3,23 +3,14 @@ import 'package:fb4_app/areas/schedule/viewmodels/add_official_schedule_page_vie
 import 'package:fb4_app/utils/helpers/alphabet_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cupertino_settings/flutter_cupertino_settings.dart';
 import 'package:provider/provider.dart';
 
-class AddOfficialSchedulePage extends StatefulWidget {
-  AddOfficialSchedulePage({Key key}) : super(key: key);
-
-  @override
-  _AddOfficialSchedulePageState createState() =>
-      _AddOfficialSchedulePageState();
-}
-
-class _AddOfficialSchedulePageState extends State<AddOfficialSchedulePage> {
-  TextStyle dialogOptionStyle =
+class AddOfficialSchedulePage extends StatelessWidget {
+  final TextStyle dialogOptionStyle =
       TextStyle(fontSize: 18, fontWeight: FontWeight.w400);
 
-  void showModalForSelection<T>(String title, List<T> items,
-      List<String> itemDisplays, Function(T) onSelect) {
+  void showModalForSelection<T>(BuildContext context, String title,
+      List<T> items, List<String> itemDisplays, Function(T) onSelect) {
     showCupertinoDialog(
       context: context,
       barrierDismissible: true,
@@ -108,61 +99,64 @@ class _AddOfficialSchedulePageState extends State<AddOfficialSchedulePage> {
                 builder: (context, viewModel, child) {
               if (viewModel.courses.length > 0) {
                 return Column(children: [
-                  GestureDetector(
-                    onTap: () => showModalForSelection(
-                        "Studiengang wählen",
-                        viewModel.courses,
-                        viewModel.courses.map((course) => course.name).toList(),
-                        (course) {
-                      viewModel.selectedCourse = course;
-                      Navigator.of(context).pop();
-                    }),
-                    child: CSControl(
-                      nameWidget: Text("Studiengang"),
-                      contentWidget: Padding(
-                        padding: const EdgeInsets.only(left: 80.0),
-                        child: Text(
-                          viewModel.selectedCourse != null
-                              ? viewModel.selectedCourse.name
-                              : "Auswählen...",
-                          overflow: TextOverflow.ellipsis,
+                  CupertinoFormSection(
+                      backgroundColor: CupertinoColors.tertiarySystemBackground,
+                      header: Text('Erforderlich'),
+                      children: [
+                        CupertinoTextFormFieldRow(
+                          prefix: Text('Studiengang'),
+                          placeholder: 'Wählen',
+                          onTap: () => showModalForSelection(
+                              context,
+                              "Studiengang wählen",
+                              viewModel.courses,
+                              viewModel.courses
+                                  .map((course) => course.name)
+                                  .toList(), (course) {
+                            viewModel.selectedCourse = course;
+                            Navigator.of(context).pop();
+                          }),
+                          textAlign: TextAlign.end,
+                          readOnly: true,
+                          controller: viewModel.courseController,
                         ),
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () => showModalForSelection(
-                        "Semester wählen",
-                        viewModel.selectedCourse.grades,
-                        viewModel.selectedCourse.grades, (semester) {
-                      setState(() {
-                        viewModel.selectedSemester = semester;
-                      });
-                      Navigator.of(context).pop();
-                    }),
-                    child: CSControl(
-                      nameWidget: Text("Semester"),
-                      contentWidget: Text(viewModel.selectedSemester.isNotEmpty
-                          ? viewModel.selectedSemester
-                          : "Kein Kurs gewählt"),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () => showModalForSelection(
-                        "Gruppenbuchstabe wählen",
-                        AlphabetList.getAlphabet(),
-                        AlphabetList.getAlphabet(),
-                        (group) => {
-                              viewModel.selectedGroup = group,
-                              Navigator.pop(context)
-                            }),
-                    child: CSControl(
-                      nameWidget: Text("Gruppenbuchstabe"),
-                      contentWidget: Text(viewModel.selectedGroup != null
-                          ? viewModel.selectedGroup
-                          : "Auswählen..."),
-                    ),
-                  )
+                        CupertinoTextFormFieldRow(
+                          prefix: Text('Semester'),
+                          placeholder: 'Wählen',
+                          onTap: () => showModalForSelection(
+                              context,
+                              "Semester wählen",
+                              viewModel.selectedCourse.grades,
+                              viewModel.selectedCourse.grades, (semester) {
+                            viewModel.selectedSemester = semester;
+                            Navigator.of(context).pop();
+                          }),
+                          textAlign: TextAlign.end,
+                          readOnly: true,
+                          controller: viewModel.semesterController,
+                        ),
+                      ]),
+                  CupertinoFormSection(
+                      backgroundColor: CupertinoColors.tertiarySystemBackground,
+                      header: Text('Optional'),
+                      children: [
+                        CupertinoTextFormFieldRow(
+                          prefix: Text('Gruppenbuchstabe'),
+                          placeholder: 'Wählen',
+                          onTap: () => showModalForSelection(
+                              context,
+                              "Gruppenbuchstaben wählen",
+                              AlphabetList.getAlphabet(),
+                              AlphabetList.getAlphabet(),
+                              (group) => {
+                                    viewModel.selectedGroup = group,
+                                    Navigator.pop(context)
+                                  }),
+                          textAlign: TextAlign.end,
+                          readOnly: true,
+                          controller: viewModel.groupController,
+                        ),
+                      ])
                 ]);
               } else {
                 return Center(child: CupertinoActivityIndicator());
