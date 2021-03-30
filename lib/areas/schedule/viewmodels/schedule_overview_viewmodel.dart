@@ -18,6 +18,9 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
 
   ScheduleOverviewViewModel() {
     getScheduleListsFromCache();
+    internalController.onItemRemoved = (item) {
+      getScheduleListsFromCache();
+    };
   }
 
   void getScheduleListsFromServer(SelectedCourseInfo info) {

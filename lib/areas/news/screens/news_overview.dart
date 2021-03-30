@@ -1,5 +1,6 @@
 import 'package:fb4_app/areas/news/viewmodels/news_overview_viewmodel.dart';
 import 'package:fb4_app/areas/news/widgets/news_card.dart';
+import 'package:fb4_app/config/themes/color_consts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +11,7 @@ class NewsOverview extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
+          backgroundColor: ColorConsts.mainOrange,
           transitionBetweenRoutes: false,
           middle: Text("News",
               style: CupertinoTheme.of(context).textTheme.navTitleTextStyle),

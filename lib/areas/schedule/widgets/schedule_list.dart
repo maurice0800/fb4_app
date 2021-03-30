@@ -60,9 +60,12 @@ class ScheduleListState extends State<ScheduleList>
                         await JsonStore().getItem("schedule_items");
                     currentItems.removeWhere((key, value) =>
                         key == widget.items[index].hashCode.toString());
-                    JsonStore().setItem("schedule_items", currentItems);
+                    await JsonStore().setItem("schedule_items", currentItems);
                     Navigator.pop(context);
-                    widget.controller.onItemRemoved(widget.items[index]);
+
+                    if (widget.controller.onItemRemoved != null) {
+                      widget.controller.onItemRemoved(widget.items[index]);
+                    }
                   },
                   child: Text("Eintrag entfernen"),
                   isDestructiveAction: true,

@@ -1,4 +1,5 @@
 import 'package:fb4_app/areas/ticket/viewmodels/ticket_overview_viewmodel.dart';
+import 'package:fb4_app/config/themes/color_consts.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:file_picker/file_picker.dart';
@@ -9,6 +10,7 @@ class TicketViewerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
+        backgroundColor: ColorConsts.mainOrange,
         middle: Text("Semesterticket",
             style: CupertinoTheme.of(context).textTheme.navTitleTextStyle),
         trailing: Consumer<TicketOverviewViewModel>(
@@ -37,7 +39,6 @@ class TicketViewerPage extends StatelessWidget {
             },
           ),
         ),
-        backgroundColor: CupertinoTheme.of(context).primaryContrastingColor,
       ),
       child: SafeArea(
         child: buildTicketView(context),
