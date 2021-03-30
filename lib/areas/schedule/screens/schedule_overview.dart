@@ -4,14 +4,13 @@ import 'package:fb4_app/areas/schedule/screens/add_official_schedule_page.dart';
 import 'package:fb4_app/areas/schedule/screens/schedule_settings_page.dart';
 import 'package:fb4_app/areas/schedule/viewmodels/add_official_schedule_page_viewmodel.dart';
 import 'package:fb4_app/areas/schedule/viewmodels/schedule_overview_viewmodel.dart';
+import 'package:fb4_app/config/themes/color_consts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-
-import '../../../app_constants.dart';
 
 class ScheduleOverview extends StatefulWidget {
   @override
@@ -25,7 +24,7 @@ class ScheduleOverviewState extends State<ScheduleOverview> {
   bool editMode = false;
   final PageController pageViewController = PageController();
   final ItemScrollController itemScrollController = ItemScrollController();
-  ValueNotifier controllerPageNotifier = ValueNotifier(0);
+  ValueNotifier<int> controllerPageNotifier = ValueNotifier(0);
   ScheduleListController scheduleListController;
 
   @override
@@ -38,34 +37,49 @@ class ScheduleOverviewState extends State<ScheduleOverview> {
           if (viewModel.scheduleDays.length == 5) {
             return Column(
               children: [
-                SizedBox(
-                  height: 35,
-                  child: ValueListenableBuilder(
-                    valueListenable: controllerPageNotifier,
-                    builder: (context, value, _) =>
-                        ScrollablePositionedList.separated(
-                      itemCount: AppConstants.weekdays.length,
-                      itemScrollController: itemScrollController,
-                      separatorBuilder: (context, index) => SizedBox(),
-                      itemBuilder: (context, index) => Padding(
-                        padding: const EdgeInsets.only(
-                            left: 10.0, top: 8.0, right: 10.0),
-                        child: GestureDetector(
-                          onTap: () => scrollClickedPageIntoView(index),
-                          child: Text(AppConstants.weekdays[index],
-                              style: TextStyle(
-                                  color: index == controllerPageNotifier.value
-                                      ? CupertinoTheme.of(context)
-                                          .textTheme
-                                          .textStyle
-                                          .color
-                                      : CupertinoColors.systemGrey,
-                                  fontSize: 23,
-                                  fontWeight: FontWeight.w700)),
+                Container(
+                  decoration: BoxDecoration(
+                      color: ColorConsts.mainOrange,
+                      border: Border(
+                          bottom: BorderSide(
+                              width: 1.0, color: CupertinoColors.systemGrey5))),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(children: [
+                      Expanded(
+                        child: ValueListenableBuilder<int>(
+                          valueListenable: controllerPageNotifier,
+                          builder: (BuildContext context, value, Widget child) {
+                            return CupertinoSegmentedControl(
+                                groupValue: value,
+                                pressedColor: ColorConsts.mainOrange,
+                                borderColor: CupertinoColors.white,
+                                unselectedColor: ColorConsts.mainOrange,
+                                selectedColor: CupertinoColors.white,
+                                children: const <int, Widget>{
+                                  0: Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text('Mo')),
+                                  1: Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text('Di')),
+                                  2: Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text('Mi')),
+                                  3: Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text('Do')),
+                                  4: Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text('Fr')),
+                                },
+                                onValueChanged: (val) {
+                                  scrollClickedPageIntoView(val);
+                                });
+                          },
                         ),
                       ),
-                      scrollDirection: Axis.horizontal,
-                    ),
+                    ]),
                   ),
                 ),
                 Expanded(
@@ -104,16 +118,12 @@ class ScheduleOverviewState extends State<ScheduleOverview> {
 
   void handlePageChanged(int value) async {
     controllerPageNotifier.value = value;
-
-    // For some reason we need this delay or it will scroll to the wrong position
-    await Future.delayed(Duration(milliseconds: 1));
-    itemScrollController.scrollTo(
-        index: value, duration: Duration(milliseconds: 50));
   }
 
   Widget buildNavigationBar() {
     return CupertinoNavigationBar(
-        backgroundColor: CupertinoTheme.of(context).primaryContrastingColor,
+        border: null,
+        backgroundColor: ColorConsts.mainOrange,
         transitionBetweenRoutes: false,
         middle: Text("Stundenplan",
             style: CupertinoTheme.of(context).textTheme.navTitleTextStyle),

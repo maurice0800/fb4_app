@@ -104,7 +104,10 @@ class AddOfficialSchedulePage extends StatelessWidget {
                       header: Text('Erforderlich'),
                       children: [
                         CupertinoTextFormFieldRow(
-                          prefix: Text('Studiengang'),
+                          prefix: Padding(
+                            padding: const EdgeInsets.only(right: 50.0),
+                            child: Text('Studiengang'),
+                          ),
                           placeholder: 'Wählen',
                           onTap: () => showModalForSelection(
                               context,

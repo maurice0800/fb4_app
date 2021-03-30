@@ -10,7 +10,7 @@ class LightTheme {
           textStyle: TextStyle(color: CupertinoColors.black),
           primaryColor: CupertinoColors.black,
           navTitleTextStyle: TextStyle(
-              color: CupertinoColors.black,
+              color: CupertinoColors.white,
               fontSize: 18,
               fontWeight: FontWeight.bold,
               background: null,
