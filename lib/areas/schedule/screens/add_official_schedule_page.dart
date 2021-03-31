@@ -1,5 +1,6 @@
 import 'package:fb4_app/areas/schedule/models/selected_course_info.dart';
 import 'package:fb4_app/areas/schedule/viewmodels/add_official_schedule_page_viewmodel.dart';
+import 'package:fb4_app/config/themes/color_consts.dart';
 import 'package:fb4_app/utils/helpers/alphabet_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -73,6 +74,7 @@ class AddOfficialSchedulePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
+          backgroundColor: ColorConsts.mainOrange,
           middle: Text("Stundenplan hinzufügen",
               style: CupertinoTheme.of(context).textTheme.navTitleTextStyle),
           trailing: CupertinoButton(
@@ -139,27 +141,31 @@ class AddOfficialSchedulePage extends StatelessWidget {
                           controller: viewModel.semesterController,
                         ),
                       ]),
-                  CupertinoFormSection(
-                      backgroundColor: CupertinoColors.tertiarySystemBackground,
-                      header: Text('Optional'),
-                      children: [
-                        CupertinoTextFormFieldRow(
-                          prefix: Text('Gruppenbuchstabe'),
-                          placeholder: 'Wählen',
-                          onTap: () => showModalForSelection(
-                              context,
-                              "Gruppenbuchstaben wählen",
-                              AlphabetList.getAlphabet(),
-                              AlphabetList.getAlphabet(),
-                              (group) => {
-                                    viewModel.selectedGroup = group,
-                                    Navigator.pop(context)
-                                  }),
-                          textAlign: TextAlign.end,
-                          readOnly: true,
-                          controller: viewModel.groupController,
-                        ),
-                      ])
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16.0),
+                    child: CupertinoFormSection(
+                        backgroundColor:
+                            CupertinoColors.tertiarySystemBackground,
+                        header: Text('Optional'),
+                        children: [
+                          CupertinoTextFormFieldRow(
+                            prefix: Text('Gruppenbuchstabe'),
+                            placeholder: 'Wählen',
+                            onTap: () => showModalForSelection(
+                                context,
+                                "Gruppenbuchstaben wählen",
+                                AlphabetList.getAlphabet(),
+                                AlphabetList.getAlphabet(),
+                                (group) => {
+                                      viewModel.selectedGroup = group,
+                                      Navigator.pop(context)
+                                    }),
+                            textAlign: TextAlign.end,
+                            readOnly: true,
+                            controller: viewModel.groupController,
+                          ),
+                        ]),
+                  )
                 ]);
               } else {
                 return Center(child: CupertinoActivityIndicator());

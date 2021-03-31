@@ -1,7 +1,6 @@
 import 'package:fb4_app/areas/schedule/models/schedule_list_controller.dart';
 import 'package:fb4_app/areas/schedule/models/selected_course_info.dart';
 import 'package:fb4_app/areas/schedule/screens/add_official_schedule_page.dart';
-import 'package:fb4_app/areas/schedule/screens/schedule_settings_page.dart';
 import 'package:fb4_app/areas/schedule/viewmodels/add_official_schedule_page_viewmodel.dart';
 import 'package:fb4_app/areas/schedule/viewmodels/schedule_overview_viewmodel.dart';
 import 'package:fb4_app/config/themes/color_consts.dart';
@@ -42,7 +41,11 @@ class ScheduleOverviewState extends State<ScheduleOverview> {
                       color: ColorConsts.mainOrange,
                       border: Border(
                           bottom: BorderSide(
-                              width: 1.0, color: CupertinoColors.systemGrey5))),
+                              width: 1.0,
+                              color: CupertinoTheme.brightnessOf(context) ==
+                                      Brightness.light
+                                  ? CupertinoColors.systemGrey5
+                                  : ColorConsts.mainOrange))),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(children: [
@@ -83,16 +86,19 @@ class ScheduleOverviewState extends State<ScheduleOverview> {
                   ),
                 ),
                 Expanded(
-                  child: PageView(
-                      controller: pageViewController,
-                      onPageChanged: handlePageChanged,
-                      children: <Widget>[
-                        viewModel.scheduleDays[0],
-                        viewModel.scheduleDays[1],
-                        viewModel.scheduleDays[2],
-                        viewModel.scheduleDays[3],
-                        viewModel.scheduleDays[4],
-                      ]),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: PageView(
+                        controller: pageViewController,
+                        onPageChanged: handlePageChanged,
+                        children: <Widget>[
+                          viewModel.scheduleDays[0],
+                          viewModel.scheduleDays[1],
+                          viewModel.scheduleDays[2],
+                          viewModel.scheduleDays[3],
+                          viewModel.scheduleDays[4],
+                        ]),
+                  ),
                 ),
               ],
             );
@@ -183,17 +189,6 @@ class ScheduleOverviewState extends State<ScheduleOverview> {
                             .color),
                     padding: EdgeInsets.zero,
                   ),
-                  CupertinoButton(
-                      onPressed: () {
-                        Navigator.of(context).push(CupertinoPageRoute(
-                            builder: (context) => ScheduleSettingsPage()));
-                      },
-                      child: Icon(CupertinoIcons.ellipsis_vertical,
-                          color: CupertinoTheme.of(context)
-                              .textTheme
-                              .navTitleTextStyle
-                              .color),
-                      padding: EdgeInsets.zero)
                 ]);
         }));
   }

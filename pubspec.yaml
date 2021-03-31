@@ -36,7 +36,10 @@ dependencies:
   quiver: ^2.1.5
   file_picker: ^2.1.6
   pdf_render: ^0.69.0
-  path_provider: ^1.6.27
+  path_provider: ^2.0.1
+  url_launcher: ^6.0.3
+  shared_preferences: ^2.0.5
+  screen: ^0.0.5
 
 
   # The following adds the Cupertino Icons font to your application.

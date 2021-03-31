@@ -13,32 +13,6 @@ class TicketViewerPage extends StatelessWidget {
         backgroundColor: ColorConsts.mainOrange,
         middle: Text("Semesterticket",
             style: CupertinoTheme.of(context).textTheme.navTitleTextStyle),
-        trailing: Consumer<TicketOverviewViewModel>(
-          builder: (context, viewModel, child) => CupertinoButton(
-            padding: EdgeInsets.zero,
-            child: Icon(CupertinoIcons.ellipsis_vertical,
-                color: CupertinoTheme.of(context)
-                    .textTheme
-                    .navTitleTextStyle
-                    .color),
-            onPressed: () {
-              showCupertinoModalPopup(
-                  context: context,
-                  builder: (context) => CupertinoActionSheet(
-                        actions: [
-                          CupertinoActionSheetAction(
-                            child: Text("Semesterticket löschen"),
-                            isDestructiveAction: true,
-                            onPressed: () {
-                              viewModel.deleteTicket();
-                              Navigator.pop(context);
-                            },
-                          )
-                        ],
-                      ));
-            },
-          ),
-        ),
       ),
       child: SafeArea(
         child: buildTicketView(context),

@@ -2,9 +2,12 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:fb4_app/app_constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf_render/pdf_render.dart';
+import 'package:screen/screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TicketOverviewViewModel extends ChangeNotifier {
   String filePath;
@@ -31,6 +34,13 @@ class TicketOverviewViewModel extends ChangeNotifier {
       imageBytes = data;
       isImageAvailable = true;
       notifyListeners();
+
+      SharedPreferences.getInstance().then((s) {
+        if (s.getBool(
+            AppConstants.settingsIncreaseDisplayBrightnessInTicketview)) {
+          Screen.setBrightness(100);
+        }
+      });
     });
   }
 

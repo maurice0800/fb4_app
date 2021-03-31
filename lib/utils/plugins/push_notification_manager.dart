@@ -1,4 +1,6 @@
+import 'package:fb4_app/app_constants.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PushNotificationsManager {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
@@ -12,9 +14,18 @@ class PushNotificationsManager {
   }
 
   Future<void> init() async {
+    var prefs = await SharedPreferences.getInstance();
+
     if (!_initialized) {
-      _firebaseMessaging.requestNotificationPermissions(IosNotificationSettings(
-          alert: true, sound: true, badge: true, provisional: true));
+      if (prefs.getBool(AppConstants.settingsNotificationOnNews) ?? false) {
+        await _firebaseMessaging.requestNotificationPermissions(
+            IosNotificationSettings(
+                alert: true, provisional: false, sound: true, badge: true));
+
+        _firebaseMessaging.subscribeToTopic("Aktuelles");
+      } else {
+        return;
+      }
 
       _firebaseMessaging.configure(
         onResume: (Map<String, dynamic> message) async {
@@ -31,5 +42,9 @@ class PushNotificationsManager {
 
       _initialized = true;
     }
+  }
+
+  void unsubscribe() {
+    _firebaseMessaging.unsubscribeFromTopic("Aktuelles");
   }
 }

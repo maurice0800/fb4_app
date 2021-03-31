@@ -1,6 +1,5 @@
 import 'package:fb4_app/areas/more/screens/more_list.dart';
 import 'package:fb4_app/areas/news/screens/news_overview.dart';
-import 'package:fb4_app/areas/schedule/repositories/schedule_repository.dart';
 import 'package:fb4_app/areas/schedule/screens/schedule_overview.dart';
 import 'package:fb4_app/areas/schedule/viewmodels/schedule_overview_viewmodel.dart';
 import 'package:fb4_app/areas/ticket/screens/ticket_viewer_page.dart';
@@ -19,12 +18,23 @@ import 'areas/canteen/screens/canteen_overview.dart';
 import 'config/themes/light_theme.dart';
 
 void main() async {
-  runApp(FB4App());
-  await PushNotificationsManager().init();
+  var appTabController = CupertinoTabController();
+  var notificationManager = PushNotificationsManager();
+
+  runApp(FB4App(
+    controller: appTabController,
+  ));
+
+  await notificationManager.init();
+  notificationManager.setRouteHandler((route) {
+    appTabController.index = 1;
+  });
 }
 
 class FB4App extends StatelessWidget {
-  const FB4App({Key key}) : super(key: key);
+  final CupertinoTabController controller;
+
+  const FB4App({Key key, this.controller}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +48,8 @@ class FB4App extends StatelessWidget {
         child: CupertinoApp(
             theme: darkMode ? DarkTheme.themeData : LightTheme.themeData,
             home: CupertinoTabScaffold(
-              tabBar: CupertinoTabBar(currentIndex: 2, items: [
+              controller: controller,
+              tabBar: CupertinoTabBar(currentIndex: 0, items: [
                 BottomNavigationBarItem(
                     icon: Icon(CupertinoIcons.calendar), label: 'Stundenplan'),
                 BottomNavigationBarItem(

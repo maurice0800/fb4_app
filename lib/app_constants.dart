@@ -5,7 +5,6 @@ class AppConstants {
     "Mittwoch",
     "Donnerstag",
     "Freitag",
-    "                                                                                        ",
   ];
 
   static final Map<String, int> routeNames = {
@@ -15,4 +14,9 @@ class AppConstants {
     "ticket": 3,
     "more": 4,
   };
+
+  static const settingsIncreaseDisplayBrightnessInTicketview =
+      "increaseDisplayBrightnessInTicketView";
+
+  static const settingsNotificationOnNews = "notificationOnNews";
 }
