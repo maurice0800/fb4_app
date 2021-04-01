@@ -15,53 +15,68 @@ class NewsCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         if (!noWrap)
-          showGeneralDialog(
-              context: context,
-              barrierLabel: "Barrier",
-              barrierDismissible: true,
-              barrierColor: CupertinoColors.black.withOpacity(0.6),
-              transitionDuration: Duration(milliseconds: 200),
-              transitionBuilder: (context, animation, secondaryAnimation,
-                      child) =>
-                  SlideTransition(
-                      position: Tween(begin: Offset(0, 1), end: Offset(0, 0))
-                          .animate(animation),
-                      child: child),
-              pageBuilder: (context, animation, secondaryAnimation) => Align(
-                    alignment: Alignment.center,
-                    child: Dialog(
-                      backgroundColor:
-                          CupertinoTheme.of(context).primaryContrastingColor,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0)),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          ConstrainedBox(
-                            constraints: BoxConstraints(
-                                maxHeight:
-                                    MediaQuery.of(context).size.height - 150),
-                            child: CupertinoScrollbar(
-                              child: SingleChildScrollView(
-                                child: NewsCard(
-                                  item: item,
-                                  noWrap: true,
-                                ),
+          showCupertinoDialog(
+            context: context,
+            barrierDismissible: true,
+            builder: (context) => CupertinoPopupSurface(
+                child: Center(
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15.0),
+                    color: CupertinoColors.white),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                      maxHeight: 600,
+                      maxWidth: MediaQuery.of(context).size.width - 80),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 16.0),
+                    child: Container(
+                      child: IntrinsicHeight(
+                        child: Column(
+                          children: [
+                            Text(item.title,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: CupertinoColors.black,
+                                    fontSize: 18)),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                              child: Divider(
+                                color: ColorConsts.mainOrange,
+                                thickness: 2,
                               ),
                             ),
-                          ),
-                          CupertinoButton(
-                              child: Text("Schließen",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500)),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              })
-                        ],
+                            Expanded(
+                              child: SingleChildScrollView(
+                                child: Text(item.description),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Divider(
+                                color: ColorConsts.mainOrange,
+                                thickness: 2,
+                              ),
+                            ),
+                            CupertinoButton(
+                                child: Text(
+                                  "Schließen",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                }),
+                          ],
+                        ),
                       ),
                     ),
-                  ));
+                  ),
+                ),
+              ),
+            )),
+          );
       },
       child: Card(
           color: CupertinoTheme.of(context).primaryContrastingColor,
