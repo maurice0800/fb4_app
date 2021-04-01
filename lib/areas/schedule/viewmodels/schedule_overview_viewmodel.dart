@@ -23,27 +23,72 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
     };
   }
 
-  void getScheduleListsFromServer(SelectedCourseInfo info) {
+  void getScheduleListsFromServer(SelectedCourseInfo info) async {
     isLoading = true;
     notifyListeners();
 
     editMode = true;
 
-    repository
-        .getScheduleItems(info.shortName, info.semester)
-        .then((List<ScheduleItem> items) {
-      scheduleDays = new List.generate(
-          5,
-          (index) => ScheduleList(
-                items: getListFromItems(items, ApiConstants.weekDayList[index]),
-                weekday: AppConstants.weekdays[index],
-                controller: internalController,
-                editMode: editMode,
-              ));
+    var items =
+        await repository.getScheduleItems(info.shortName, info.semester);
 
-      isLoading = false;
-      notifyListeners();
+    items.forEach((element) {
+      element.userIsInGroup = isGroupInScheduleItem(info, element);
     });
+
+    scheduleDays = new List.generate(
+        5,
+        (index) => ScheduleList(
+              items: getListFromItems(items, ApiConstants.weekDayList[index]),
+              weekday: AppConstants.weekdays[index],
+              controller: internalController,
+              editMode: editMode,
+            ));
+    isLoading = false;
+    notifyListeners();
+  }
+
+  bool isGroupInScheduleItem(SelectedCourseInfo info, ScheduleItem item) {
+    if (info.groupLetter == "" || info.groupLetter == null) {
+      return true;
+    }
+
+    // Check if student set is valid
+    if (!item.studentSet.contains("-")) {
+      return info.groupNumber.codeUnitAt(0) == item.studentSet.codeUnitAt(0);
+    } else {
+      // Get matches from student set
+      var matches = RegExp('^([A-Z])([0-9]*)-([A-Z])([0-9]*)\$')
+          .allMatches(item.studentSet)
+          .toList()[0];
+
+      // When the the first letter is the same as the input letter from the user we have to check the number
+      if (info.groupLetter.codeUnitAt(0) == matches.group(1).codeUnitAt(0)) {
+        if (matches.group(2) == null || matches.group(2) == "") {
+          return true;
+        } else {
+          return int.parse(info.groupNumber) >= int.parse(matches.group(2));
+        }
+      }
+
+      // Also check the last letter
+      if (info.groupLetter.codeUnitAt(0) == matches.group(3).codeUnitAt(0)) {
+        if (matches.group(4) == null || matches.group(4) == "") {
+          return true;
+        } else {
+          return int.parse(info.groupNumber) <= int.parse(matches.group(4));
+        }
+      }
+
+      // Just check letters because the number does not matter when the given letter is inbetween the student set
+      if (info.groupLetter.codeUnitAt(0) > matches.group(1).codeUnitAt(0)) {
+        if (info.groupLetter.codeUnitAt(0) < matches.group(3).codeUnitAt(0)) {
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
 
   void getScheduleListsFromCache() {
@@ -79,7 +124,7 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
 
     var itemsMap = Map.fromIterable(
         internalController.selectedItems.map((e) => e.toJson()),
-        key: (item) => ScheduleItem.fromJson(item).hashCode.toString(),
+        key: (item) => item.hashCode.toString(),
         value: (item) => item);
 
     jsonStore.setItem("schedule_items", itemsMap).then((result) => {

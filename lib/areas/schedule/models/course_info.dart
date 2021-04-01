@@ -6,7 +6,6 @@ class CourseInfo {
   CourseInfo({this.name, this.shortName, this.grades});
 
   factory CourseInfo.fromJson(Map<String, dynamic> json) {
-    var lul = (json['grades']);
     return CourseInfo(
         name: json['name'],
         shortName: json['sname'],

@@ -1,4 +1,5 @@
 import 'package:fb4_app/areas/schedule/models/schedule_item.dart';
+import 'package:fb4_app/config/themes/color_consts.dart';
 import 'package:fb4_app/utils/ui/widgets/cupertino_checkbox.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -39,7 +40,9 @@ class ScheduleCardState extends State<ScheduleCard> {
           height: 90,
           child: Container(
               decoration: BoxDecoration(
-                  color: CupertinoColors.activeOrange,
+                  color: widget.item.userIsInGroup ?? true
+                      ? ColorConsts.mainOrange
+                      : ColorConsts.mainOrange.withAlpha(168),
                   borderRadius: BorderRadius.circular(4)),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),

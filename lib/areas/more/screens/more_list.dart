@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cupertino_settings/flutter_cupertino_settings.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MoreList extends StatelessWidget {
   const MoreList({Key key}) : super(key: key);
@@ -29,7 +30,12 @@ class MoreList extends StatelessWidget {
                     builder: (context) => LinksDownloadsPage()));
               },
             ),
-            CSLink(title: 'Feedback geben'),
+            CSLink(
+              title: 'Feedback geben',
+              onPressed: () {
+                launch("mailto:fb4app@hemacode.de");
+              },
+            ),
             CSLink(
               title: 'Einstellungen',
               onPressed: () {

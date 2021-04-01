@@ -1,7 +1,6 @@
 import 'package:fb4_app/areas/schedule/models/selected_course_info.dart';
 import 'package:fb4_app/areas/schedule/viewmodels/add_official_schedule_page_viewmodel.dart';
 import 'package:fb4_app/config/themes/color_consts.dart';
-import 'package:fb4_app/utils/helpers/alphabet_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -86,7 +85,7 @@ class AddOfficialSchedulePage extends StatelessWidget {
                 Navigator.of(context).pop(SelectedCourseInfo(
                     viewModel.selectedCourse.shortName,
                     viewModel.selectedSemester,
-                    group: viewModel.selectedGroup));
+                    groupString: viewModel.selectedGroup));
               },
               child: Icon(CupertinoIcons.check_mark,
                   color: CupertinoTheme.of(context)
@@ -150,19 +149,19 @@ class AddOfficialSchedulePage extends StatelessWidget {
                         children: [
                           CupertinoTextFormFieldRow(
                             prefix: Text('Gruppenbuchstabe'),
-                            placeholder: 'Wählen',
-                            onTap: () => showModalForSelection(
-                                context,
-                                "Gruppenbuchstaben wählen",
-                                AlphabetList.getAlphabet(),
-                                AlphabetList.getAlphabet(),
-                                (group) => {
-                                      viewModel.selectedGroup = group,
-                                      Navigator.pop(context)
-                                    }),
+                            placeholder: '*',
                             textAlign: TextAlign.end,
-                            readOnly: true,
                             controller: viewModel.groupController,
+                            textCapitalization: TextCapitalization.characters,
+                            validator: (input) {
+                              if (input == "" ||
+                                  RegExp('^[A-Z][0-9]+\$').hasMatch(input)) {
+                                return null;
+                              }
+                              return "Ungültiges Format!";
+                            },
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
                           ),
                         ]),
                   )

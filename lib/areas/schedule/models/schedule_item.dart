@@ -10,6 +10,7 @@ class ScheduleItem {
   String timeEnd;
   String weekday;
   String roomId;
+  bool userIsInGroup;
 
   ScheduleItem(
       {this.name,

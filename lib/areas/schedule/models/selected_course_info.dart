@@ -1,7 +1,13 @@
 class SelectedCourseInfo {
   final String shortName;
   final String semester;
-  final String group;
+  String groupLetter;
+  String groupNumber;
 
-  SelectedCourseInfo(this.shortName, this.semester, {this.group});
+  SelectedCourseInfo(this.shortName, this.semester, {String groupString}) {
+    if (groupString != "") {
+      this.groupLetter = groupString.substring(0, 1);
+      this.groupNumber = groupString.substring(1);
+    }
+  }
 }
