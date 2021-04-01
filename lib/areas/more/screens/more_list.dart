@@ -1,7 +1,6 @@
 import 'package:fb4_app/areas/more/screens/links_downloads_page.dart';
 import 'package:fb4_app/areas/more/screens/settings_page.dart';
 import 'package:fb4_app/areas/more/viewmodels/settings_page_view_model.dart';
-import 'package:fb4_app/areas/more/widgets/list_item.dart';
 import 'package:fb4_app/config/themes/color_consts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -46,8 +45,81 @@ class MoreList extends StatelessWidget {
                         )));
               },
             ),
-            CSLink(title: 'Über'),
+            CSLink(
+              title: 'Über',
+              onPressed: () => showAboutDialog(context),
+            ),
           ]),
         ));
+  }
+
+  void showAboutDialog(BuildContext context) {
+    showCupertinoDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) => CupertinoPopupSurface(
+          child: Center(
+        child: Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15.0),
+              color: CupertinoColors.white),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+                maxHeight: 600,
+                maxWidth: MediaQuery.of(context).size.width - 80),
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
+              child: Container(
+                child: IntrinsicHeight(
+                  child: Column(
+                    children: [
+                      Text("Über diese App",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: CupertinoColors.black,
+                              fontSize: 18)),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                        child: Divider(
+                          color: ColorConsts.mainOrange,
+                          thickness: 2,
+                        ),
+                      ),
+                      Text(
+                        "Fachschaftsrat Informatik",
+                        style: TextStyle(fontSize: 24),
+                      ),
+                      Text(
+                        "FB4",
+                        style: TextStyle(fontSize: 24),
+                      ),
+                      SizedBox(height: 10),
+                      Text("Version: 1.0.0 BETA"),
+                      SizedBox(height: 10),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Divider(
+                          color: ColorConsts.mainOrange,
+                          thickness: 2,
+                        ),
+                      ),
+                      CupertinoButton(
+                          child: Text(
+                            "Schließen",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          }),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      )),
+    );
   }
 }
