@@ -89,6 +89,7 @@ class MoreList extends StatelessWidget {
                       Text(
                         "Fachschaftsrat Informatik",
                         style: TextStyle(fontSize: 24),
+                        textAlign: TextAlign.center,
                       ),
                       Text(
                         "FB4",

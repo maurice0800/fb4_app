@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 
 class NewsOverviewViewModel extends ChangeNotifier {
   NewsRepository repository = new NewsRepository();
-  List<NewsItem> newsItems = List<NewsItem>();
+  List<NewsItem> newsItems = [];
 
   Future fetchNewsItems() {
     return repository.getNewsItems().then((items) {

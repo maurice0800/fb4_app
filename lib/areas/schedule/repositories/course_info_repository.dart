@@ -14,6 +14,8 @@ class CourseInfoRepository {
         return data.values
             .map<CourseInfo>((item) => CourseInfo.fromJson(item))
             .toList();
+      } else {
+        return [];
       }
     });
   }

@@ -1,3 +1,4 @@
+import 'package:fb4_app/app_constants.dart';
 import 'package:fb4_app/areas/more/screens/more_list.dart';
 import 'package:fb4_app/areas/news/screens/news_overview.dart';
 import 'package:fb4_app/areas/schedule/screens/schedule_overview.dart';
@@ -12,18 +13,40 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:screen/screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'areas/canteen/screens/canteen_overview.dart';
 
 import 'config/themes/light_theme.dart';
 
 void main() async {
+  int prevIndex = 0;
+  double prevBrightness = 0;
   var appTabController = CupertinoTabController();
   var notificationManager = PushNotificationsManager();
 
   runApp(FB4App(
     controller: appTabController,
   ));
+
+  var sharedPrefs = await SharedPreferences.getInstance();
+  appTabController.addListener(() async {
+    if (appTabController.index == 3) {
+      if (sharedPrefs.getBool(
+          AppConstants.settingsIncreaseDisplayBrightnessInTicketview)) {
+        prevBrightness = await Screen.brightness;
+        Screen.setBrightness(100.0);
+      }
+    } else if (prevIndex == 3) {
+      if (sharedPrefs.getBool(
+          AppConstants.settingsIncreaseDisplayBrightnessInTicketview)) {
+        Screen.setBrightness(prevBrightness);
+      }
+    }
+
+    prevIndex = appTabController.index;
+  });
 
   await notificationManager.init();
   notificationManager.setRouteHandler((route) {

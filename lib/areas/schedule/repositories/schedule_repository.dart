@@ -16,6 +16,8 @@ class ScheduleRepository {
             .map<ScheduleItem>((item) => ScheduleItem.fromJson(item))
             .toList();
         return items;
+      } else {
+        return [];
       }
     });
   }

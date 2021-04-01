@@ -12,9 +12,13 @@ class CanteenOverview extends StatelessWidget {
           middle: Text("Mensa"),
         ),
         child: Center(
-          child: Text(
-            "COMING SOON",
-            style: CupertinoTheme.of(context).textTheme.textStyle,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "Aufgrund der aktuellen Lage wird dieses Feature nachgeliefert, sobald die Mensen wieder geöffnet haben.",
+              textAlign: TextAlign.center,
+              style: CupertinoTheme.of(context).textTheme.textStyle,
+            ),
           ),
         ));
   }
