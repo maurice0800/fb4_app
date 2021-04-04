@@ -30,7 +30,6 @@ dependencies:
   xml: ^4.5.1
   intl: ^0.16.1
   firebase_messaging: ^7.0.3
-  scrollable_positioned_list: ^0.1.9
   json_store: ^1.2.0
   circular_check_box: ^1.0.4
   quiver: ^2.1.5
@@ -55,6 +54,8 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
+  assets:
+    - assets/licenses
   fonts:
   - family:  Fb4app
     fonts:

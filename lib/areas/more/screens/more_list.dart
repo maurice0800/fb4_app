@@ -1,5 +1,7 @@
+import 'package:fb4_app/areas/more/screens/licenses_page.dart';
 import 'package:fb4_app/areas/more/screens/links_downloads_page.dart';
 import 'package:fb4_app/areas/more/screens/settings_page.dart';
+import 'package:fb4_app/areas/more/viewmodels/licenses_page_viewmodel.dart';
 import 'package:fb4_app/areas/more/viewmodels/settings_page_view_model.dart';
 import 'package:fb4_app/config/themes/color_consts.dart';
 import 'package:flutter/cupertino.dart';
@@ -48,6 +50,17 @@ class MoreList extends StatelessWidget {
             CSLink(
               title: 'Über',
               onPressed: () => showAboutDialog(context),
+            ),
+            CSLink(
+              title: "Lizenzen",
+              onPressed: () => Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                      builder: (context) => ChangeNotifierProvider(
+                            create: (context) =>
+                                LicensesPageViewModel()..load(),
+                            child: LicensesPage(),
+                          ))),
             ),
           ]),
         ));
