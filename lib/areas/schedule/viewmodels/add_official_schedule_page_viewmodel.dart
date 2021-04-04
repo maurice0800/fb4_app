@@ -29,6 +29,7 @@ class AddOfficialSchedulePageViewModel extends ChangeNotifier {
   set selectedSemester(String semester) {
     _selectedSemester = semester;
     semesterController.text = semester;
+    notifyListeners();
   }
 
   String get selectedSemester => _selectedSemester;

@@ -9,7 +9,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class ScheduleOverview extends StatefulWidget {
   @override
@@ -22,7 +21,6 @@ class ScheduleOverviewState extends State<ScheduleOverview> {
   ScrollDirection currentScrollDirection;
   bool editMode = false;
   final PageController pageViewController = PageController();
-  final ItemScrollController itemScrollController = ItemScrollController();
   ValueNotifier<int> controllerPageNotifier = ValueNotifier(0);
   ScheduleListController scheduleListController;
 

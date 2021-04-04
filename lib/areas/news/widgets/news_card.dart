@@ -23,7 +23,9 @@ class NewsCard extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15.0),
-                    color: CupertinoColors.white),
+                    border:
+                        Border.all(color: ColorConsts.mainOrange, width: 0.3),
+                    color: CupertinoTheme.of(context).primaryContrastingColor),
                 child: ConstrainedBox(
                   constraints: BoxConstraints(
                       maxHeight: 600,
@@ -37,9 +39,7 @@ class NewsCard extends StatelessWidget {
                           children: [
                             Text(item.title,
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: CupertinoColors.black,
-                                    fontSize: 18)),
+                                    fontWeight: FontWeight.bold, fontSize: 18)),
                             Padding(
                               padding:
                                   const EdgeInsets.only(top: 8.0, bottom: 8.0),

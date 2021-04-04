@@ -22,7 +22,7 @@ class SettingsPage extends StatelessWidget {
                   () => viewModel.deleteSchedule(context)),
               CSHeader("NRW-Ticket"),
               CSControl(
-                nameWidget: Text("Helligkeit erhöhren"),
+                nameWidget: Text("Helligkeit erhöhen"),
                 contentWidget: CupertinoSwitch(
                   value: viewModel.increaseDisplayBrightnessInTicketview,
                   onChanged: (value) {

@@ -6,6 +6,7 @@ import 'package:fb4_app/areas/schedule/viewmodels/schedule_overview_viewmodel.da
 import 'package:fb4_app/areas/ticket/screens/ticket_viewer_page.dart';
 import 'package:fb4_app/areas/ticket/viewmodels/ticket_overview_viewmodel.dart';
 import 'package:fb4_app/config/themes/dark_theme.dart';
+import 'package:fb4_app/utils/helpers/app_state_oberserver.dart';
 import 'package:fb4_app/utils/plugins/push_notification_manager.dart';
 import 'package:fb4_app/utils/ui/icons/fb4app_icons.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,8 +22,6 @@ import 'areas/canteen/screens/canteen_overview.dart';
 import 'config/themes/light_theme.dart';
 
 void main() async {
-  int prevIndex = 0;
-  double prevBrightness = 0;
   var appTabController = CupertinoTabController();
   var notificationManager = PushNotificationsManager();
 
@@ -30,23 +29,8 @@ void main() async {
     controller: appTabController,
   ));
 
-  var sharedPrefs = await SharedPreferences.getInstance();
-  appTabController.addListener(() async {
-    if (appTabController.index == 3) {
-      if (sharedPrefs.getBool(
-          AppConstants.settingsIncreaseDisplayBrightnessInTicketview)) {
-        prevBrightness = await Screen.brightness;
-        Screen.setBrightness(100.0);
-      }
-    } else if (prevIndex == 3) {
-      if (sharedPrefs.getBool(
-          AppConstants.settingsIncreaseDisplayBrightnessInTicketview)) {
-        Screen.setBrightness(prevBrightness);
-      }
-    }
-
-    prevIndex = appTabController.index;
-  });
+  WidgetsBinding.instance
+      .addObserver(AppStateObserver(controller: appTabController));
 
   await notificationManager.init();
   notificationManager.setRouteHandler((route) {

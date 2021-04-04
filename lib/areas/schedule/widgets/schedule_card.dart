@@ -57,18 +57,18 @@ class ScheduleCardState extends State<ScheduleCard> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          widget.item.timeBegin.substring(0, 2) +
+                          widget.item.timeBegin.toString().substring(0, 2) +
                               ':' +
-                              widget.item.timeBegin.substring(2),
+                              widget.item.timeBegin.toString().substring(2),
                           style: TextStyle(
                               color: CupertinoColors.white,
                               fontSize: 20,
                               fontWeight: FontWeight.w600),
                         ),
                         Text(
-                          widget.item.timeEnd.substring(0, 2) +
+                          widget.item.timeEnd.toString().substring(0, 2) +
                               ':' +
-                              widget.item.timeEnd.substring(2),
+                              widget.item.timeEnd.toString().substring(2),
                           style: TextStyle(
                               color: CupertinoColors.white,
                               fontSize: 20,

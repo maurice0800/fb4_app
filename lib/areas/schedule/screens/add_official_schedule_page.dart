@@ -19,7 +19,7 @@ class AddOfficialSchedulePage extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15.0),
-              color: CupertinoColors.white),
+              color: CupertinoTheme.of(context).primaryContrastingColor),
           child: ConstrainedBox(
             constraints: BoxConstraints(
                 maxHeight: 600,
@@ -30,10 +30,8 @@ class AddOfficialSchedulePage extends StatelessWidget {
               child: Column(
                 children: [
                   Text(title,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: CupertinoColors.black,
-                          fontSize: 18)),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
                   Divider(),
                   Expanded(
                     child: ListView.separated(
@@ -45,8 +43,7 @@ class AddOfficialSchedulePage extends StatelessWidget {
                           onTap: () => onSelect(items[index]),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: Text(itemDisplays[index],
-                                style: TextStyle(color: CupertinoColors.black)),
+                            child: Text(itemDisplays[index]),
                           ),
                         );
                       },
@@ -82,10 +79,34 @@ class AddOfficialSchedulePage extends StatelessWidget {
                 var viewModel = Provider.of<AddOfficialSchedulePageViewModel>(
                     context,
                     listen: false);
-                Navigator.of(context).pop(SelectedCourseInfo(
-                    viewModel.selectedCourse.shortName,
-                    viewModel.selectedSemester,
-                    groupString: viewModel.selectedGroup));
+                if (viewModel.selectedCourse == null ||
+                    viewModel.selectedSemester == "") {
+                  showCupertinoDialog(
+                      context: context,
+                      builder: (context) => CupertinoAlertDialog(
+                            title: Text("Fehler"),
+                            content: Text(
+                                "Es wurden nicht alle erforderlichen Felder ausgefüllt."),
+                            actions: [
+                              GestureDetector(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Text(
+                                    "Schließen",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                ),
+                                onTap: () => Navigator.pop(context),
+                              )
+                            ],
+                          ));
+                } else {
+                  Navigator.of(context).pop(SelectedCourseInfo(
+                      viewModel.selectedCourse.shortName,
+                      viewModel.selectedSemester,
+                      groupString: viewModel.selectedGroup));
+                }
               },
               child: Icon(CupertinoIcons.check_mark,
                   color: CupertinoTheme.of(context)
@@ -110,16 +131,19 @@ class AddOfficialSchedulePage extends StatelessWidget {
                             child: Text('Studiengang'),
                           ),
                           placeholder: 'Wählen',
-                          onTap: () => showModalForSelection(
-                              context,
-                              "Studiengang wählen",
-                              viewModel.courses,
-                              viewModel.courses
-                                  .map((course) => course.name)
-                                  .toList(), (course) {
-                            viewModel.selectedCourse = course;
-                            Navigator.of(context).pop();
-                          }),
+                          onTap: () {
+                            viewModel.selectedSemester = "";
+                            showModalForSelection(
+                                context,
+                                "Studiengang wählen",
+                                viewModel.courses,
+                                viewModel.courses
+                                    .map((course) => course.name)
+                                    .toList(), (course) {
+                              viewModel.selectedCourse = course;
+                              Navigator.of(context).pop();
+                            });
+                          },
                           textAlign: TextAlign.end,
                           readOnly: true,
                           controller: viewModel.courseController,
@@ -127,14 +151,40 @@ class AddOfficialSchedulePage extends StatelessWidget {
                         CupertinoTextFormFieldRow(
                           prefix: Text('Semester'),
                           placeholder: 'Wählen',
-                          onTap: () => showModalForSelection(
-                              context,
-                              "Semester wählen",
-                              viewModel.selectedCourse.grades,
-                              viewModel.selectedCourse.grades, (semester) {
-                            viewModel.selectedSemester = semester;
-                            Navigator.of(context).pop();
-                          }),
+                          onTap: () {
+                            if (viewModel.selectedCourse != null) {
+                              showModalForSelection(
+                                  context,
+                                  "Semester wählen",
+                                  viewModel.selectedCourse.grades,
+                                  viewModel.selectedCourse.grades, (semester) {
+                                viewModel.selectedSemester = semester;
+                                Navigator.of(context).pop();
+                              });
+                            } else {
+                              showCupertinoDialog(
+                                  context: context,
+                                  builder: (context) => CupertinoAlertDialog(
+                                        title: Text("Fehler"),
+                                        content: Text(
+                                            "Bitte wähle zuerst einen Studiengang aus."),
+                                        actions: [
+                                          GestureDetector(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(16.0),
+                                              child: Text(
+                                                "Schließen",
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(fontSize: 16),
+                                              ),
+                                            ),
+                                            onTap: () => Navigator.pop(context),
+                                          )
+                                        ],
+                                      ));
+                            }
+                          },
                           textAlign: TextAlign.end,
                           readOnly: true,
                           controller: viewModel.semesterController,

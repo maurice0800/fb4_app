@@ -48,12 +48,16 @@ class LinksDownloadsPage extends StatelessWidget {
           CSHeader("Downloads"),
           CSLink(
             title: "Prüfungsplan",
+            onPressed: () => launch("https://www.fh-dortmund.de/zeitplan"),
           ),
           CSLink(
             title: "Lageplan",
+            onPressed: () => launch(
+                "https://www.fh-dortmund.de/de/_diverses/anschr/medien/Lageplan_EFS.pdf"),
           ),
           CSLink(
             title: "Zeitplan",
+            onPressed: () => launch("https://www.fh-dortmund.de/zeitplan"),
           )
         ],
       ),

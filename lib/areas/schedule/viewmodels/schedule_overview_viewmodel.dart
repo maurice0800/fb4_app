@@ -102,6 +102,10 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
             .map<ScheduleItem>((item) => ScheduleItem.fromJson(item))
             .toList();
 
+        scheduleItems.sort((i1, i2) =>
+            int.parse(i1.timeBegin.substring(0, 1)) -
+            int.parse(i2.timeBegin.substring(0, 1)));
+
         scheduleDays = new List.generate(
             5,
             (index) => ScheduleList(
@@ -119,22 +123,28 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
   }
 
   void saveSelectedItemsToCache() {
-    isLoading = true;
-    notifyListeners();
+    if (internalController.selectedItems.isNotEmpty) {
+      isLoading = true;
+      notifyListeners();
 
-    var itemsMap = Map.fromIterable(
-        internalController.selectedItems.map((e) => e.toJson()),
-        key: (item) => item.hashCode.toString(),
-        value: (item) => item);
+      var itemsMap = Map.fromIterable(
+          internalController.selectedItems.map((e) => e.toJson()),
+          key: (item) => item.hashCode.toString(),
+          value: (item) => item);
 
-    jsonStore.setItem("schedule_items", itemsMap).then((result) => {
-          getScheduleListsFromCache(),
-          editMode = false,
-          isLoading = false,
-          notifyListeners(),
-        });
+      jsonStore.setItem("schedule_items", itemsMap).then((result) => {
+            getScheduleListsFromCache(),
+            editMode = false,
+            isLoading = false,
+            notifyListeners(),
+          });
 
-    internalController.selectedItems.clear();
+      internalController.selectedItems.clear();
+    } else {
+      getScheduleListsFromCache();
+      editMode = false;
+      notifyListeners();
+    }
   }
 
   List<ScheduleItem> getListFromItems(
