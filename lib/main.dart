@@ -1,11 +1,14 @@
 import 'package:fb4_app/app_constants.dart';
 import 'package:fb4_app/areas/more/screens/more_list.dart';
+import 'package:fb4_app/areas/more/screens/privacy_page.dart';
+import 'package:fb4_app/areas/more/viewmodels/privacy_page_viewmodel.dart';
 import 'package:fb4_app/areas/news/screens/news_overview.dart';
 import 'package:fb4_app/areas/schedule/screens/schedule_overview.dart';
 import 'package:fb4_app/areas/schedule/viewmodels/schedule_overview_viewmodel.dart';
 import 'package:fb4_app/areas/ticket/screens/ticket_viewer_page.dart';
 import 'package:fb4_app/areas/ticket/viewmodels/ticket_overview_viewmodel.dart';
 import 'package:fb4_app/config/themes/dark_theme.dart';
+import 'package:fb4_app/main_view_model.dart';
 import 'package:fb4_app/utils/helpers/app_state_oberserver.dart';
 import 'package:fb4_app/utils/plugins/push_notification_manager.dart';
 import 'package:fb4_app/utils/ui/icons/fb4app_icons.dart';
@@ -14,7 +17,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:screen/screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'areas/canteen/screens/canteen_overview.dart';
@@ -25,9 +27,7 @@ void main() async {
   var appTabController = CupertinoTabController();
   var notificationManager = PushNotificationsManager();
 
-  runApp(FB4App(
-    controller: appTabController,
-  ));
+  runApp(FB4App(controller: appTabController));
 
   WidgetsBinding.instance
       .addObserver(AppStateObserver(controller: appTabController));
@@ -50,46 +50,73 @@ class FB4App extends StatelessWidget {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
-    return ChangeNotifierProvider<ScheduleOverviewViewModel>(
-        create: (context) => ScheduleOverviewViewModel(),
-        child: CupertinoApp(
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+              create: (context) => ScheduleOverviewViewModel()),
+          ChangeNotifierProvider(create: (context) => MainViewModel()..init()),
+        ],
+        child: Consumer<MainViewModel>(
+          builder: (context, viewModel, child) => CupertinoApp(
+            debugShowCheckedModeBanner: false,
             theme: darkMode ? DarkTheme.themeData : LightTheme.themeData,
-            home: CupertinoTabScaffold(
-              controller: controller,
-              tabBar: CupertinoTabBar(currentIndex: 0, items: [
-                BottomNavigationBarItem(
-                    icon: Icon(CupertinoIcons.calendar), label: 'Stundenplan'),
-                BottomNavigationBarItem(
-                    icon: Icon(CupertinoIcons.news), label: 'News'),
-                BottomNavigationBarItem(
-                    icon: Padding(
-                        padding: const EdgeInsets.only(top: 6.0),
-                        child: Icon(FB4Icons.food, size: 25)),
-                    label: 'Mensa'),
-                BottomNavigationBarItem(
-                    icon: Icon(CupertinoIcons.ticket), label: 'Semesterticket'),
-                BottomNavigationBarItem(
-                    icon: Icon(CupertinoIcons.ellipsis), label: 'Mehr'),
-              ]),
-              tabBuilder: (context, index) {
-                switch (index) {
-                  case 0:
-                    return ScheduleOverview();
-                  case 1:
-                    return NewsOverview();
-                  case 2:
-                    return CanteenOverview();
-                  case 3:
-                    return ChangeNotifierProvider(
-                      create: (context) => TicketOverviewViewModel()..init(),
-                      child: TicketViewerPage(),
-                    );
-                  case 4:
-                    return MoreList();
-                  default:
-                    throw Exception("User tried to open an invalid page.");
-                }
-              },
-            )));
+            home: viewModel.isInitialized
+                ? (viewModel.shouldShowPrivacyPolicy
+                    ? ChangeNotifierProvider(
+                        create: (context) => PrivacyPageViewModel()..load(),
+                        child: PrivacyPage(
+                          shouldAccept: true,
+                        ),
+                      )
+                    : CupertinoTabScaffold(
+                        controller: controller,
+                        tabBar: CupertinoTabBar(currentIndex: 0, items: [
+                          BottomNavigationBarItem(
+                              icon: Icon(CupertinoIcons.calendar),
+                              label: 'Stundenplan'),
+                          BottomNavigationBarItem(
+                              icon: Icon(CupertinoIcons.news), label: 'News'),
+                          BottomNavigationBarItem(
+                              icon: Padding(
+                                  padding: const EdgeInsets.only(top: 6.0),
+                                  child: Icon(FB4Icons.food, size: 25)),
+                              label: 'Mensa'),
+                          BottomNavigationBarItem(
+                              icon: Icon(CupertinoIcons.ticket),
+                              label: 'Semesterticket'),
+                          BottomNavigationBarItem(
+                              icon: Icon(CupertinoIcons.ellipsis),
+                              label: 'Mehr'),
+                        ]),
+                        tabBuilder: (context, index) {
+                          switch (index) {
+                            case 0:
+                              return ScheduleOverview();
+                            case 1:
+                              return NewsOverview();
+                            case 2:
+                              return CanteenOverview();
+                            case 3:
+                              return ChangeNotifierProvider(
+                                create: (context) =>
+                                    TicketOverviewViewModel()..init(),
+                                child: TicketViewerPage(),
+                              );
+                            case 4:
+                              return MoreList();
+                            default:
+                              throw Exception(
+                                  "User tried to open an invalid page.");
+                          }
+                        },
+                      ))
+                : CupertinoPageScaffold(
+                    child: SafeArea(
+                    child: Center(
+                      child: CupertinoActivityIndicator(),
+                    ),
+                  )),
+          ),
+        ));
   }
 }

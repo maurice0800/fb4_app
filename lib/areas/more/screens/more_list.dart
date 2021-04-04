@@ -1,7 +1,9 @@
 import 'package:fb4_app/areas/more/screens/licenses_page.dart';
 import 'package:fb4_app/areas/more/screens/links_downloads_page.dart';
+import 'package:fb4_app/areas/more/screens/privacy_page.dart';
 import 'package:fb4_app/areas/more/screens/settings_page.dart';
 import 'package:fb4_app/areas/more/viewmodels/licenses_page_viewmodel.dart';
+import 'package:fb4_app/areas/more/viewmodels/privacy_page_viewmodel.dart';
 import 'package:fb4_app/areas/more/viewmodels/settings_page_view_model.dart';
 import 'package:fb4_app/config/themes/color_consts.dart';
 import 'package:flutter/cupertino.dart';
@@ -60,6 +62,16 @@ class MoreList extends StatelessWidget {
                             create: (context) =>
                                 LicensesPageViewModel()..load(),
                             child: LicensesPage(),
+                          ))),
+            ),
+            CSLink(
+              title: "Datenschutz",
+              onPressed: () => Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                      builder: (context) => ChangeNotifierProvider(
+                            create: (context) => PrivacyPageViewModel()..load(),
+                            child: PrivacyPage(),
                           ))),
             ),
           ]),

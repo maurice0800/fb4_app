@@ -19,4 +19,6 @@ class AppConstants {
       "increaseDisplayBrightnessInTicketView";
 
   static const settingsNotificationOnNews = "notificationOnNews";
+
+  static const privacyPolicyAccepted = "privacyPolicyAccepted";
 }

@@ -1,0 +1,21 @@
+### Welche Informationen diese App sammelt:  
+Diese App sammelt keine persönlichen Informationen des Nutzers. Es werden keine Daten an uns übertragen und alle Daten wie Ticket oder Stundenpläne werden lokal auf dem Gerät gespeichert.
+  
+  
+### Übermittlung von Daten an die FH Dortmund:  
+Beim Anlegen eines neuen Stundenplanes werden die Daten aus dem Formular an eine API der Hochschule übertragen um daraus den entsprechenden Stundenplan zu generieren.
+Diese Daten werden nicht gespeichert und dienen lediglich der Bereitstellung des Stundenplanes. Es ist nicht möglich anhand der erforderlichen Daten einen Nutzer eindeutig zu identifizieren.
+  
+  
+### Gruppenbuchstabe:  
+Der Gruppenbuchstabe, welcher optional zum Stundenplan angebeben werden kann, ist für jeden Stundenten eines Studiengangs eindeutig. Dieser Gruppenbuchstabe wird zu keinem Zeitpunkt übertragen und die Sortierung anhand der
+Gruppe erfolgt lokal auf dem Gerät des Endbenutzers. Diese Angabe wird nicht persistent gespeichert.
+  
+  
+### Firebase Cloud Messaging:  
+Sollte der Nutzer die Push-Benachrichtigungen aktivieren, wird von Google eine eindeutige, pseudonymisierte Geräte-ID zugeteilt. Der alleine Zweck dieser ID ist das Zustellen das Push-Benachrichtigungen an die jeweiligen Geräte.
+Hierfür wird Firebase Cloud Messaging verwendet. Für uns ist ein Rückschluss auf einzelne Personen durch die Geräte-ID nicht möglich.
+Zur Aufbewahrung der Daten stellt Google folgende Informationen zur Verfügung:
+Aufbewahrung: Firebase behält die Firebase-Installations-IDs bei, bis der Firebase-Kunde einen API-Aufruf zum Löschen der ID ausführt. Nach dem Anruf werden die Daten innerhalb von 180 Tagen aus den Live- und Backup-Systemen entfernt.
+Weitere Informationen sind hier verfügbar: https://firebase.google.com/support/privacy
+

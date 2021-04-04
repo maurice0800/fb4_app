@@ -12,14 +12,16 @@ class AppStateObserver extends WidgetsBindingObserver {
     SharedPreferences.getInstance().then((sharedPrefs) {
       controller.addListener(() async {
         if (controller.index == 3) {
-          if (sharedPrefs.getBool(
-              AppConstants.settingsIncreaseDisplayBrightnessInTicketview)) {
+          if ((sharedPrefs.getBool(
+                  AppConstants.settingsIncreaseDisplayBrightnessInTicketview) ??
+              false)) {
             _prevBrightness = await Screen.brightness;
             Screen.setBrightness(100.0);
           }
         } else if (prevIndex == 3) {
-          if (sharedPrefs.getBool(
-              AppConstants.settingsIncreaseDisplayBrightnessInTicketview)) {
+          if ((sharedPrefs.getBool(
+                  AppConstants.settingsIncreaseDisplayBrightnessInTicketview) ??
+              false)) {
             Screen.setBrightness(_prevBrightness);
           }
         }
@@ -35,8 +37,9 @@ class AppStateObserver extends WidgetsBindingObserver {
       var sharedPrefs = await SharedPreferences.getInstance();
       _prevBrightness = await Screen.brightness;
 
-      if (sharedPrefs.getBool(
-          AppConstants.settingsIncreaseDisplayBrightnessInTicketview)) {
+      if ((sharedPrefs.getBool(
+              AppConstants.settingsIncreaseDisplayBrightnessInTicketview) ??
+          false)) {
         if (controller.index == 3) {
           Screen.setBrightness(100.0);
         }
