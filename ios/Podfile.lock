@@ -113,14 +113,14 @@ PODS:
   - Protobuf (3.14.0)
   - screen (0.0.1):
     - Flutter
-  - SDWebImage (5.10.4):
-    - SDWebImage/Core (= 5.10.4)
-  - SDWebImage/Core (5.10.4)
+  - SDWebImage (5.11.0):
+    - SDWebImage/Core (= 5.11.0)
+  - SDWebImage/Core (5.11.0)
   - shared_preferences (0.0.1):
     - Flutter
-  - sqflite (0.0.2):
+  - sqflite (0.0.1):
     - Flutter
-    - FMDB (>= 2.7.5)
+    - FMDB (~> 2.7.2)
   - SwiftyGif (5.4.0)
   - url_launcher (0.0.1):
     - Flutter
@@ -208,9 +208,9 @@ SPEC CHECKSUMS:
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   Protobuf: 0cde852566359049847168e51bd1c690e0f70056
   screen: abd91ca7bf3426e1cc3646d27e9b2358d6bf07b0
-  SDWebImage: c666b97e1fa9c64b4909816a903322018f0a9c84
+  SDWebImage: 7acbb57630ac7db4a495547fb73916ff3e432f6b
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
-  sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
+  sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
   SwiftyGif: 5d4af95df24caf1c570dbbcb32a3b8a0763bc6d7
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
 
