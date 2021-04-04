@@ -24,7 +24,11 @@ class PrivacyPage extends StatelessWidget {
               children: [
                 Expanded(
                   child: SingleChildScrollView(
-                    child: MarkdownBody(data: viewModel.licenseText),
+                    child: MarkdownBody(
+                      data: viewModel.licenseText,
+                      styleSheet: MarkdownStyleSheet.fromCupertinoTheme(
+                          CupertinoTheme.of(context)),
+                    ),
                   ),
                 ),
                 shouldAccept

@@ -7,7 +7,10 @@ class DarkTheme {
       primaryColor: ColorConsts.mainOrange,
       primaryContrastingColor: CupertinoColors.systemGrey6,
       textTheme: CupertinoTextThemeData(
-          textStyle: TextStyle(color: CupertinoColors.white),
+          textStyle: TextStyle(
+            color: CupertinoColors.white,
+            fontSize: 14,
+          ),
           primaryColor: CupertinoColors.white,
           navTitleTextStyle: TextStyle(
               color: CupertinoColors.white,

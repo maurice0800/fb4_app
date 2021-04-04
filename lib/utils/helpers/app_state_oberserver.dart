@@ -12,6 +12,7 @@ class AppStateObserver extends WidgetsBindingObserver {
     SharedPreferences.getInstance().then((sharedPrefs) {
       controller.addListener(() async {
         if (controller.index == 3) {
+          await sharedPrefs.reload();
           if ((sharedPrefs.getBool(
                   AppConstants.settingsIncreaseDisplayBrightnessInTicketview) ??
               false)) {

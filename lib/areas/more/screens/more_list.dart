@@ -87,7 +87,7 @@ class MoreList extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15.0),
-              color: CupertinoColors.white),
+              color: CupertinoTheme.of(context).primaryContrastingColor),
           child: ConstrainedBox(
             constraints: BoxConstraints(
                 maxHeight: 600,
@@ -101,9 +101,7 @@ class MoreList extends StatelessWidget {
                     children: [
                       Text("Über diese App",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: CupertinoColors.black,
-                              fontSize: 18)),
+                              fontWeight: FontWeight.bold, fontSize: 18)),
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
                         child: Divider(
@@ -121,7 +119,7 @@ class MoreList extends StatelessWidget {
                         style: TextStyle(fontSize: 24),
                       ),
                       SizedBox(height: 10),
-                      Text("Version: 1.0.0 BETA"),
+                      Text("Version: 1.0.0"),
                       SizedBox(height: 10),
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0),

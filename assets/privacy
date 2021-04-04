@@ -8,10 +8,10 @@ Diese Daten werden nicht gespeichert und dienen lediglich der Bereitstellung des
   
   
 ### Gruppenbuchstabe:  
-Der Gruppenbuchstabe, welcher optional zum Stundenplan angebeben werden kann, ist für jeden Stundenten eines Studiengangs eindeutig. Dieser Gruppenbuchstabe wird zu keinem Zeitpunkt übertragen und die Sortierung anhand der
+Der Gruppenbuchstabe, welcher optional zum Stundenplan angegeben werden kann, ist für jede(n) Studierende(n) eines Studiengangs eindeutig. Dieser Gruppenbuchstabe wird zu keinem Zeitpunkt übertragen und die Sortierung anhand der
 Gruppe erfolgt lokal auf dem Gerät des Endbenutzers. Diese Angabe wird nicht persistent gespeichert.
   
-  
+
 ### Firebase Cloud Messaging:  
 Sollte der Nutzer die Push-Benachrichtigungen aktivieren, wird von Google eine eindeutige, pseudonymisierte Geräte-ID zugeteilt. Der alleine Zweck dieser ID ist das Zustellen das Push-Benachrichtigungen an die jeweiligen Geräte.
 Hierfür wird Firebase Cloud Messaging verwendet. Für uns ist ein Rückschluss auf einzelne Personen durch die Geräte-ID nicht möglich.

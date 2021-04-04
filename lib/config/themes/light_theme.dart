@@ -7,7 +7,10 @@ class LightTheme {
       primaryColor: ColorConsts.mainOrange,
       primaryContrastingColor: CupertinoColors.white,
       textTheme: CupertinoTextThemeData(
-          textStyle: TextStyle(color: CupertinoColors.black),
+          textStyle: TextStyle(
+            color: CupertinoColors.black,
+            fontSize: 14,
+          ),
           primaryColor: CupertinoColors.white,
           navTitleTextStyle: TextStyle(
               color: CupertinoColors.white,
