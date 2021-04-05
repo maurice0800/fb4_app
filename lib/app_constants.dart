@@ -21,4 +21,6 @@ class AppConstants {
   static const settingsNotificationOnNews = "notificationOnNews";
 
   static const privacyPolicyAccepted = "privacyPolicyAccepted";
+
+  static const quickActionTicket = "quickActionTicket";
 }
