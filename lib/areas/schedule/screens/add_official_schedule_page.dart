@@ -37,12 +37,16 @@ class AddOfficialSchedulePage extends StatelessWidget {
                     child: ListView.separated(
                       padding: const EdgeInsets.only(top: 12.0),
                       itemCount: itemDisplays.length,
-                      separatorBuilder: (context, index) => Divider(),
+                      separatorBuilder: (context, index) => Divider(
+                        color: CupertinoColors.systemGrey,
+                        height: 1,
+                      ),
                       itemBuilder: (context, index) {
                         return GestureDetector(
+                          behavior: HitTestBehavior.opaque,
                           onTap: () => onSelect(items[index]),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            padding: const EdgeInsets.symmetric(vertical: 15.0),
                             child: Text(itemDisplays[index]),
                           ),
                         );
@@ -198,8 +202,8 @@ class AddOfficialSchedulePage extends StatelessWidget {
                         header: Text('Optional'),
                         children: [
                           CupertinoTextFormFieldRow(
-                            prefix: Text('Gruppenbuchstabe'),
-                            placeholder: '*',
+                            prefix: Text('Gruppenkennung'),
+                            placeholder: 'Beispiel: C8',
                             textAlign: TextAlign.end,
                             controller: viewModel.groupController,
                             textCapitalization: TextCapitalization.characters,
@@ -208,7 +212,7 @@ class AddOfficialSchedulePage extends StatelessWidget {
                                   RegExp('^[A-Z][0-9]+\$').hasMatch(input)) {
                                 return null;
                               }
-                              return "Ungültiges Format!";
+                              return "Muss folgendes beeinhalten:\n- Genau einen Buchstaben \n- Mindestens eine Zahl";
                             },
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
