@@ -145,41 +145,57 @@ class ScheduleOverviewState extends State<ScheduleOverview> {
               : Row(mainAxisSize: MainAxisSize.min, children: [
                   CupertinoButton(
                     onPressed: () {
-                      showCupertinoModalPopup(
-                          context: context,
-                          builder: (builder) => CupertinoActionSheet(
-                                actions: [
-                                  CupertinoActionSheetAction(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                        Navigator.of(context)
-                                            .push<SelectedCourseInfo>(
-                                                CupertinoPageRoute(
-                                                    builder: (context) =>
-                                                        ChangeNotifierProvider(
-                                                          create: (context) =>
-                                                              AddOfficialSchedulePageViewModel()
-                                                                ..init(),
-                                                          child:
-                                                              AddOfficialSchedulePage(),
-                                                        )))
-                                            .then((SelectedCourseInfo result) {
-                                          if (result != null) {
-                                            Provider.of<ScheduleOverviewViewModel>(
-                                                    context,
-                                                    listen: false)
-                                                .getScheduleListsFromServer(
-                                                    result);
-                                          }
-                                        });
-                                      },
-                                      child: Text("Offizieller Stundenplan")),
-                                  CupertinoActionSheetAction(
-                                      onPressed: () {},
-                                      child: Text("Eigener Eintrag")),
-                                ],
-                              ));
+                      Navigator.of(context)
+                          .push<SelectedCourseInfo>(CupertinoPageRoute(
+                              builder: (context) => ChangeNotifierProvider(
+                                    create: (context) =>
+                                        AddOfficialSchedulePageViewModel()
+                                          ..init(),
+                                    child: AddOfficialSchedulePage(),
+                                  )))
+                          .then((SelectedCourseInfo result) {
+                        if (result != null) {
+                          Provider.of<ScheduleOverviewViewModel>(context,
+                                  listen: false)
+                              .getScheduleListsFromServer(result);
+                        }
+                      });
                     },
+                    //   showCupertinoModalPopup(
+                    //       context: context,
+                    //       builder: (builder) => CupertinoActionSheet(
+                    //             actions: [
+                    //               CupertinoActionSheetAction(
+                    //                   onPressed: () {
+                    //                     Navigator.pop(context);
+                    //                     Navigator.of(context)
+                    //                         .push<SelectedCourseInfo>(
+                    //                             CupertinoPageRoute(
+                    //                                 builder: (context) =>
+                    //                                     ChangeNotifierProvider(
+                    //                                       create: (context) =>
+                    //                                           AddOfficialSchedulePageViewModel()
+                    //                                             ..init(),
+                    //                                       child:
+                    //                                           AddOfficialSchedulePage(),
+                    //                                     )))
+                    //                         .then((SelectedCourseInfo result) {
+                    //                       if (result != null) {
+                    //                         Provider.of<ScheduleOverviewViewModel>(
+                    //                                 context,
+                    //                                 listen: false)
+                    //                             .getScheduleListsFromServer(
+                    //                                 result);
+                    //                       }
+                    //                     });
+                    //                   },
+                    //                   child: Text("Offizieller Stundenplan")),
+                    //               CupertinoActionSheetAction(
+                    //                   onPressed: () {},
+                    //                   child: Text("Eigener Eintrag")),
+                    //             ],
+                    //           ));
+                    // },
                     child: Icon(CupertinoIcons.add,
                         color: CupertinoTheme.of(context)
                             .textTheme
