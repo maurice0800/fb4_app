@@ -17,13 +17,13 @@ class NewsRepository {
       var result = await request.close();
       if (result.statusCode == 200) {
         var document =
-            XmlDocument.parse(await result.transform(Latin1Decoder()).join());
+            XmlDocument.parse(await result.transform(latin1.decoder).join());
         var items = document.findAllElements('item');
         return items
             .map<NewsItem>((element) => NewsItem.fromXmlElement(element))
             .toList();
       } else {
-        throw Exception("Unexpected answer from API.");
+        throw Exception("Statuscode: " + result.statusCode.toString());
       }
     });
   }
