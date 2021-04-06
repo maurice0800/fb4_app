@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fb4_app/areas/more/viewmodels/settings_page_view_model.dart';
 import 'package:fb4_app/config/themes/color_consts.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,7 +21,14 @@ class SettingsPage extends StatelessWidget {
             items: [
               CSHeader("Stundenplan"),
               CSButton(CSButtonType.DESTRUCTIVE, "Stundenplan löschen",
-                  () => viewModel.deleteSchedule(context)),
+                  () async {
+                var result = await showConfirmDialog(
+                    context, "Soll der Stundenplan wirklich gelöscht werden?");
+                if (result) {
+                  viewModel.deleteSchedule(context);
+                }
+                Navigator.pop(context);
+              }),
               CSHeader("NRW-Ticket"),
               CSControl(
                 nameWidget: Text("Helligkeit erhöhen"),
@@ -30,8 +39,14 @@ class SettingsPage extends StatelessWidget {
                   },
                 ),
               ),
-              CSButton(CSButtonType.DESTRUCTIVE, "Ticket löschen",
-                  () => viewModel.deleteTicket(context)),
+              CSButton(CSButtonType.DESTRUCTIVE, "Ticket löschen", () async {
+                var result = await showConfirmDialog(
+                    context, "Soll das Ticket wirklich gelöscht werden?");
+                if (result) {
+                  viewModel.deleteTicket(context);
+                }
+                Navigator.pop(context);
+              }),
               CSHeader("Sonstiges"),
               CSControl(
                 nameWidget: Text("Benachrichtigungen bei News"),
@@ -43,5 +58,50 @@ class SettingsPage extends StatelessWidget {
             ],
           ),
         ));
+  }
+
+  Future<bool> showConfirmDialog(BuildContext context, String message) {
+    Completer<bool> completer = Completer<bool>();
+    showCupertinoDialog(
+        context: context,
+        builder: (context) => CupertinoAlertDialog(
+              title: Text("Bestätigung"),
+              content: Text(message),
+              actions: [
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  child: Container(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        "Ja",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  ),
+                  onTap: () {
+                    completer.complete(true);
+                  },
+                ),
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  child: Container(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        "Nein",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  ),
+                  onTap: () {
+                    completer.complete(false);
+                  },
+                )
+              ],
+            ));
+    return completer.future;
   }
 }
