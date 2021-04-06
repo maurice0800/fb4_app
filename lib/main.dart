@@ -55,6 +55,8 @@ class FB4App extends StatelessWidget {
           ChangeNotifierProvider(
               create: (context) => ScheduleOverviewViewModel()),
           ChangeNotifierProvider(create: (context) => MainViewModel()..init()),
+          ChangeNotifierProvider(
+              create: (context) => TicketOverviewViewModel()..init())
         ],
         child: Consumer<MainViewModel>(
           builder: (context, viewModel, child) => CupertinoApp(
@@ -97,11 +99,7 @@ class FB4App extends StatelessWidget {
                             case 2:
                               return CanteenOverview();
                             case 3:
-                              return ChangeNotifierProvider(
-                                create: (context) =>
-                                    TicketOverviewViewModel()..init(),
-                                child: TicketViewerPage(),
-                              );
+                              return TicketViewerPage();
                             case 4:
                               return MoreList();
                             default:

@@ -6,6 +6,12 @@ import 'package:file_picker/file_picker.dart';
 import 'package:provider/provider.dart';
 
 class TicketViewerPage extends StatelessWidget {
+  final TransformationController _transformationController =
+      TransformationController();
+
+  TapDownDetails _tapDownDetails;
+  bool _isZoomed = false;
+
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
@@ -56,13 +62,31 @@ class TicketViewerPage extends StatelessWidget {
 
       if (viewModel.isImageAvailable) {
         return Center(
-          child: InteractiveViewer(
-            child: Image.memory(viewModel.imageBytes),
+          child: GestureDetector(
+            onDoubleTap: _handleDoubleTap,
+            onDoubleTapDown: (details) => _tapDownDetails = details,
+            child: InteractiveViewer(
+              transformationController: _transformationController,
+              child: Image.memory(viewModel.imageBytes),
+            ),
           ),
         );
       }
 
       return buildSelectTicket(context);
     });
+  }
+
+  void _handleDoubleTap() {
+    if (_isZoomed) {
+      _transformationController.value = Matrix4.identity();
+      _isZoomed = false;
+    } else {
+      _transformationController.value = Matrix4.identity()
+        ..translate(-_tapDownDetails.localPosition.dx,
+            -_tapDownDetails.localPosition.dy)
+        ..scale(2.0);
+      _isZoomed = true;
+    }
   }
 }
