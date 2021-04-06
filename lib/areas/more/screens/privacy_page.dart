@@ -32,9 +32,12 @@ class PrivacyPage extends StatelessWidget {
                   ),
                 ),
                 shouldAccept
-                    ? CupertinoButton.filled(
-                        child: Text("Akzeptieren"),
-                        onPressed: () => viewModel.acceptPolicy(context))
+                    ? Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: CupertinoButton.filled(
+                            child: Text("Akzeptieren"),
+                            onPressed: () => viewModel.acceptPolicy(context)),
+                      )
                     : Container(),
               ],
             ),

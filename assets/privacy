@@ -17,5 +17,5 @@ Sollte der Nutzer die Push-Benachrichtigungen aktivieren, wird von Google eine e
 Hierfür wird Firebase Cloud Messaging verwendet. Für uns ist ein Rückschluss auf einzelne Personen durch die Geräte-ID nicht möglich.
 Zur Aufbewahrung der Daten stellt Google folgende Informationen zur Verfügung:
 Aufbewahrung: Firebase behält die Firebase-Installations-IDs bei, bis der Firebase-Kunde einen API-Aufruf zum Löschen der ID ausführt. Nach dem Anruf werden die Daten innerhalb von 180 Tagen aus den Live- und Backup-Systemen entfernt.
-Weitere Informationen sind hier verfügbar: https://firebase.google.com/support/privacy
+Weitere Informationen sind hier verfügbar: [https://firebase.google.com/support/privacy](https://firebase.google.com/support/privacy)
 
