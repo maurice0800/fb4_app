@@ -22,7 +22,7 @@ class LinksDownloadsPage extends StatelessWidget {
           ),
           CSLink(
             title: "Ilias",
-            onPressed: () => launch("https://ilias.fh-dortmund.de"),
+            onPressed: () => launch("https://www.ilias.fh-dortmund.de"),
           ),
           CSLink(
             title: "ODS",
@@ -48,7 +48,8 @@ class LinksDownloadsPage extends StatelessWidget {
           CSHeader("Downloads"),
           CSLink(
             title: "Prüfungsplan",
-            onPressed: () => launch("https://www.fh-dortmund.de/zeitplan"),
+            onPressed: () =>
+                launch("https://www.fh-dortmund.de/de/fb/4/lehre/pplan.php"),
           ),
           CSLink(
             title: "Lageplan",
