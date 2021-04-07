@@ -36,14 +36,33 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
       element.userIsInGroup = isGroupInScheduleItem(info, element);
     });
 
-    scheduleDays = new List.generate(
-        5,
-        (index) => ScheduleList(
-              items: getListFromItems(items, ApiConstants.weekDayList[index]),
-              weekday: AppConstants.weekdays[index],
-              controller: internalController,
-              editMode: editMode,
-            ));
+    if (scheduleDays.length == 0) {
+      // No schedule available. We have to create a new one
+      scheduleDays = new List.generate(
+          5,
+          (index) => ScheduleList(
+                items: markListForEdit(
+                    getListFromItems(items, ApiConstants.weekDayList[index])),
+                weekday: AppConstants.weekdays[index],
+                controller: internalController,
+              ));
+    } else {
+      // We have to merge schedules
+      scheduleDays = new List.generate(
+          5,
+          (index) => ScheduleList(
+                items: scheduleDays[index].items +
+                    markListForEdit(getListFromItems(
+                        items, ApiConstants.weekDayList[index])),
+                weekday: AppConstants.weekdays[index],
+                controller: internalController,
+              ));
+    }
+
+    scheduleDays.forEach((element) {
+      element.items.sort();
+    });
+
     isLoading = false;
     notifyListeners();
   }
@@ -102,9 +121,7 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
             .map<ScheduleItem>((item) => ScheduleItem.fromJson(item))
             .toList();
 
-        scheduleItems.sort((i1, i2) =>
-            int.parse(i1.timeBegin.substring(0, 1)) -
-            int.parse(i2.timeBegin.substring(0, 1)));
+        scheduleItems.sort();
 
         scheduleDays = new List.generate(
             5,
@@ -113,7 +130,6 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
                       scheduleItems, ApiConstants.weekDayList[index]),
                   weekday: AppConstants.weekdays[index],
                   controller: internalController,
-                  editMode: editMode,
                 ));
       }
 
@@ -127,8 +143,15 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
       isLoading = true;
       notifyListeners();
 
+      var currentSavedItems = [];
+      scheduleDays.forEach((element) {
+        currentSavedItems.addAll(
+            element.items.where((element) => element.editMode == false));
+      });
+
       var itemsMap = Map.fromIterable(
-          internalController.selectedItems.map((e) => e.toJson()),
+          (currentSavedItems + internalController.selectedItems)
+              .map((e) => e.toJson()),
           key: (item) => item.hashCode.toString(),
           value: (item) => item);
 
@@ -150,5 +173,10 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
   List<ScheduleItem> getListFromItems(
       List<ScheduleItem> items, String shortWeekday) {
     return items.where((element) => element.weekday == shortWeekday).toList();
+  }
+
+  List<ScheduleItem> markListForEdit(List<ScheduleItem> items) {
+    items.forEach((element) => element.editMode = true);
+    return items;
   }
 }

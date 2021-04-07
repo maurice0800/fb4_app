@@ -1,6 +1,6 @@
 import 'package:quiver/core.dart';
 
-class ScheduleItem {
+class ScheduleItem implements Comparable {
   String name;
   String courseType;
   String lecturerId;
@@ -11,6 +11,7 @@ class ScheduleItem {
   String weekday;
   String roomId;
   bool userIsInGroup;
+  bool editMode;
 
   ScheduleItem(
       {this.name,
@@ -21,7 +22,8 @@ class ScheduleItem {
       this.timeBegin,
       this.timeEnd,
       this.weekday,
-      this.roomId});
+      this.roomId,
+      this.editMode = false});
 
   factory ScheduleItem.fromJson(Map<String, dynamic> json) {
     return ScheduleItem(
@@ -62,4 +64,8 @@ class ScheduleItem {
     }
     return false;
   }
+
+  @override
+  int compareTo(other) =>
+      int.parse(this.timeBegin) - int.parse(other.timeBegin);
 }

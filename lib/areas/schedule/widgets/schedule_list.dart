@@ -8,10 +8,8 @@ class ScheduleList extends StatefulWidget {
   final String weekday;
   final List<ScheduleItem> items;
   final ScheduleListController controller;
-  final bool editMode;
 
-  const ScheduleList(
-      {Key key, this.weekday, this.items, this.editMode, this.controller})
+  const ScheduleList({Key key, this.weekday, this.items, this.controller})
       : super(key: key);
 
   @override
@@ -39,7 +37,7 @@ class ScheduleListState extends State<ScheduleList>
                         .contains(widget.items[index]),
                     onItemSelected: widget.controller.onItemSelected,
                     onItemDeselected: widget.controller.onItemDeselected,
-                    editMode: widget.editMode,
+                    editMode: widget.items[index].editMode,
                     item: widget.items[index],
                   ),
                 ),
