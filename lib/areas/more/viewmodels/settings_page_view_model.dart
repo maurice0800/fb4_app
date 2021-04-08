@@ -58,8 +58,8 @@ class SettingsPageViewModel extends ChangeNotifier {
   }
 
   void deleteSchedule(BuildContext context) {
-    JsonStore().deleteItem("schedule_items");
+    JsonStore().deleteLike("schedule%");
     Provider.of<ScheduleOverviewViewModel>(context, listen: false)
-        .getScheduleListsFromCache();
+        .getScheduleListsFromDatabase();
   }
 }

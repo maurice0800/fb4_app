@@ -9,7 +9,8 @@ class ScheduleList extends StatefulWidget {
   final List<ScheduleItem> items;
   final ScheduleListController controller;
 
-  const ScheduleList({Key key, this.weekday, this.items, this.controller})
+  const ScheduleList(
+      {Key key, this.weekday, this.items = const [], this.controller})
       : super(key: key);
 
   @override
@@ -54,16 +55,11 @@ class ScheduleListState extends State<ScheduleList>
               actions: [
                 CupertinoActionSheetAction(
                   onPressed: () async {
-                    var currentItems =
-                        await JsonStore().getItem("schedule_items");
-                    currentItems.removeWhere((key, value) =>
-                        key == widget.items[index].hashCode.toString());
-                    await JsonStore().setItem("schedule_items", currentItems);
-                    Navigator.pop(context);
-
                     if (widget.controller.onItemRemoved != null) {
                       widget.controller.onItemRemoved(widget.items[index]);
                     }
+                    widget.items.removeAt(index);
+                    Navigator.pop(context);
                   },
                   child: Text("Eintrag entfernen"),
                   isDestructiveAction: true,

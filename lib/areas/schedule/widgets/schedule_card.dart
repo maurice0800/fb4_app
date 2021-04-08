@@ -93,7 +93,7 @@ class ScheduleCardState extends State<ScheduleCard> {
                             maxLines: 1,
                           ),
                           Text(
-                            '${widget.item.studentSet} | ${widget.item.lecturerId}',
+                            '${widget.item.studentSet ?? "*"} | ${widget.item.lecturerName} (${widget.item.lecturerId})',
                             style: TextStyle(
                               color: CupertinoColors.white,
                               fontSize: 14,

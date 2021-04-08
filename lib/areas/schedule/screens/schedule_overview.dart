@@ -1,37 +1,22 @@
-import 'package:fb4_app/areas/schedule/models/schedule_list_controller.dart';
-import 'package:fb4_app/areas/schedule/models/selected_course_info.dart';
+import 'package:fb4_app/areas/schedule/screens/add_custom_schedule_item_page.dart';
 import 'package:fb4_app/areas/schedule/screens/add_official_schedule_page.dart';
-import 'package:fb4_app/areas/schedule/viewmodels/add_official_schedule_page_viewmodel.dart';
 import 'package:fb4_app/areas/schedule/viewmodels/schedule_overview_viewmodel.dart';
 import 'package:fb4_app/config/themes/color_consts.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 
-class ScheduleOverview extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return ScheduleOverviewState();
-  }
-}
-
-class ScheduleOverviewState extends State<ScheduleOverview> {
-  ScrollDirection currentScrollDirection;
-  bool editMode = false;
-  final PageController pageViewController = PageController();
-  ValueNotifier<int> controllerPageNotifier = ValueNotifier(0);
-  ScheduleListController scheduleListController;
-
+class ScheduleOverview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-        navigationBar: buildNavigationBar(),
+        navigationBar: buildNavigationBar(context),
         child: SafeArea(child: Container(child:
             Consumer<ScheduleOverviewViewModel>(
                 builder: (context, viewModel, child) {
-          if (viewModel.scheduleDays.length == 5) {
+          if (viewModel.hasItems) {
             return Column(
               children: [
                 Container(
@@ -49,7 +34,7 @@ class ScheduleOverviewState extends State<ScheduleOverview> {
                     child: Row(children: [
                       Expanded(
                         child: ValueListenableBuilder<int>(
-                          valueListenable: controllerPageNotifier,
+                          valueListenable: viewModel.controllerPageNotifier,
                           builder: (BuildContext context, value, Widget child) {
                             return CupertinoSegmentedControl(
                                 groupValue: value,
@@ -75,7 +60,9 @@ class ScheduleOverviewState extends State<ScheduleOverview> {
                                       child: Text('Fr')),
                                 },
                                 onValueChanged: (val) {
-                                  scrollClickedPageIntoView(val);
+                                  viewModel.controllerPageNotifier.value = val;
+                                  scrollClickedPageIntoView(
+                                      val, viewModel.pageViewController);
                                 });
                           },
                         ),
@@ -87,14 +74,15 @@ class ScheduleOverviewState extends State<ScheduleOverview> {
                   child: Padding(
                     padding: const EdgeInsets.only(top: 8.0),
                     child: PageView(
-                        controller: pageViewController,
-                        onPageChanged: handlePageChanged,
+                        controller: viewModel.pageViewController,
+                        onPageChanged: (index) =>
+                            viewModel.controllerPageNotifier.value = index,
                         children: <Widget>[
-                          viewModel.scheduleDays[0],
-                          viewModel.scheduleDays[1],
-                          viewModel.scheduleDays[2],
-                          viewModel.scheduleDays[3],
-                          viewModel.scheduleDays[4],
+                          viewModel.displayScheduleItems[0],
+                          viewModel.displayScheduleItems[1],
+                          viewModel.displayScheduleItems[2],
+                          viewModel.displayScheduleItems[3],
+                          viewModel.displayScheduleItems[4],
                         ]),
                   ),
                 ),
@@ -115,16 +103,16 @@ class ScheduleOverviewState extends State<ScheduleOverview> {
         }))));
   }
 
-  void scrollClickedPageIntoView(index) async {
-    pageViewController.animateToPage(index,
+  void scrollClickedPageIntoView(index, controller) async {
+    controller.animateToPage(index,
         curve: Curves.ease, duration: Duration(milliseconds: 100));
   }
 
   void handlePageChanged(int value) async {
-    controllerPageNotifier.value = value;
+    // controllerPageNotifier.value = value;
   }
 
-  Widget buildNavigationBar() {
+  Widget buildNavigationBar(BuildContext context) {
     return CupertinoNavigationBar(
         border: null,
         backgroundColor: ColorConsts.mainOrange,
@@ -141,61 +129,41 @@ class ScheduleOverviewState extends State<ScheduleOverview> {
                           .textTheme
                           .navTitleTextStyle
                           .color),
-                  onPressed: () => viewModel.saveSelectedItemsToCache())
+                  onPressed: () => viewModel.addSelectedItemsToList())
               : Row(mainAxisSize: MainAxisSize.min, children: [
                   CupertinoButton(
                     onPressed: () {
-                      Navigator.of(context)
-                          .push<SelectedCourseInfo>(CupertinoPageRoute(
-                              builder: (context) => ChangeNotifierProvider(
-                                    create: (context) =>
-                                        AddOfficialSchedulePageViewModel()
-                                          ..init(),
-                                    child: AddOfficialSchedulePage(),
-                                  )))
-                          .then((SelectedCourseInfo result) {
-                        if (result != null) {
-                          Provider.of<ScheduleOverviewViewModel>(context,
-                                  listen: false)
-                              .getScheduleListsFromServer(result);
-                        }
-                      });
+                      showCupertinoModalPopup(
+                          context: context,
+                          builder: (builder) => CupertinoActionSheet(
+                                actions: [
+                                  CupertinoActionSheetAction(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        showCupertinoModalBottomSheet(
+                                                context: context,
+                                                builder: (context) =>
+                                                    AddOfficialSchedulePage())
+                                            .then((result) {
+                                          viewModel.getScheduleListsFromServer(
+                                              result);
+                                        });
+                                      },
+                                      child: Text("Offizieller Stundenplan")),
+                                  CupertinoActionSheetAction(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        showCupertinoModalBottomSheet(
+                                                context: context,
+                                                builder: (context) =>
+                                                    AddCustomScheduleItemPage())
+                                            .then((result) => viewModel
+                                                .addCustomItem(result));
+                                      },
+                                      child: Text("Eigener Eintrag")),
+                                ],
+                              ));
                     },
-                    //   showCupertinoModalPopup(
-                    //       context: context,
-                    //       builder: (builder) => CupertinoActionSheet(
-                    //             actions: [
-                    //               CupertinoActionSheetAction(
-                    //                   onPressed: () {
-                    //                     Navigator.pop(context);
-                    //                     Navigator.of(context)
-                    //                         .push<SelectedCourseInfo>(
-                    //                             CupertinoPageRoute(
-                    //                                 builder: (context) =>
-                    //                                     ChangeNotifierProvider(
-                    //                                       create: (context) =>
-                    //                                           AddOfficialSchedulePageViewModel()
-                    //                                             ..init(),
-                    //                                       child:
-                    //                                           AddOfficialSchedulePage(),
-                    //                                     )))
-                    //                         .then((SelectedCourseInfo result) {
-                    //                       if (result != null) {
-                    //                         Provider.of<ScheduleOverviewViewModel>(
-                    //                                 context,
-                    //                                 listen: false)
-                    //                             .getScheduleListsFromServer(
-                    //                                 result);
-                    //                       }
-                    //                     });
-                    //                   },
-                    //                   child: Text("Offizieller Stundenplan")),
-                    //               CupertinoActionSheetAction(
-                    //                   onPressed: () {},
-                    //                   child: Text("Eigener Eintrag")),
-                    //             ],
-                    //           ));
-                    // },
                     child: Icon(CupertinoIcons.add,
                         color: CupertinoTheme.of(context)
                             .textTheme

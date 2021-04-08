@@ -72,159 +72,170 @@ class AddOfficialSchedulePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-        navigationBar: CupertinoNavigationBar(
-          backgroundColor: ColorConsts.mainOrange,
-          middle: Text("Stundenplan hinzufügen",
-              style: CupertinoTheme.of(context).textTheme.navTitleTextStyle),
-          trailing: CupertinoButton(
-              padding: EdgeInsets.zero,
-              onPressed: () {
-                var viewModel = Provider.of<AddOfficialSchedulePageViewModel>(
-                    context,
-                    listen: false);
-                if (viewModel.selectedCourse == null ||
-                    viewModel.selectedSemester == "") {
-                  showCupertinoDialog(
-                      context: context,
-                      builder: (context) => CupertinoAlertDialog(
-                            title: Text("Fehler"),
-                            content: Text(
-                                "Es wurden nicht alle erforderlichen Felder ausgefüllt."),
-                            actions: [
-                              GestureDetector(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Text(
-                                    "Schließen",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(fontSize: 16),
-                                  ),
+    return ChangeNotifierProvider<AddOfficialSchedulePageViewModel>(
+        create: (context) => AddOfficialSchedulePageViewModel()..init(),
+        child: Consumer<AddOfficialSchedulePageViewModel>(
+            builder: (context, viewModel, child) {
+          return CupertinoPageScaffold(
+              navigationBar: CupertinoNavigationBar(
+                backgroundColor: ColorConsts.mainOrange,
+                middle: Text("Stundenplan hinzufügen",
+                    style:
+                        CupertinoTheme.of(context).textTheme.navTitleTextStyle),
+                trailing: CupertinoButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: () {
+                      if (viewModel.selectedCourse == null ||
+                          viewModel.selectedSemester == "") {
+                        showCupertinoDialog(
+                            context: context,
+                            builder: (context) => CupertinoAlertDialog(
+                                  title: Text("Fehler"),
+                                  content: Text(
+                                      "Es wurden nicht alle erforderlichen Felder ausgefüllt."),
+                                  actions: [
+                                    GestureDetector(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: Text(
+                                          "Schließen",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                      ),
+                                      onTap: () => Navigator.pop(context),
+                                    )
+                                  ],
+                                ));
+                      } else {
+                        Navigator.of(context).pop(SelectedCourseInfo(
+                            viewModel.selectedCourse.shortName,
+                            viewModel.selectedSemester,
+                            groupString: viewModel.selectedGroup));
+                      }
+                    },
+                    child: Icon(CupertinoIcons.check_mark,
+                        color: CupertinoTheme.of(context)
+                            .textTheme
+                            .navTitleTextStyle
+                            .color)),
+              ),
+              child: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 16.0),
+                  child: Builder(builder: (context) {
+                    if (viewModel.courses.length > 0) {
+                      return Column(children: [
+                        CupertinoFormSection(
+                            backgroundColor:
+                                CupertinoColors.tertiarySystemBackground,
+                            header: Text('Erforderlich'),
+                            children: [
+                              CupertinoTextFormFieldRow(
+                                prefix: Padding(
+                                  padding: const EdgeInsets.only(right: 50.0),
+                                  child: Text('Studiengang'),
                                 ),
-                                onTap: () => Navigator.pop(context),
-                              )
-                            ],
-                          ));
-                } else {
-                  Navigator.of(context).pop(SelectedCourseInfo(
-                      viewModel.selectedCourse.shortName,
-                      viewModel.selectedSemester,
-                      groupString: viewModel.selectedGroup));
-                }
-              },
-              child: Icon(CupertinoIcons.check_mark,
-                  color: CupertinoTheme.of(context)
-                      .textTheme
-                      .navTitleTextStyle
-                      .color)),
-        ),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 16.0),
-            child: Consumer<AddOfficialSchedulePageViewModel>(
-                builder: (context, viewModel, child) {
-              if (viewModel.courses.length > 0) {
-                return Column(children: [
-                  CupertinoFormSection(
-                      backgroundColor: CupertinoColors.tertiarySystemBackground,
-                      header: Text('Erforderlich'),
-                      children: [
-                        CupertinoTextFormFieldRow(
-                          prefix: Padding(
-                            padding: const EdgeInsets.only(right: 50.0),
-                            child: Text('Studiengang'),
-                          ),
-                          placeholder: 'Wählen',
-                          onTap: () {
-                            viewModel.selectedSemester = "";
-                            showModalForSelection(
-                                context,
-                                "Studiengang wählen",
-                                viewModel.courses,
-                                viewModel.courses
-                                    .map((course) => course.name)
-                                    .toList(), (course) {
-                              viewModel.selectedCourse = course;
-                              Navigator.of(context).pop();
-                            });
-                          },
-                          textAlign: TextAlign.end,
-                          readOnly: true,
-                          controller: viewModel.courseController,
-                        ),
-                        CupertinoTextFormFieldRow(
-                          prefix: Text('Semester'),
-                          placeholder: 'Wählen',
-                          onTap: () {
-                            if (viewModel.selectedCourse != null) {
-                              showModalForSelection(
-                                  context,
-                                  "Semester wählen",
-                                  viewModel.selectedCourse.grades,
-                                  viewModel.selectedCourse.grades, (semester) {
-                                viewModel.selectedSemester = semester;
-                                Navigator.of(context).pop();
-                              });
-                            } else {
-                              showCupertinoDialog(
-                                  context: context,
-                                  builder: (context) => CupertinoAlertDialog(
-                                        title: Text("Fehler"),
-                                        content: Text(
-                                            "Bitte wähle zuerst einen Studiengang aus."),
-                                        actions: [
-                                          GestureDetector(
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(16.0),
-                                              child: Text(
-                                                "Schließen",
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(fontSize: 16),
-                                              ),
-                                            ),
-                                            onTap: () => Navigator.pop(context),
-                                          )
-                                        ],
-                                      ));
-                            }
-                          },
-                          textAlign: TextAlign.end,
-                          readOnly: true,
-                          controller: viewModel.semesterController,
-                        ),
-                      ]),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16.0),
-                    child: CupertinoFormSection(
-                        backgroundColor:
-                            CupertinoColors.tertiarySystemBackground,
-                        header: Text('Optional'),
-                        children: [
-                          CupertinoTextFormFieldRow(
-                            prefix: Text('Gruppenkennung'),
-                            placeholder: 'Beispiel: C8',
-                            textAlign: TextAlign.end,
-                            controller: viewModel.groupController,
-                            textCapitalization: TextCapitalization.characters,
-                            validator: (input) {
-                              if (input == "" ||
-                                  RegExp('^[A-Z][0-9]+\$').hasMatch(input)) {
-                                return null;
-                              }
-                              return "Muss folgendes beeinhalten:\n- Genau einen Buchstaben \n- Mindestens eine Zahl";
-                            },
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                          ),
-                        ]),
-                  )
-                ]);
-              } else {
-                return Center(child: CupertinoActivityIndicator());
-              }
-            }),
-          ),
-        ));
+                                placeholder: 'Wählen',
+                                onTap: () {
+                                  viewModel.selectedSemester = "";
+                                  showModalForSelection(
+                                      context,
+                                      "Studiengang wählen",
+                                      viewModel.courses,
+                                      viewModel.courses
+                                          .map((course) => course.name)
+                                          .toList(), (course) {
+                                    viewModel.selectedCourse = course;
+                                    Navigator.of(context).pop();
+                                  });
+                                },
+                                textAlign: TextAlign.end,
+                                readOnly: true,
+                                controller: viewModel.courseController,
+                              ),
+                              CupertinoTextFormFieldRow(
+                                prefix: Text('Semester'),
+                                placeholder: 'Wählen',
+                                onTap: () {
+                                  if (viewModel.selectedCourse != null) {
+                                    showModalForSelection(
+                                        context,
+                                        "Semester wählen",
+                                        viewModel.selectedCourse.grades,
+                                        viewModel.selectedCourse.grades,
+                                        (semester) {
+                                      viewModel.selectedSemester = semester;
+                                      Navigator.of(context).pop();
+                                    });
+                                  } else {
+                                    showCupertinoDialog(
+                                        context: context,
+                                        builder: (context) =>
+                                            CupertinoAlertDialog(
+                                              title: Text("Fehler"),
+                                              content: Text(
+                                                  "Bitte wähle zuerst einen Studiengang aus."),
+                                              actions: [
+                                                GestureDetector(
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            16.0),
+                                                    child: Text(
+                                                      "Schließen",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          fontSize: 16),
+                                                    ),
+                                                  ),
+                                                  onTap: () =>
+                                                      Navigator.pop(context),
+                                                )
+                                              ],
+                                            ));
+                                  }
+                                },
+                                textAlign: TextAlign.end,
+                                readOnly: true,
+                                controller: viewModel.semesterController,
+                              ),
+                            ]),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 16.0),
+                          child: CupertinoFormSection(
+                              backgroundColor:
+                                  CupertinoColors.tertiarySystemBackground,
+                              header: Text('Optional'),
+                              children: [
+                                CupertinoTextFormFieldRow(
+                                  prefix: Text('Gruppenkennung'),
+                                  placeholder: 'Beispiel: C8',
+                                  textAlign: TextAlign.end,
+                                  controller: viewModel.groupController,
+                                  textCapitalization:
+                                      TextCapitalization.characters,
+                                  validator: (input) {
+                                    if (input == "" ||
+                                        RegExp('^[A-Z][0-9]+\$')
+                                            .hasMatch(input)) {
+                                      return null;
+                                    }
+                                    return "Muss folgendes beeinhalten:\n- Genau einen Buchstaben \n- Mindestens eine Zahl";
+                                  },
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                ),
+                              ]),
+                        )
+                      ]);
+                    } else {
+                      return Center(child: CupertinoActivityIndicator());
+                    }
+                  }),
+                ),
+              ));
+        }));
   }
 }

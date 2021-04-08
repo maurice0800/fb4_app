@@ -9,62 +9,154 @@ import 'package:flutter/cupertino.dart';
 import 'package:json_store/json_store.dart';
 
 class ScheduleOverviewViewModel extends ChangeNotifier {
-  JsonStore jsonStore = JsonStore();
+  final JsonStore jsonStore = JsonStore();
+  final ScheduleRepository repository = ScheduleRepository();
+  final ScheduleListController internalController = ScheduleListController();
+  final PageController pageViewController = PageController();
+  final ValueNotifier<int> controllerPageNotifier = ValueNotifier(0);
   bool editMode = false;
   bool isLoading = false;
-  ScheduleRepository repository = ScheduleRepository();
-  ScheduleListController internalController = ScheduleListController();
-  List<ScheduleList> scheduleDays = [];
+  bool hasItems = false;
+  List<ScheduleList> persistentScheduleItems = [];
+  List<ScheduleList> displayScheduleItems = [];
 
   ScheduleOverviewViewModel() {
-    getScheduleListsFromCache();
+    getScheduleListsFromDatabase();
     internalController.onItemRemoved = (item) {
-      getScheduleListsFromCache();
+      resyncWithDatabase();
     };
   }
 
   void getScheduleListsFromServer(SelectedCourseInfo info) async {
+    if (info != null) {
+      isLoading = true;
+      notifyListeners();
+
+      editMode = true;
+      hasItems = true;
+
+      var items =
+          await repository.getScheduleItems(info.shortName, info.semester);
+
+      items.forEach((element) {
+        element.userIsInGroup = isGroupInScheduleItem(info, element);
+      });
+
+      displayScheduleItems = new List.generate(
+          5,
+          (index) => ScheduleList(
+                items: persistentScheduleItems[index].items +
+                    markListForEdit(generateListFromItems(
+                        items, ApiConstants.shortWeekDayList[index])),
+                weekday: AppConstants.weekdays[index],
+                controller: internalController,
+              ));
+
+      displayScheduleItems.forEach((element) {
+        element.items.sort();
+      });
+
+      isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future getScheduleListsFromDatabase() async {
     isLoading = true;
+    hasItems = false;
     notifyListeners();
 
-    editMode = true;
+    var lists = await jsonStore.getListLike("schedule%") ?? [];
 
-    var items =
-        await repository.getScheduleItems(info.shortName, info.semester);
+    if (lists.length == 5) {
+      lists.forEach((element) {
+        hasItems = hasItems || element.keys.length > 0;
+      });
 
-    items.forEach((element) {
-      element.userIsInGroup = isGroupInScheduleItem(info, element);
-    });
-
-    if (scheduleDays.length == 0) {
-      // No schedule available. We have to create a new one
-      scheduleDays = new List.generate(
+      persistentScheduleItems = new List.generate(
           5,
           (index) => ScheduleList(
-                items: markListForEdit(
-                    getListFromItems(items, ApiConstants.weekDayList[index])),
-                weekday: AppConstants.weekdays[index],
+                items: generateListFromItems(
+                    lists[index]
+                        .values
+                        .map<ScheduleItem>((e) => ScheduleItem.fromJson(e))
+                        .toList(),
+                    ApiConstants.shortWeekDayList[index]),
+                weekday: ApiConstants.shortWeekDayList[index],
                 controller: internalController,
               ));
+      persistentScheduleItems.forEach((element) => element.items.sort());
+      displayScheduleItems = persistentScheduleItems.toList();
     } else {
-      // We have to merge schedules
-      scheduleDays = new List.generate(
+      // There is an error with the database. Initializing new database structure...
+      jsonStore.deleteLike("schedule%");
+      persistentScheduleItems = List.generate(
           5,
           (index) => ScheduleList(
-                items: scheduleDays[index].items +
-                    markListForEdit(getListFromItems(
-                        items, ApiConstants.weekDayList[index])),
-                weekday: AppConstants.weekdays[index],
-                controller: internalController,
+                items: [],
+                weekday: ApiConstants.shortWeekDayList[index],
               ));
+      await resyncWithDatabase();
     }
 
-    scheduleDays.forEach((element) {
-      element.items.sort();
+    lists.clear();
+    isLoading = false;
+    controllerPageNotifier.value = 0;
+    notifyListeners();
+  }
+
+  Future saveAllItemsToDatabase() async {
+    jsonStore.deleteLike("schedule%");
+    var batch = await jsonStore.startBatch();
+    persistentScheduleItems.forEach((element) {
+      var itemsMap = Map.fromIterable(
+        (element.items).map((e) => e.toJson()),
+        key: (item) => item.hashCode.toString(),
+        value: (item) => item,
+      );
+      jsonStore.setItem("schedule-" + element.weekday, itemsMap);
     });
 
-    isLoading = false;
-    notifyListeners();
+    await jsonStore.commitBatch(batch);
+  }
+
+  void addSelectedItemsToList() async {
+    if (internalController.selectedItems.isNotEmpty) {
+      internalController.selectedItems.forEach((newItem) {
+        persistentScheduleItems
+            .firstWhere(
+                (scheduleList) => scheduleList.weekday == newItem.weekday)
+            .items
+            .add(newItem..editMode = false);
+      });
+    }
+
+    editMode = false;
+    displayScheduleItems.clear();
+    internalController.selectedItems.clear();
+
+    await resyncWithDatabase();
+  }
+
+  List<ScheduleItem> generateListFromItems(
+      List<ScheduleItem> items, String shortWeekday) {
+    return items.where((element) => element.weekday == shortWeekday).toList();
+  }
+
+  List<ScheduleItem> markListForEdit(List<ScheduleItem> items) {
+    items.forEach((element) => element.editMode = true);
+    return items;
+  }
+
+  void addCustomItem(ScheduleItem result) async {
+    if (result != null) {
+      persistentScheduleItems
+          .firstWhere((element) => element.weekday == result.weekday)
+          .items
+          .add(result);
+
+      await resyncWithDatabase();
+    }
   }
 
   bool isGroupInScheduleItem(SelectedCourseInfo info, ScheduleItem item) {
@@ -110,73 +202,14 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
     return false;
   }
 
-  void getScheduleListsFromCache() {
-    isLoading = true;
-    notifyListeners();
-    scheduleDays.clear();
+  Future resyncWithDatabase() async {
+    await saveAllItemsToDatabase();
+    await getScheduleListsFromDatabase();
+  }
 
-    jsonStore.getItem("schedule_items").then((itemsList) {
-      if (itemsList != null) {
-        var scheduleItems = itemsList.values
-            .map<ScheduleItem>((item) => ScheduleItem.fromJson(item))
-            .toList();
-
-        scheduleItems.sort();
-
-        scheduleDays = new List.generate(
-            5,
-            (index) => ScheduleList(
-                  items: getListFromItems(
-                      scheduleItems, ApiConstants.weekDayList[index]),
-                  weekday: AppConstants.weekdays[index],
-                  controller: internalController,
-                ));
-      }
-
-      isLoading = false;
-      notifyListeners();
+  void deleteItemFromDatabase(ScheduleItem item) async {
+    persistentScheduleItems.forEach((element) {
+      element.items.remove(item);
     });
-  }
-
-  void saveSelectedItemsToCache() {
-    if (internalController.selectedItems.isNotEmpty) {
-      isLoading = true;
-      notifyListeners();
-
-      var currentSavedItems = [];
-      scheduleDays.forEach((element) {
-        currentSavedItems.addAll(
-            element.items.where((element) => element.editMode == false));
-      });
-
-      var itemsMap = Map.fromIterable(
-          (currentSavedItems + internalController.selectedItems)
-              .map((e) => e.toJson()),
-          key: (item) => item.hashCode.toString(),
-          value: (item) => item);
-
-      jsonStore.setItem("schedule_items", itemsMap).then((result) => {
-            getScheduleListsFromCache(),
-            editMode = false,
-            isLoading = false,
-            notifyListeners(),
-          });
-
-      internalController.selectedItems.clear();
-    } else {
-      getScheduleListsFromCache();
-      editMode = false;
-      notifyListeners();
-    }
-  }
-
-  List<ScheduleItem> getListFromItems(
-      List<ScheduleItem> items, String shortWeekday) {
-    return items.where((element) => element.weekday == shortWeekday).toList();
-  }
-
-  List<ScheduleItem> markListForEdit(List<ScheduleItem> items) {
-    items.forEach((element) => element.editMode = true);
-    return items;
   }
 }
