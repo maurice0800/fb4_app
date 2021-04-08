@@ -3,13 +3,13 @@ import 'package:fb4_app/areas/schedule/models/schedule_item.dart';
 import 'package:flutter/cupertino.dart';
 
 class AddCustomScheduleItemPageViewModel extends ChangeNotifier {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController weekdayController = TextEditingController();
-  TextEditingController timeBeginController = TextEditingController();
-  TextEditingController timeEndController = TextEditingController();
-  TextEditingController roomController = TextEditingController();
-  TextEditingController lecturerController = TextEditingController();
-  TextEditingController shortlecturerController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController weekdayController = TextEditingController();
+  final TextEditingController timeBeginController = TextEditingController();
+  final TextEditingController timeEndController = TextEditingController();
+  final TextEditingController roomController = TextEditingController();
+  final TextEditingController lecturerController = TextEditingController();
+  final TextEditingController shortlecturerController = TextEditingController();
 
   ScheduleItem createNewItem() {
     return ScheduleItem(
@@ -21,6 +21,16 @@ class AddCustomScheduleItemPageViewModel extends ChangeNotifier {
         timeEnd: timeEndController.text.replaceFirst(':', ''),
         weekday: ApiConstants.longWeekDays[weekdayController.text],
         roomId: roomController.text);
+  }
+
+  bool validate() {
+    return (nameController.text.length > 0 &&
+        weekdayController.text.length > 0 &&
+        timeBeginController.text.length > 0 &&
+        timeEndController.text.length > 0 &&
+        roomController.text.length > 0 &&
+        lecturerController.text.length > 0 &&
+        shortlecturerController.text.length > 0);
   }
 
   void setTimeBegin(DateTime time) {

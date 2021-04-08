@@ -12,130 +12,153 @@ class AddCustomScheduleItemPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<AddCustomScheduleItemPageViewModel>(
         create: (context) => AddCustomScheduleItemPageViewModel(),
-        builder: (context, child) =>
-            Consumer<AddCustomScheduleItemPageViewModel>(
-              builder: (context, viewModel, child) => CupertinoPageScaffold(
-                navigationBar: CupertinoNavigationBar(
-                  backgroundColor: ColorConsts.mainOrange,
-                  middle: Text("Eigener Eintrag"),
-                  trailing: GestureDetector(
-                    onTap: () =>
-                        Navigator.pop(context, viewModel.createNewItem()),
-                    child: Text(
-                      "Speichern",
-                      style: TextStyle(
-                        color: CupertinoColors.white,
+        builder: (context, child) => Consumer<
+                AddCustomScheduleItemPageViewModel>(
+            builder: (context, viewModel, child) => CupertinoPageScaffold(
+                  navigationBar: CupertinoNavigationBar(
+                    backgroundColor: ColorConsts.mainOrange,
+                    middle: Text("Eigener Eintrag"),
+                    trailing: GestureDetector(
+                      onTap: () {
+                        if (viewModel.validate()) {
+                          Navigator.pop(context, viewModel.createNewItem());
+                        } else {
+                          showCupertinoDialog(
+                              context: context,
+                              builder: (context) => CupertinoAlertDialog(
+                                    title: Text("Fehler"),
+                                    content: Text(
+                                        "Es wurden nicht alle erforderlichen Felder ausgefüllt."),
+                                    actions: [
+                                      GestureDetector(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: Text(
+                                            "Schließen",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(fontSize: 16),
+                                          ),
+                                        ),
+                                        onTap: () => Navigator.pop(context),
+                                      )
+                                    ],
+                                  ));
+                        }
+                      },
+                      child: Text(
+                        "Speichern",
+                        style: TextStyle(
+                          color: CupertinoColors.white,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                child: CupertinoFormSection(
-                    backgroundColor: CupertinoColors.tertiarySystemBackground,
-                    header: Text('Kursdetails'),
-                    children: [
-                      CupertinoTextFormFieldRow(
-                        prefix: Padding(
-                          padding: const EdgeInsets.only(right: 50.0),
-                          child: Text("Kursname"),
-                        ),
-                        controller: viewModel.nameController,
-                        textAlign: TextAlign.end,
-                        validator: (value) =>
-                            value == "" ? "Pflichtfeld" : null,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                      ),
-                      CupertinoTextFormFieldRow(
-                        prefix: Padding(
-                          padding: const EdgeInsets.only(right: 50.0),
-                          child: Text("Tag"),
-                        ),
-                        placeholder: "Auswählen",
-                        controller: viewModel.weekdayController,
-                        readOnly: true,
-                        textAlign: TextAlign.end,
-                        onTap: () => _showWeekdayPicker(context).then(
-                            (result) =>
-                                viewModel.weekdayController.text = result),
-                        validator: (value) =>
-                            value == "" ? "Pflichtfeld" : null,
-                      ),
-                      CupertinoTextFormFieldRow(
+                  child: CupertinoFormSection(
+                      backgroundColor: CupertinoColors.tertiarySystemBackground,
+                      header: Text('Kursdetails'),
+                      children: [
+                        CupertinoTextFormFieldRow(
                           prefix: Padding(
                             padding: const EdgeInsets.only(right: 50.0),
-                            child: Text("Startzeit"),
+                            child: Text("Kursname"),
                           ),
-                          placeholder: "Auswählen",
-                          readOnly: true,
-                          controller: viewModel.timeBeginController,
+                          controller: viewModel.nameController,
                           textAlign: TextAlign.end,
                           validator: (value) =>
                               value == "" ? "Pflichtfeld" : null,
-                          onTap: () => _showTimePicker(context).then(
-                              (result) => viewModel.setTimeBegin(result))),
-                      CupertinoTextFormFieldRow(
-                        prefix: Padding(
-                          padding: const EdgeInsets.only(right: 50.0),
-                          child: Text("Endzeit"),
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                         ),
-                        placeholder: "Auswählen",
-                        readOnly: true,
-                        controller: viewModel.timeEndController,
-                        validator: (value) =>
-                            value == "" ? "Pflichtfeld" : null,
-                        textAlign: TextAlign.end,
-                        onTap: () => _showTimePicker(context)
-                            .then((result) => viewModel.setTimeEnd(result)),
-                      ),
-                      CupertinoTextFormFieldRow(
-                        prefix: Padding(
-                          padding: const EdgeInsets.only(right: 50.0),
-                          child: Text("Raum"),
+                        CupertinoTextFormFieldRow(
+                          prefix: Padding(
+                            padding: const EdgeInsets.only(right: 50.0),
+                            child: Text("Tag"),
+                          ),
+                          placeholder: "Auswählen",
+                          controller: viewModel.weekdayController,
+                          readOnly: true,
+                          textAlign: TextAlign.end,
+                          onTap: () => _showWeekdayPicker(context).then(
+                              (result) =>
+                                  viewModel.weekdayController.text = result),
+                          validator: (value) =>
+                              value == "" ? "Pflichtfeld" : null,
                         ),
-                        controller: viewModel.roomController,
-                        validator: (value) =>
-                            value == "" ? "Pflichtfeld" : null,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        textAlign: TextAlign.end,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 12,
-                            child: CupertinoTextFormFieldRow(
-                              prefix: Text("Lehrender"),
-                              controller: viewModel.lecturerController,
-                              validator: (value) =>
-                                  value == "" ? "Pflichtfeld" : null,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              textAlign: TextAlign.end,
+                        CupertinoTextFormFieldRow(
+                            prefix: Padding(
+                              padding: const EdgeInsets.only(right: 50.0),
+                              child: Text("Startzeit"),
                             ),
+                            placeholder: "Auswählen",
+                            readOnly: true,
+                            controller: viewModel.timeBeginController,
+                            textAlign: TextAlign.end,
+                            validator: (value) =>
+                                value == "" ? "Pflichtfeld" : null,
+                            onTap: () => _showTimePicker(context).then(
+                                (result) => viewModel.setTimeBegin(result))),
+                        CupertinoTextFormFieldRow(
+                          prefix: Padding(
+                            padding: const EdgeInsets.only(right: 50.0),
+                            child: Text("Endzeit"),
                           ),
-                          Expanded(
-                            flex: 7,
-                            child: CupertinoTextFormFieldRow(
-                              prefix: Text("Kürzel"),
-                              controller: viewModel.shortlecturerController,
-                              validator: (value) =>
-                                  value == "" ? "Pflichtfeld" : null,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              textAlign: TextAlign.end,
-                              maxLength: 5,
+                          placeholder: "Auswählen",
+                          readOnly: true,
+                          controller: viewModel.timeEndController,
+                          validator: (value) =>
+                              value == "" ? "Pflichtfeld" : null,
+                          textAlign: TextAlign.end,
+                          onTap: () => _showTimePicker(context)
+                              .then((result) => viewModel.setTimeEnd(result)),
+                        ),
+                        CupertinoTextFormFieldRow(
+                          prefix: Padding(
+                            padding: const EdgeInsets.only(right: 50.0),
+                            child: Text("Raum"),
+                          ),
+                          controller: viewModel.roomController,
+                          validator: (value) =>
+                              value == "" ? "Pflichtfeld" : null,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          textAlign: TextAlign.end,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 12,
+                              child: CupertinoTextFormFieldRow(
+                                prefix: Text("Lehrender"),
+                                controller: viewModel.lecturerController,
+                                validator: (value) =>
+                                    value == "" ? "Pflichtfeld" : null,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                textAlign: TextAlign.end,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ]),
-              ),
-            ));
+                            Expanded(
+                              flex: 7,
+                              child: CupertinoTextFormFieldRow(
+                                prefix: Text("Kürzel"),
+                                controller: viewModel.shortlecturerController,
+                                validator: (value) =>
+                                    value == "" ? "Pflichtfeld" : null,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                textAlign: TextAlign.end,
+                                maxLength: 5,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ]),
+                )));
   }
 
   Future<DateTime> _showTimePicker(BuildContext context) async {
     return showCupertinoModalPopup<DateTime>(
       context: context,
       builder: (context) {
-        DateTime tempPickedDate;
+        DateTime pickedTime = DateTime.now();
         return Container(
           height: 250,
           child: Column(
@@ -153,7 +176,7 @@ class AddCustomScheduleItemPage extends StatelessWidget {
                     CupertinoButton(
                       child: Text('Fertig'),
                       onPressed: () {
-                        Navigator.of(context).pop(tempPickedDate);
+                        Navigator.of(context).pop(pickedTime);
                       },
                     ),
                   ],
@@ -168,7 +191,7 @@ class AddCustomScheduleItemPage extends StatelessWidget {
                   child: CupertinoDatePicker(
                     mode: CupertinoDatePickerMode.time,
                     onDateTimeChanged: (DateTime dateTime) {
-                      tempPickedDate = dateTime;
+                      pickedTime = dateTime;
                     },
                   ),
                 ),

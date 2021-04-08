@@ -78,48 +78,45 @@ class AddOfficialSchedulePage extends StatelessWidget {
             builder: (context, viewModel, child) {
           return CupertinoPageScaffold(
               navigationBar: CupertinoNavigationBar(
-                backgroundColor: ColorConsts.mainOrange,
-                middle: Text("Stundenplan hinzufügen",
-                    style:
-                        CupertinoTheme.of(context).textTheme.navTitleTextStyle),
-                trailing: CupertinoButton(
-                    padding: EdgeInsets.zero,
-                    onPressed: () {
-                      if (viewModel.selectedCourse == null ||
-                          viewModel.selectedSemester == "") {
-                        showCupertinoDialog(
-                            context: context,
-                            builder: (context) => CupertinoAlertDialog(
-                                  title: Text("Fehler"),
-                                  content: Text(
-                                      "Es wurden nicht alle erforderlichen Felder ausgefüllt."),
-                                  actions: [
-                                    GestureDetector(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(16.0),
-                                        child: Text(
-                                          "Schließen",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(fontSize: 16),
+                  backgroundColor: ColorConsts.mainOrange,
+                  middle: Text("Hinzufügen",
+                      style: CupertinoTheme.of(context)
+                          .textTheme
+                          .navTitleTextStyle),
+                  trailing: CupertinoButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: () {
+                        if (viewModel.selectedCourse == null ||
+                            viewModel.selectedSemester == "") {
+                          showCupertinoDialog(
+                              context: context,
+                              builder: (context) => CupertinoAlertDialog(
+                                    title: Text("Fehler"),
+                                    content: Text(
+                                        "Es wurden nicht alle erforderlichen Felder ausgefüllt."),
+                                    actions: [
+                                      GestureDetector(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: Text(
+                                            "Schließen",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(fontSize: 16),
+                                          ),
                                         ),
-                                      ),
-                                      onTap: () => Navigator.pop(context),
-                                    )
-                                  ],
-                                ));
-                      } else {
-                        Navigator.of(context).pop(SelectedCourseInfo(
-                            viewModel.selectedCourse.shortName,
-                            viewModel.selectedSemester,
-                            groupString: viewModel.selectedGroup));
-                      }
-                    },
-                    child: Icon(CupertinoIcons.check_mark,
-                        color: CupertinoTheme.of(context)
-                            .textTheme
-                            .navTitleTextStyle
-                            .color)),
-              ),
+                                        onTap: () => Navigator.pop(context),
+                                      )
+                                    ],
+                                  ));
+                        } else {
+                          Navigator.of(context).pop(SelectedCourseInfo(
+                              viewModel.selectedCourse.shortName,
+                              viewModel.selectedSemester,
+                              groupString: viewModel.selectedGroup));
+                        }
+                      },
+                      child: Text("Spiechern",
+                          style: TextStyle(color: CupertinoColors.white)))),
               child: SafeArea(
                 child: Padding(
                   padding: const EdgeInsets.only(top: 16.0),
