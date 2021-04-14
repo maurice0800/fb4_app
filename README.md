@@ -1,6 +1,6 @@
 # FB4 App (iOS)
 
-Eine (inoffizielle) iOS App für Studenten des Fachbereiches 4 der FH Dortmund!
+Eine iOS App für Studenten des Fachbereiches 4 der FH Dortmund!
 
 ## Features
 - Verwaltung von Stundenplänen
