@@ -66,6 +66,7 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
         element.items.sort();
       });
 
+      aferNextRender = () => pageViewController.jumpToPage(0);
       isLoading = false;
       notifyListeners();
     }
@@ -100,7 +101,7 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
 
       if ((await SharedPreferences.getInstance())
           .getBool(AppConstants.settingsGoToCurrentDayInSchedule)) {
-        if (aferNextRender == null) {
+        if (aferNextRender == null && !editMode) {
           aferNextRender = () =>
               pageViewController.jumpToPage(min(DateTime.now().weekday - 1, 5));
         }

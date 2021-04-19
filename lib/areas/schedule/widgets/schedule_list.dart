@@ -35,7 +35,9 @@ class ScheduleListState extends State<ScheduleList>
                 itemCount: widget.items.length,
                 separatorBuilder: (context, index) => SizedBox(height: 5),
                 itemBuilder: (context, index) => GestureDetector(
-                  onLongPress: () => showDeletePopup(context, index),
+                  onLongPress: () => widget.items[index].editMode == false
+                      ? showContextMenu(context, index)
+                      : {},
                   child: ScheduleCard(
                     isChecked: widget.controller.selectedItems
                         .contains(widget.items[index]),
@@ -51,7 +53,7 @@ class ScheduleListState extends State<ScheduleList>
     );
   }
 
-  void showDeletePopup(BuildContext context, int index) {
+  void showContextMenu(BuildContext context, int index) {
     showCupertinoModalPopup(
         context: context,
         builder: (builder) => CupertinoActionSheet(
@@ -95,6 +97,7 @@ class ScheduleListState extends State<ScheduleList>
                                     });
                                     widget.controller
                                         .onItemChanged(widget.items[index]);
+                                    Navigator.of(context).pop();
                                   }),
                               actions: [
                                 CupertinoDialogAction(

@@ -126,6 +126,22 @@ class ScheduleOverview extends StatelessWidget {
         border: null,
         backgroundColor: ColorConsts.mainOrange,
         transitionBetweenRoutes: false,
+        leading: Consumer<ScheduleOverviewViewModel>(
+            builder: (context, viewModel, child) {
+          return viewModel.editMode
+              ? CupertinoButton(
+                  padding: EdgeInsets.zero,
+                  child: Icon(CupertinoIcons.xmark,
+                      color: CupertinoTheme.of(context)
+                          .textTheme
+                          .navTitleTextStyle
+                          .color),
+                  onPressed: () {
+                    viewModel.editMode = false;
+                    viewModel.getScheduleListsFromDatabase();
+                  })
+              : Container();
+        }),
         middle: Text("Stundenplan",
             style: CupertinoTheme.of(context).textTheme.navTitleTextStyle),
         trailing: Consumer<ScheduleOverviewViewModel>(
