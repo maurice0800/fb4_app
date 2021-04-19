@@ -1,3 +1,4 @@
+import 'package:fb4_app/app_constants.dart';
 import 'package:fb4_app/areas/schedule/screens/add_custom_schedule_item_page.dart';
 import 'package:fb4_app/areas/schedule/screens/add_official_schedule_page.dart';
 import 'package:fb4_app/areas/schedule/viewmodels/schedule_overview_viewmodel.dart';
@@ -7,6 +8,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:math';
 
 class ScheduleOverview extends StatelessWidget {
   @override
@@ -17,6 +20,15 @@ class ScheduleOverview extends StatelessWidget {
             Consumer<ScheduleOverviewViewModel>(
                 builder: (context, viewModel, child) {
           if (viewModel.hasItems) {
+            WidgetsBinding.instance.addPostFrameCallback((_) async {
+              if ((await SharedPreferences.getInstance())
+                  .getBool(AppConstants.settingsGoToCurrentDayInSchedule)) {
+                viewModel.pageViewController.animateToPage(
+                    min(DateTime.now().weekday, 4),
+                    duration: Duration(milliseconds: 100),
+                    curve: Curves.ease);
+              }
+            });
             return Column(
               children: [
                 Container(

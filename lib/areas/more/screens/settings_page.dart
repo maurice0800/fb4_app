@@ -20,6 +20,15 @@ class SettingsPage extends StatelessWidget {
           builder: (context, viewModel, child) => CupertinoSettings(
             items: [
               CSHeader("Stundenplan"),
+              CSControl(
+                nameWidget: Text("Aktuellen Wochentag zuerst zeigen"),
+                contentWidget: CupertinoSwitch(
+                  value: viewModel.goToCurrentDayInSchedule,
+                  onChanged: (value) {
+                    viewModel.goToCurrentDayInSchedule = value;
+                  },
+                ),
+              ),
               CSButton(CSButtonType.DESTRUCTIVE, "Stundenplan löschen",
                   () async {
                 var result = await showConfirmDialog(

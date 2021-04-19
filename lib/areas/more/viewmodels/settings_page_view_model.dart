@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SettingsPageViewModel extends ChangeNotifier {
   bool _increaseDisplayBrightnessInTicketview = false;
   bool _notificaitonOnNews = false;
+  bool _goToCurrentWeekInSchedule = false;
 
   init() {
     SharedPreferences.getInstance().then((s) {
@@ -19,6 +20,9 @@ class SettingsPageViewModel extends ChangeNotifier {
 
       _notificaitonOnNews =
           s.get(AppConstants.settingsNotificationOnNews) ?? false;
+
+      _goToCurrentWeekInSchedule =
+          s.get(AppConstants.settingsGoToCurrentDayInSchedule) ?? false;
 
       notifyListeners();
     });
@@ -48,6 +52,16 @@ class SettingsPageViewModel extends ChangeNotifier {
       }
     });
     notifyListeners();
+  }
+
+  get goToCurrentDayInSchedule => _goToCurrentWeekInSchedule;
+
+  set goToCurrentDayInSchedule(bool val) {
+    _goToCurrentWeekInSchedule = val;
+    SharedPreferences.getInstance().then((s) {
+      s.setBool(AppConstants.settingsGoToCurrentDayInSchedule, val);
+      notifyListeners();
+    });
   }
 
   void deleteTicket(BuildContext context) {
