@@ -57,9 +57,12 @@ class AddCustomScheduleItemPage extends StatelessWidget {
                   ),
                   child: CupertinoFormSection(
                       backgroundColor: CupertinoColors.tertiarySystemBackground,
-                      header: Text(
-                        'Kursdetails',
-                        style: TextStyle(fontSize: 16.0),
+                      header: Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: Text(
+                          'Kursdetails',
+                          style: TextStyle(fontSize: 16.0),
+                        ),
                       ),
                       children: [
                         CupertinoTextFormFieldRow(
@@ -199,6 +202,7 @@ class AddCustomScheduleItemPage extends StatelessWidget {
               Expanded(
                 child: Container(
                   child: CupertinoDatePicker(
+                    use24hFormat: true,
                     mode: CupertinoDatePickerMode.time,
                     onDateTimeChanged: (DateTime dateTime) {
                       pickedTime = dateTime;
