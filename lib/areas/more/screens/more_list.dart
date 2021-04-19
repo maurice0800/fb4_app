@@ -119,7 +119,7 @@ class MoreList extends StatelessWidget {
                         style: TextStyle(fontSize: 24),
                       ),
                       SizedBox(height: 10),
-                      Text("Version: 1.0.1"),
+                      Text("Version: 1.0.3"),
                       SizedBox(height: 10),
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0),
