@@ -1,29 +1,18 @@
 import 'dart:convert';
-import 'dart:io';
-
+import 'package:http/http.dart' as http;
 import 'package:fb4_app/areas/news/models/news_item.dart';
-import 'package:xml/xml.dart';
 
 class NewsRepository {
   // We need to ignore https trust because FH Dortmund does not seem to care too much about using valid certificates :(
   Future<List<NewsItem>> getNewsItems() async {
-    HttpClient client = HttpClient()
-      ..badCertificateCallback = (cert, host, port) {
-        return host == "www.inf.fh-dortmund.de" && port == 443;
-      };
-    return client
-        .getUrl(Uri.parse('https://www.inf.fh-dortmund.de/rss.php'))
-        .then((request) async {
-      var result = await request.close();
+    return http.get('https://fb4app.hemacode.de/getNews.php').then((result) {
       if (result.statusCode == 200) {
-        var document =
-            XmlDocument.parse(await result.transform(latin1.decoder).join());
-        var items = document.findAllElements('item');
-        return items
-            .map<NewsItem>((element) => NewsItem.fromXmlElement(element))
-            .toList();
+        var data = jsonDecode(utf8.decode(result.bodyBytes));
+        List<NewsItem> items =
+            data.map<NewsItem>((item) => NewsItem.fromJson(item)).toList();
+        return items;
       } else {
-        throw Exception("Statuscode: " + result.statusCode.toString());
+        return [];
       }
     });
   }

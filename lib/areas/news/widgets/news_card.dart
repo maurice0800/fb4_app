@@ -50,7 +50,9 @@ class NewsCard extends StatelessWidget {
                             ),
                             Expanded(
                               child: SingleChildScrollView(
-                                child: Text(item.description),
+                                child: Text(item.description +
+                                    "\n\n" +
+                                    '(${item.list})'),
                               ),
                             ),
                             Padding(
@@ -108,7 +110,7 @@ class NewsCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Aktuelles",
+                    Text(item.list,
                         style: CupertinoTheme.of(context).textTheme.textStyle),
                     Text(
                       DateFormat('dd.MM.yyyy HH:mm').format(item.pubDate),

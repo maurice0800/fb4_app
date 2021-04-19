@@ -4,9 +4,10 @@ import 'package:xml/xml.dart';
 class NewsItem {
   final String title;
   final DateTime pubDate;
+  final String list;
   final String description;
 
-  NewsItem({this.title, this.pubDate, this.description});
+  NewsItem({this.title, this.pubDate, this.list, this.description});
 
   static String replaceSpecialChars(String input) {
     return input
@@ -17,16 +18,12 @@ class NewsItem {
         .trim();
   }
 
-  factory NewsItem.fromXmlElement(XmlElement element) {
-    var timeFormat = DateFormat("EEE, dd MMM yyyy hh:mm:ss");
+  factory NewsItem.fromJson(Map<String, dynamic> json) {
+    var timeFormat = DateFormat("dd.MM.yyyy - hh:mm:ss");
     return NewsItem(
-        title: replaceSpecialChars(element.findElements('title').first.text),
-        pubDate: timeFormat.parse(element
-            .findElements('pubDate')
-            .first
-            .text
-            .replaceFirst('+0100', '')),
-        description: replaceSpecialChars(
-            element.findElements('description').first.text));
+        title: json['header'],
+        pubDate: timeFormat.parse(json['date']),
+        description: json['body'],
+        list: json['list']);
   }
 }
