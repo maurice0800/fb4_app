@@ -33,7 +33,10 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
     internalController.onItemChanged = (item) {
       var currentPage = pageViewController.page.floor();
       resyncWithDatabase();
-      aferNextRender = () => pageViewController.jumpToPage(currentPage);
+      aferNextRender = () {
+        pageViewController.jumpToPage(currentPage);
+        controllerPageNotifier.value = currentPage;
+      };
     };
   }
 
@@ -100,7 +103,8 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
       displayScheduleItems = persistentScheduleItems.toList();
 
       if ((await SharedPreferences.getInstance())
-          .getBool(AppConstants.settingsGoToCurrentDayInSchedule)) {
+              .getBool(AppConstants.settingsGoToCurrentDayInSchedule) ??
+          false) {
         if (aferNextRender == null && !editMode) {
           aferNextRender = () =>
               pageViewController.jumpToPage(min(DateTime.now().weekday - 1, 5));
