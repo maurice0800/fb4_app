@@ -21,12 +21,9 @@ class ScheduleOverview extends StatelessWidget {
                 builder: (context, viewModel, child) {
           if (viewModel.hasItems) {
             WidgetsBinding.instance.addPostFrameCallback((_) async {
-              if ((await SharedPreferences.getInstance())
-                  .getBool(AppConstants.settingsGoToCurrentDayInSchedule)) {
-                viewModel.pageViewController.animateToPage(
-                    min(DateTime.now().weekday, 4),
-                    duration: Duration(milliseconds: 100),
-                    curve: Curves.ease);
+              if (viewModel.aferNextRender != null) {
+                viewModel.aferNextRender();
+                viewModel.aferNextRender = null;
               }
             });
             return Column(

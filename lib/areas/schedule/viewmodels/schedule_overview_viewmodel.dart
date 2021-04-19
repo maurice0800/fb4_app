@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:fb4_app/api_constants.dart';
 import 'package:fb4_app/app_constants.dart';
 import 'package:fb4_app/areas/schedule/models/schedule_item.dart';
@@ -7,6 +9,7 @@ import 'package:fb4_app/areas/schedule/repositories/schedule_repository.dart';
 import 'package:fb4_app/areas/schedule/widgets/schedule_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:json_store/json_store.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ScheduleOverviewViewModel extends ChangeNotifier {
   final JsonStore jsonStore = JsonStore();
@@ -14,6 +17,7 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
   final ScheduleListController internalController = ScheduleListController();
   final PageController pageViewController = PageController();
   final ValueNotifier<int> controllerPageNotifier = ValueNotifier(0);
+  Function() aferNextRender;
   bool editMode = false;
   bool isLoading = false;
   bool hasItems = false;
@@ -24,6 +28,12 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
     getScheduleListsFromDatabase();
     internalController.onItemRemoved = (item) {
       resyncWithDatabase();
+    };
+
+    internalController.onItemChanged = (item) {
+      var currentPage = pageViewController.page.floor();
+      resyncWithDatabase();
+      aferNextRender = () => pageViewController.jumpToPage(currentPage);
     };
   }
 
@@ -87,6 +97,14 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
               ));
       persistentScheduleItems.forEach((element) => element.items.sort());
       displayScheduleItems = persistentScheduleItems.toList();
+
+      if ((await SharedPreferences.getInstance())
+          .getBool(AppConstants.settingsGoToCurrentDayInSchedule)) {
+        if (aferNextRender == null) {
+          aferNextRender = () =>
+              pageViewController.jumpToPage(min(DateTime.now().weekday - 1, 5));
+        }
+      }
     } else {
       // There is an error with the database. Initializing new database structure...
       jsonStore.deleteLike("schedule%");

@@ -1,7 +1,10 @@
 import 'package:fb4_app/areas/schedule/models/schedule_item.dart';
 import 'package:fb4_app/areas/schedule/models/schedule_list_controller.dart';
 import 'package:fb4_app/areas/schedule/widgets/schedule_card.dart';
+import 'package:fb4_app/config/themes/color_consts.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:json_store/json_store.dart';
 
 class ScheduleList extends StatefulWidget {
@@ -54,6 +57,58 @@ class ScheduleListState extends State<ScheduleList>
         builder: (builder) => CupertinoActionSheet(
               actions: [
                 CupertinoActionSheetAction(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    showCupertinoDialog(
+                        context: context,
+                        builder: (context) => CupertinoAlertDialog(
+                              title: Text("Farbe wählen"),
+                              content: BlockPicker(
+                                  availableColors: [
+                                    Colors.red,
+                                    Colors.pink,
+                                    Colors.purple,
+                                    Colors.deepPurple,
+                                    Colors.indigo,
+                                    Colors.blue,
+                                    Colors.lightBlue,
+                                    Colors.blueAccent,
+                                    Colors.cyan,
+                                    Colors.teal,
+                                    Colors.green,
+                                    Colors.lightGreen,
+                                    Colors.lime,
+                                    Colors.yellow,
+                                    ColorConsts.mainOrange,
+                                    Colors.amber,
+                                    Colors.orange,
+                                    Colors.deepOrange,
+                                    Colors.brown,
+                                    Colors.grey,
+                                    Colors.blueGrey,
+                                    Colors.black,
+                                  ],
+                                  pickerColor: widget.items[index].color,
+                                  onColorChanged: (color) {
+                                    setState(() {
+                                      widget.items[index].color = color;
+                                    });
+                                    widget.controller
+                                        .onItemChanged(widget.items[index]);
+                                  }),
+                              actions: [
+                                CupertinoDialogAction(
+                                  child: Text("Abbrechen"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                )
+                              ],
+                            ));
+                  },
+                  child: Text("Farbe ändern"),
+                ),
+                CupertinoActionSheetAction(
                   onPressed: () async {
                     if (widget.controller.onItemRemoved != null) {
                       widget.controller.onItemRemoved(widget.items[index]);
@@ -63,7 +118,7 @@ class ScheduleListState extends State<ScheduleList>
                   },
                   child: Text("Eintrag entfernen"),
                   isDestructiveAction: true,
-                )
+                ),
               ],
             ));
   }

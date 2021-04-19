@@ -41,7 +41,7 @@ class ScheduleCardState extends State<ScheduleCard> {
           child: Container(
               decoration: BoxDecoration(
                   color: widget.item.userIsInGroup ?? true
-                      ? ColorConsts.mainOrange
+                      ? widget.item.color
                       : ColorConsts.mainOrange.withAlpha(168),
                   borderRadius: BorderRadius.circular(4)),
               child: Padding(

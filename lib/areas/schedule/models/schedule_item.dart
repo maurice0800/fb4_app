@@ -1,3 +1,6 @@
+import 'package:fb4_app/app_constants.dart';
+import 'package:fb4_app/config/themes/color_consts.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:quiver/core.dart';
 
 class ScheduleItem implements Comparable {
@@ -12,6 +15,7 @@ class ScheduleItem implements Comparable {
   String roomId;
   bool userIsInGroup;
   bool editMode;
+  Color color = ColorConsts.mainOrange;
 
   ScheduleItem(
       {this.name,
@@ -23,19 +27,22 @@ class ScheduleItem implements Comparable {
       this.timeEnd,
       this.weekday,
       this.roomId,
-      this.editMode = false});
+      this.editMode = false,
+      this.color});
 
   factory ScheduleItem.fromJson(Map<String, dynamic> json) {
     return ScheduleItem(
-        name: json['name'],
-        courseType: json['courseType'],
-        lecturerId: json['lecturerId'],
-        lecturerName: json['lecturerName'],
-        studentSet: json['studentSet'],
-        timeBegin: json['timeBegin'].toString().padLeft(4, '0'),
-        timeEnd: json['timeEnd'].toString().padLeft(4, '0'),
-        weekday: json['weekday'],
-        roomId: json['roomId']);
+      name: json['name'],
+      courseType: json['courseType'],
+      lecturerId: json['lecturerId'],
+      lecturerName: json['lecturerName'],
+      studentSet: json['studentSet'],
+      timeBegin: json['timeBegin'].toString().padLeft(4, '0'),
+      timeEnd: json['timeEnd'].toString().padLeft(4, '0'),
+      weekday: json['weekday'],
+      roomId: json['roomId'],
+      color: Color(json['color'] ?? ColorConsts.mainOrange.value),
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -49,6 +56,7 @@ class ScheduleItem implements Comparable {
       'timeEnd': timeEnd,
       'weekday': weekday,
       'roomId': roomId,
+      'color': color.value,
     };
   }
 
