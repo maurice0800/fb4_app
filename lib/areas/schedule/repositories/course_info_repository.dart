@@ -12,6 +12,7 @@ class CourseInfoRepository {
       if (result.statusCode == 200) {
         var data = jsonDecode(result.body) as Map;
         return data.values
+            .where((item) => item['grades'] != null)
             .map<CourseInfo>((item) => CourseInfo.fromJson(item))
             .toList();
       } else {
