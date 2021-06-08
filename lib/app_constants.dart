@@ -22,5 +22,7 @@ class AppConstants {
 
   static const privacyPolicyAccepted = "privacyPolicyAccepted";
 
+  static const quickActionTicket = "quickActionTicket";
+
   static const settingsGoToCurrentDayInSchedule = "goToCurrentDayInSchedule";
 }
