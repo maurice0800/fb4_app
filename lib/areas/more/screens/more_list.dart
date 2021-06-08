@@ -5,10 +5,13 @@ import 'package:fb4_app/areas/more/screens/settings_page.dart';
 import 'package:fb4_app/areas/more/viewmodels/licenses_page_viewmodel.dart';
 import 'package:fb4_app/areas/more/viewmodels/privacy_page_viewmodel.dart';
 import 'package:fb4_app/areas/more/viewmodels/settings_page_view_model.dart';
+import 'package:fb4_app/areas/ods/views/grade_overview_page.dart';
+import 'package:fb4_app/areas/ods/views/login_page.dart';
 import 'package:fb4_app/config/themes/color_consts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cupertino_settings/flutter_cupertino_settings.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -26,6 +29,7 @@ class MoreList extends StatelessWidget {
         ),
         child: Container(
           child: CupertinoSettings(items: <Widget>[
+            CSHeader("Mehr"),
             CSLink(
               title: 'Links / Downloads',
               onPressed: () {
@@ -74,6 +78,23 @@ class MoreList extends StatelessWidget {
                             child: PrivacyPage(),
                           ))),
             ),
+            CSHeader("Mobiles ODS"),
+            CSLink(
+              title: "Notenübersicht",
+              onPressed: () async {
+                if (await FlutterSecureStorage()
+                    .containsKey(key: 'odsUsername')) {
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                        builder: (context) => GradeOverViewPage()),
+                  );
+                } else {
+                  Navigator.push(context,
+                      CupertinoPageRoute(builder: (context) => LoginPage()));
+                }
+              },
+            ),
           ]),
         ));
   }
@@ -119,7 +140,7 @@ class MoreList extends StatelessWidget {
                         style: TextStyle(fontSize: 24),
                       ),
                       SizedBox(height: 10),
-                      Text("Version: 1.0.3"),
+                      Text("Version: 1.1.0"),
                       SizedBox(height: 10),
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0),

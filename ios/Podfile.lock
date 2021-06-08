@@ -111,6 +111,8 @@ PODS:
     - Flutter
   - PromisesObjC (1.2.12)
   - Protobuf (3.14.0)
+  - quick_actions (0.0.1):
+    - Flutter
   - screen (0.0.1):
     - Flutter
   - SDWebImage (5.11.0):
@@ -118,9 +120,9 @@ PODS:
   - SDWebImage/Core (5.11.0)
   - shared_preferences (0.0.1):
     - Flutter
-  - sqflite (0.0.1):
+  - sqflite (0.0.2):
     - Flutter
-    - FMDB (~> 2.7.2)
+    - FMDB (>= 2.7.5)
   - SwiftyGif (5.4.0)
   - url_launcher (0.0.1):
     - Flutter
@@ -134,6 +136,7 @@ DEPENDENCIES:
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - pdf_render (from `.symlinks/plugins/pdf_render/ios`)
+  - quick_actions (from `.symlinks/plugins/quick_actions/ios`)
   - screen (from `.symlinks/plugins/screen/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
@@ -175,6 +178,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider/ios"
   pdf_render:
     :path: ".symlinks/plugins/pdf_render/ios"
+  quick_actions:
+    :path: ".symlinks/plugins/quick_actions/ios"
   screen:
     :path: ".symlinks/plugins/screen/ios"
   shared_preferences:
@@ -207,10 +212,11 @@ SPEC CHECKSUMS:
   pdf_render: 0b4e1a615aab83ce88b26c57753049424908a755
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   Protobuf: 0cde852566359049847168e51bd1c690e0f70056
+  quick_actions: 6cb2390c4dab0e737c94573c27e18d9666710720
   screen: abd91ca7bf3426e1cc3646d27e9b2358d6bf07b0
   SDWebImage: 7acbb57630ac7db4a495547fb73916ff3e432f6b
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
-  sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
+  sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
   SwiftyGif: 5d4af95df24caf1c570dbbcb32a3b8a0763bc6d7
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
 

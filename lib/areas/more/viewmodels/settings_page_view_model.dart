@@ -1,8 +1,10 @@
 import 'package:fb4_app/app_constants.dart';
+import 'package:fb4_app/areas/ods/repositories/ods_repository.dart';
 import 'package:fb4_app/areas/schedule/viewmodels/schedule_overview_viewmodel.dart';
 import 'package:fb4_app/areas/ticket/viewmodels/ticket_overview_viewmodel.dart';
 import 'package:fb4_app/utils/plugins/push_notification_manager.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:json_store/json_store.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -75,5 +77,11 @@ class SettingsPageViewModel extends ChangeNotifier {
     JsonStore().deleteLike("schedule%");
     Provider.of<ScheduleOverviewViewModel>(context, listen: false)
         .getScheduleListsFromDatabase();
+  }
+
+  Future<void> logoutOds() async {
+    await FlutterSecureStorage().delete(key: "odsUsername");
+    await FlutterSecureStorage().delete(key: "odsPassword");
+    OdsRepository.cachedToken = null;
   }
 }

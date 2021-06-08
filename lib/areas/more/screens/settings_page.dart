@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:fb4_app/areas/more/viewmodels/settings_page_view_model.dart';
 import 'package:fb4_app/config/themes/color_consts.dart';
+import 'package:fb4_app/utils/helpers/cupertino_info_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_cupertino_settings/flutter_cupertino_settings.dart';
 import 'package:provider/provider.dart';
@@ -55,6 +56,14 @@ class SettingsPage extends StatelessWidget {
                   viewModel.deleteTicket(context);
                 }
                 Navigator.pop(context);
+              }),
+              CSHeader("ODS"),
+              CSButton(CSButtonType.DESTRUCTIVE, "Anmeldedaten löschen",
+                  () async {
+                await viewModel.logoutOds();
+                CupertinoInfoDialog(
+                        context, "Erfolgreich", "Logout erfolgreich.")
+                    .show();
               }),
               CSHeader("Sonstiges"),
               CSControl(
