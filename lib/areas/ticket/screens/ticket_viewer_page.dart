@@ -1,9 +1,9 @@
 import 'package:fb4_app/areas/ticket/viewmodels/ticket_overview_viewmodel.dart';
 import 'package:fb4_app/config/themes/color_consts.dart';
+import 'package:fb4_app/core/views/base_view.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:provider/provider.dart';
 
 class TicketViewerPage extends StatelessWidget {
   final TransformationController _transformationController =
@@ -26,55 +26,53 @@ class TicketViewerPage extends StatelessWidget {
     );
   }
 
-  Widget buildSelectTicket(BuildContext context) {
-    return Consumer<TicketOverviewViewModel>(
-      builder: (context, viewModel, child) => Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Du hast noch kein Ticket ausgewählt.",
-              style: CupertinoTheme.of(context).textTheme.textStyle,
-            ),
-            SizedBox(height: 20),
-            CupertinoButton.filled(
-                child: Text("Ticket wählen",
-                    style: TextStyle(color: CupertinoColors.white)),
-                onPressed: () {
-                  FilePicker.platform.pickFiles().then((result) => {
-                        viewModel.extractImageFromPdf(result.files.first.path),
-                      });
-                })
-          ],
+  Widget buildSelectTicket(
+      BuildContext context, TicketOverviewViewModel viewModel) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          "Du hast noch kein Ticket ausgewählt.",
+          style: CupertinoTheme.of(context).textTheme.textStyle,
         ),
-      ),
+        SizedBox(height: 20),
+        CupertinoButton.filled(
+            child: Text("Ticket wählen",
+                style: TextStyle(color: CupertinoColors.white)),
+            onPressed: () {
+              FilePicker.platform.pickFiles().then((result) => {
+                    viewModel.extractImageFromPdf(result.files.first.path),
+                  });
+            })
+      ],
     );
   }
 
   Widget buildTicketView(BuildContext context) {
-    return Consumer<TicketOverviewViewModel>(
+    return BaseView<TicketOverviewViewModel>(
+        onViewModelCreated: (viewModel) => viewModel.init(),
         builder: (context, viewModel, child) {
-      if (viewModel.isImageProcessing) {
-        return Center(
-          child: CupertinoActivityIndicator(),
-        );
-      }
+          if (viewModel.isImageProcessing) {
+            return Center(
+              child: CupertinoActivityIndicator(),
+            );
+          }
 
-      if (viewModel.isImageAvailable) {
-        return Center(
-          child: GestureDetector(
-            onDoubleTap: _handleDoubleTap,
-            onDoubleTapDown: (details) => _tapDownDetails = details,
-            child: InteractiveViewer(
-              transformationController: _transformationController,
-              child: Image.memory(viewModel.imageBytes),
-            ),
-          ),
-        );
-      }
+          if (viewModel.isImageAvailable) {
+            return Center(
+              child: GestureDetector(
+                onDoubleTap: _handleDoubleTap,
+                onDoubleTapDown: (details) => _tapDownDetails = details,
+                child: InteractiveViewer(
+                  transformationController: _transformationController,
+                  child: Image.memory(viewModel.imageBytes),
+                ),
+              ),
+            );
+          }
 
-      return buildSelectTicket(context);
-    });
+          return buildSelectTicket(context, viewModel);
+        });
   }
 
   void _handleDoubleTap() {

@@ -9,8 +9,11 @@ class GradeOverviewPageViewModel extends ChangeNotifier {
   GradeOverviewPageViewModel({this.onError});
 
   getGradeList() async {
-    exams = await OdsRepository.getExamInfos()
-        .catchError((error) => onError(error.toString()));
-    notifyListeners();
+    if (exams == null) {
+      exams = await OdsRepository.getExamInfos().catchError((error) {
+        onError(error.toString());
+      });
+      notifyListeners();
+    }
   }
 }

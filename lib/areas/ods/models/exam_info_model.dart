@@ -14,5 +14,5 @@ class ExamInfoModel {
       this.grade,
       this.ects,
       this.status,
-      this.additional}) {}
+      this.additional});
 }

@@ -1,28 +1,27 @@
 import 'package:fb4_app/areas/news/viewmodels/news_overview_viewmodel.dart';
 import 'package:fb4_app/areas/news/widgets/news_card.dart';
 import 'package:fb4_app/config/themes/color_consts.dart';
+import 'package:fb4_app/core/views/base_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'dart:math';
 
 class NewsOverview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-        navigationBar: CupertinoNavigationBar(
-          backgroundColor: ColorConsts.mainOrange,
-          transitionBetweenRoutes: false,
-          middle: Text("News",
-              style: CupertinoTheme.of(context).textTheme.navTitleTextStyle),
-        ),
-        child: SafeArea(
-          child: ChangeNotifierProvider(
-              create: (context) => NewsOverviewViewModel()
-                ..fetchNewsItems(
-                    onError: (message) => showErrorDialog(context, message)),
-              child: Consumer<NewsOverviewViewModel>(
-                builder: (context, viewModel, child) {
+    return BaseView<NewsOverviewViewModel>(
+        onViewModelCreated: (viewModel) =>
+            viewModel.fetchNewsItems(alwaysRefresh: false),
+        builder: (context, viewModel, child) => CupertinoPageScaffold(
+              navigationBar: CupertinoNavigationBar(
+                backgroundColor: ColorConsts.mainOrange,
+                transitionBetweenRoutes: false,
+                middle: Text("News",
+                    style:
+                        CupertinoTheme.of(context).textTheme.navTitleTextStyle),
+              ),
+              child: SafeArea(child: Builder(
+                builder: (context) {
                   if (!viewModel.isLoading) {
                     return viewModel.hasError
                         ? Center(
@@ -81,7 +80,7 @@ class NewsOverview extends StatelessWidget {
                   }
                 },
               )),
-        ));
+            ));
   }
 
   void showErrorDialog(BuildContext context, String message) {

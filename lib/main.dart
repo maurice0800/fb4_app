@@ -1,9 +1,15 @@
-import 'package:fb4_app/app_constants.dart';
 import 'package:fb4_app/areas/more/screens/more_list.dart';
 import 'package:fb4_app/areas/more/screens/privacy_page.dart';
+import 'package:fb4_app/areas/more/viewmodels/licenses_page_viewmodel.dart';
 import 'package:fb4_app/areas/more/viewmodels/privacy_page_viewmodel.dart';
+import 'package:fb4_app/areas/more/viewmodels/settings_page_view_model.dart';
 import 'package:fb4_app/areas/news/screens/news_overview.dart';
+import 'package:fb4_app/areas/news/viewmodels/news_overview_viewmodel.dart';
+import 'package:fb4_app/areas/ods/viewmodels/grades_overview_page_viewmodel.dart';
+import 'package:fb4_app/areas/ods/viewmodels/login_page_viewmodel.dart';
 import 'package:fb4_app/areas/schedule/screens/schedule_overview.dart';
+import 'package:fb4_app/areas/schedule/viewmodels/add_custom_schedule_item_page_viewmodel.dart';
+import 'package:fb4_app/areas/schedule/viewmodels/add_official_schedule_page_viewmodel.dart';
 import 'package:fb4_app/areas/schedule/viewmodels/schedule_overview_viewmodel.dart';
 import 'package:fb4_app/areas/ticket/screens/ticket_viewer_page.dart';
 import 'package:fb4_app/areas/ticket/viewmodels/ticket_overview_viewmodel.dart';
@@ -16,8 +22,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:kiwi/kiwi.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'areas/canteen/screens/canteen_overview.dart';
 
@@ -26,6 +32,8 @@ import 'config/themes/light_theme.dart';
 void main() async {
   var appTabController = CupertinoTabController();
   var notificationManager = PushNotificationsManager();
+
+  registerDependencies();
 
   runApp(FB4App(controller: appTabController));
 
@@ -36,6 +44,29 @@ void main() async {
   notificationManager.setRouteHandler((route) {
     appTabController.index = 1;
   });
+}
+
+void registerDependencies() {
+  KiwiContainer().registerSingleton<ScheduleOverviewViewModel>(
+      (container) => ScheduleOverviewViewModel());
+  KiwiContainer().registerSingleton<AddOfficialSchedulePageViewModel>(
+      (container) => AddOfficialSchedulePageViewModel());
+  KiwiContainer().registerSingleton<NewsOverviewViewModel>(
+      (container) => NewsOverviewViewModel());
+  KiwiContainer().registerSingleton<TicketOverviewViewModel>(
+      (container) => TicketOverviewViewModel());
+  KiwiContainer().registerSingleton<LicensesPageViewModel>(
+      (container) => LicensesPageViewModel());
+  KiwiContainer().registerSingleton<PrivacyPageViewModel>(
+      (container) => PrivacyPageViewModel());
+  KiwiContainer().registerSingleton<AddCustomScheduleItemPageViewModel>(
+      (container) => AddCustomScheduleItemPageViewModel());
+  KiwiContainer().registerSingleton<SettingsPageViewModel>(
+      (container) => SettingsPageViewModel());
+  KiwiContainer().registerSingleton<LoginPageViewModel>(
+      (container) => LoginPageViewModel());
+  KiwiContainer().registerSingleton<GradeOverviewPageViewModel>(
+      (container) => GradeOverviewPageViewModel());
 }
 
 class FB4App extends StatelessWidget {
@@ -52,11 +83,7 @@ class FB4App extends StatelessWidget {
     ]);
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider(
-              create: (context) => ScheduleOverviewViewModel()),
           ChangeNotifierProvider(create: (context) => MainViewModel()..init()),
-          ChangeNotifierProvider(
-              create: (context) => TicketOverviewViewModel()..init())
         ],
         child: Consumer<MainViewModel>(
           builder: (context, viewModel, child) => CupertinoApp(

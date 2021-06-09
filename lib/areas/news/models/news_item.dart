@@ -1,5 +1,4 @@
 import 'package:intl/intl.dart';
-import 'package:xml/xml.dart';
 
 class NewsItem {
   final String title;

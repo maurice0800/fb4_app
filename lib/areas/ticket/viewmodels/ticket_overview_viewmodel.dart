@@ -13,19 +13,21 @@ class TicketOverviewViewModel extends ChangeNotifier {
   Uint8List imageBytes;
   double prevBrightness;
 
-  Future<bool> init() async {
-    isImageProcessing = true;
-    filePath = await getApplicationDocumentsDirectory()
-        .then((dir) => dir.path + "/semester_ticket.dat");
-    isImageAvailable = await getIsImageAvailable();
+  Future init() async {
+    if (imageBytes == null) {
+      isImageProcessing = true;
+      filePath = await getApplicationDocumentsDirectory()
+          .then((dir) => dir.path + "/semester_ticket.dat");
+      isImageAvailable = await getIsImageAvailable();
 
-    if (isImageAvailable) {
-      await loadImageData();
+      if (isImageAvailable) {
+        await loadImageData();
+      }
+
+      isImageProcessing = false;
+      notifyListeners();
+      return true;
     }
-
-    isImageProcessing = false;
-    notifyListeners();
-    return true;
   }
 
   Future loadImageData() {

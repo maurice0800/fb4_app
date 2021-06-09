@@ -1,7 +1,7 @@
 import 'package:fb4_app/areas/more/viewmodels/privacy_page_viewmodel.dart';
 import 'package:fb4_app/config/themes/color_consts.dart';
+import 'package:fb4_app/core/views/base_view.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
 class PrivacyPage extends StatelessWidget {
@@ -11,7 +11,8 @@ class PrivacyPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<PrivacyPageViewModel>(
+    return BaseView<PrivacyPageViewModel>(
+      onViewModelCreated: (viewModel) => viewModel.load(),
       builder: (context, viewModel, child) => CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
           middle: Text("Datenschutz"),

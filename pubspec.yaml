@@ -46,6 +46,7 @@ dependencies:
   html: ^0.15.0
   group_list_view: ^1.1.1
   flutter_secure_storage: ^4.2.0
+  kiwi: ^3.0.0
  
 
 
@@ -58,6 +59,7 @@ dependency_overrides:
   plugin_platform_interface: ^2.0.0
 
 dev_dependencies:
+  lint: ^1.5.3
   flutter_test:
     sdk: flutter
 

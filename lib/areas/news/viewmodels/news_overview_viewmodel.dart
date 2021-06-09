@@ -10,22 +10,26 @@ class NewsOverviewViewModel extends ChangeNotifier {
   List<NewsItem> newsItems = [];
   bool isLoading = false;
 
-  Future fetchNewsItems({Function(String) onError}) {
-    isLoading = true;
-    notifyListeners();
+  Future fetchNewsItems({Function(String) onError, bool alwaysRefresh = true}) {
+    if (alwaysRefresh || newsItems.length == 0) {
+      isLoading = true;
+      notifyListeners();
 
-    return repository.getNewsItems().then((items) {
-      newsItems = items;
-      hasError = false;
-      notifyListeners();
-    }).onError((error, stackTrace) {
-      if (error is SocketException) {
-        onError("Verbindung zum Server fehlgeschlagen.");
-      } else {
-        onError(error.toString());
-      }
-      hasError = true;
-      notifyListeners();
-    }).whenComplete(() => isLoading = false);
+      return repository.getNewsItems().then((items) {
+        newsItems = items;
+        hasError = false;
+        notifyListeners();
+      }).onError((error, stackTrace) {
+        if (error is SocketException) {
+          onError("Verbindung zum Server fehlgeschlagen.");
+        } else {
+          onError(error.toString());
+        }
+        hasError = true;
+        notifyListeners();
+      }).whenComplete(() => isLoading = false);
+    }
+
+    return Future.value();
   }
 }
