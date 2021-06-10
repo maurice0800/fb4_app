@@ -6,7 +6,7 @@ import 'package:fb4_app/utils/plugins/push_notification_manager.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:json_store/json_store.dart';
-import 'package:provider/provider.dart';
+import 'package:kiwi/kiwi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPageViewModel extends ChangeNotifier {
@@ -67,15 +67,13 @@ class SettingsPageViewModel extends ChangeNotifier {
   }
 
   void deleteTicket(BuildContext context) {
-    try {
-      Provider.of<TicketOverviewViewModel>(context, listen: false)
-          .deleteTicket();
-    } on ArgumentError {}
+    KiwiContainer().resolve<TicketOverviewViewModel>().deleteTicket();
   }
 
   void deleteSchedule(BuildContext context) {
     JsonStore().deleteLike("schedule%");
-    Provider.of<ScheduleOverviewViewModel>(context, listen: false)
+    KiwiContainer()
+        .resolve<ScheduleOverviewViewModel>()
         .getScheduleListsFromDatabase();
   }
 

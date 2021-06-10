@@ -28,26 +28,30 @@ class TicketViewerPage extends StatelessWidget {
 
   Widget buildSelectTicket(
       BuildContext context, TicketOverviewViewModel viewModel) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          "Du hast noch kein Ticket ausgewählt.",
-          style: CupertinoTheme.of(context).textTheme.textStyle,
-        ),
-        SizedBox(height: 20),
-        CupertinoButton.filled(
-            child: Text("Ticket wählen",
-                style: TextStyle(color: CupertinoColors.white)),
-            onPressed: () {
-              FilePicker.platform.pickFiles().then((result) => {
-                    if (result != null)
-                      {
-                        viewModel.extractImageFromPdf(result.files.first.path!),
-                      }
-                  });
-            })
-      ],
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            "Du hast noch kein Ticket ausgewählt.",
+            style: CupertinoTheme.of(context).textTheme.textStyle,
+          ),
+          SizedBox(height: 20),
+          CupertinoButton.filled(
+              child: Text("Ticket wählen",
+                  style: TextStyle(color: CupertinoColors.white)),
+              onPressed: () {
+                FilePicker.platform.pickFiles().then((result) => {
+                      if (result != null)
+                        {
+                          viewModel
+                              .extractImageFromPdf(result.files.first.path!),
+                        }
+                    });
+              })
+        ],
+      ),
     );
   }
 

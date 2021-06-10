@@ -8,7 +8,7 @@ class ScheduleCard extends StatefulWidget {
   final bool editMode;
   final Function(ScheduleItem) onItemSelected;
   final Function(ScheduleItem) onItemDeselected;
-  bool isChecked = false;
+  final bool isChecked;
 
   ScheduleCard(
       {required this.item,
@@ -18,18 +18,24 @@ class ScheduleCard extends StatefulWidget {
       required this.isChecked});
 
   @override
-  State<StatefulWidget> createState() => ScheduleCardState();
+  State<StatefulWidget> createState() => ScheduleCardState(isChecked);
 }
 
 class ScheduleCardState extends State<ScheduleCard> {
+  bool isChecked = false;
+
+  ScheduleCardState(bool isChecked) {
+    this.isChecked = isChecked;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       child: GestureDetector(
         onTap: () {
           setState(() {
-            widget.isChecked = !widget.isChecked;
-            if (widget.isChecked) {
+            isChecked = !isChecked;
+            if (isChecked) {
               widget.onItemSelected(widget.item);
             } else {
               widget.onItemDeselected(widget.item);
@@ -50,7 +56,7 @@ class ScheduleCardState extends State<ScheduleCard> {
                   children: [
                     widget.editMode
                         ? CupertinoCheckBox(
-                            isChecked: widget.isChecked,
+                            isChecked: isChecked,
                             onChanged: (value) {},
                           )
                         : Container(),

@@ -41,38 +41,36 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
   }
 
   void getScheduleListsFromServer(SelectedCourseInfo info) async {
-    if (info != null) {
-      isLoading = true;
-      notifyListeners();
+    isLoading = true;
+    notifyListeners();
 
-      editMode = true;
-      hasItems = true;
+    editMode = true;
+    hasItems = true;
 
-      var items =
-          await repository.getScheduleItems(info.shortName, info.semester);
+    var items =
+        await repository.getScheduleItems(info.shortName, info.semester);
 
-      items.forEach((element) {
-        element.userIsInGroup = isGroupInScheduleItem(info, element);
-      });
+    items.forEach((element) {
+      element.userIsInGroup = isGroupInScheduleItem(info, element);
+    });
 
-      displayScheduleItems = new List.generate(
-          5,
-          (index) => ScheduleList(
-                items: persistentScheduleItems[index].items +
-                    markListForEdit(generateListFromItems(
-                        items, ApiConstants.shortWeekDayList[index])),
-                weekday: AppConstants.weekdays[index],
-                controller: internalController,
-              ));
+    displayScheduleItems = new List.generate(
+        5,
+        (index) => ScheduleList(
+              items: persistentScheduleItems[index].items +
+                  markListForEdit(generateListFromItems(
+                      items, ApiConstants.shortWeekDayList[index])),
+              weekday: AppConstants.weekdays[index],
+              controller: internalController,
+            ));
 
-      displayScheduleItems.forEach((element) {
-        element.items.sort();
-      });
+    displayScheduleItems.forEach((element) {
+      element.items.sort();
+    });
 
-      aferNextRender = () => pageViewController.jumpToPage(0);
-      isLoading = false;
-      notifyListeners();
-    }
+    aferNextRender = () => pageViewController.jumpToPage(0);
+    isLoading = false;
+    notifyListeners();
   }
 
   Future getScheduleListsFromDatabase() async {
@@ -106,7 +104,7 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
       if ((await SharedPreferences.getInstance())
               .getBool(AppConstants.settingsGoToCurrentDayInSchedule) ??
           false) {
-        if (aferNextRender == null && !editMode) {
+        if (!editMode) {
           aferNextRender = () =>
               pageViewController.jumpToPage(min(DateTime.now().weekday - 1, 5));
         }
@@ -174,18 +172,16 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
   }
 
   void addCustomItem(ScheduleItem result) async {
-    if (result != null) {
-      persistentScheduleItems
-          .firstWhere((element) => element.weekday == result.weekday)
-          .items
-          .add(result);
+    persistentScheduleItems
+        .firstWhere((element) => element.weekday == result.weekday)
+        .items
+        .add(result);
 
-      await resyncWithDatabase();
-    }
+    await resyncWithDatabase();
   }
 
   bool isGroupInScheduleItem(SelectedCourseInfo info, ScheduleItem item) {
-    if (info.groupLetter == "" || info.groupLetter == null) {
+    if (info.groupLetter == "" || info.groupLetter == "") {
       return true;
     }
 
