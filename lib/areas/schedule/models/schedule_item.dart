@@ -31,16 +31,17 @@ class ScheduleItem implements Comparable {
 
   factory ScheduleItem.fromJson(Map<String, dynamic> json) {
     return ScheduleItem(
-      name: json['name'],
-      courseType: json['courseType'],
-      lecturerId: json['lecturerId'],
-      lecturerName: json['lecturerName'],
-      studentSet: json['studentSet'],
+      name: json['name'].toString(),
+      courseType: json['courseType'].toString(),
+      lecturerId: json['lecturerId'].toString(),
+      lecturerName: json['lecturerName'].toString(),
+      studentSet: json['studentSet'].toString(),
       timeBegin: json['timeBegin'].toString().padLeft(4, '0'),
       timeEnd: json['timeEnd'].toString().padLeft(4, '0'),
-      weekday: json['weekday'],
-      roomId: json['roomId'],
-      color: Color(json['color'] ?? ColorConsts.mainOrange.value),
+      weekday: json['weekday'].toString(),
+      roomId: json['roomId'].toString(),
+      color: Color(
+          int.parse(json['color'].toString()) ?? ColorConsts.mainOrange.value),
     );
   }
 
@@ -67,12 +68,12 @@ class ScheduleItem implements Comparable {
   @override
   bool operator ==(Object other) {
     if (other is ScheduleItem) {
-      return other.hashCode == this.hashCode;
+      return other.hashCode == hashCode;
     }
     return false;
   }
 
   @override
-  int compareTo(other) =>
-      int.parse(this.timeBegin) - int.parse(other.timeBegin);
+  int compareTo(dynamic other) =>
+      int.parse(timeBegin) - int.parse(other.timeBegin.toString());
 }

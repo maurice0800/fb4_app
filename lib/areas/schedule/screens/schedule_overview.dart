@@ -1,3 +1,5 @@
+import 'package:fb4_app/areas/schedule/models/schedule_item.dart';
+import 'package:fb4_app/areas/schedule/models/selected_course_info.dart';
 import 'package:fb4_app/areas/schedule/screens/add_custom_schedule_item_page.dart';
 import 'package:fb4_app/areas/schedule/screens/add_official_schedule_page.dart';
 import 'package:fb4_app/areas/schedule/viewmodels/schedule_overview_viewmodel.dart';
@@ -14,7 +16,7 @@ class ScheduleOverview extends StatelessWidget {
     return BaseView<ScheduleOverviewViewModel>(
         builder: (context, viewModel, child) => CupertinoPageScaffold(
             navigationBar: buildNavigationBar(context, viewModel),
-            child: SafeArea(child: Container(child: Builder(builder: (context) {
+            child: SafeArea(child: Builder(builder: (context) {
               if (viewModel.hasItems) {
                 WidgetsBinding.instance.addPostFrameCallback((_) async {
                   if (viewModel.aferNextRender != null) {
@@ -29,7 +31,6 @@ class ScheduleOverview extends StatelessWidget {
                           color: ColorConsts.mainOrange,
                           border: Border(
                               bottom: BorderSide(
-                                  width: 1.0,
                                   color: CupertinoTheme.brightnessOf(context) ==
                                           Brightness.light
                                       ? CupertinoColors.systemGrey5
@@ -67,7 +68,7 @@ class ScheduleOverview extends StatelessWidget {
                                     },
                                     onValueChanged: (val) {
                                       viewModel.controllerPageNotifier.value =
-                                          val;
+                                          int.parse(val.toString());
                                       scrollClickedPageIntoView(
                                           val, viewModel.pageViewController);
                                     });
@@ -107,7 +108,7 @@ class ScheduleOverview extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ));
               }
-            })))));
+            }))));
   }
 
   void scrollClickedPageIntoView(index, controller) async {
@@ -119,7 +120,7 @@ class ScheduleOverview extends StatelessWidget {
     // controllerPageNotifier.value = value;
   }
 
-  Widget buildNavigationBar(
+  ObstructingPreferredSizeWidget buildNavigationBar(
       BuildContext context, ScheduleOverviewViewModel viewModel) {
     return CupertinoNavigationBar(
         border: null,
@@ -168,7 +169,7 @@ class ScheduleOverview extends StatelessWidget {
                                                     AddOfficialSchedulePage())
                                             .then((result) {
                                           viewModel.getScheduleListsFromServer(
-                                              result);
+                                              result as SelectedCourseInfo);
                                         });
                                       },
                                       child: Text("Offizieller Stundenplan")),
@@ -179,8 +180,9 @@ class ScheduleOverview extends StatelessWidget {
                                                 context: context,
                                                 builder: (context) =>
                                                     AddCustomScheduleItemPage())
-                                            .then((result) => viewModel
-                                                .addCustomItem(result));
+                                            .then((result) =>
+                                                viewModel.addCustomItem(
+                                                    result as ScheduleItem));
                                       },
                                       child: Text("Eigener Eintrag")),
                                 ],

@@ -30,12 +30,12 @@ class PushNotificationsManager {
       _firebaseMessaging.configure(
         onResume: (Map<String, dynamic> message) async {
           if (onRoute != null) {
-            onRoute(message['route']);
+            onRoute(message['route'].toString());
           }
         },
         onLaunch: (Map<String, dynamic> message) async {
           if (onRoute != null) {
-            onRoute(message['route']);
+            onRoute(message['route'].toString());
           }
         },
       );

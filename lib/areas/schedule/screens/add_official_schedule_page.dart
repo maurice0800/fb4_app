@@ -1,3 +1,4 @@
+import 'package:fb4_app/areas/schedule/models/course_info.dart';
 import 'package:fb4_app/areas/schedule/models/selected_course_info.dart';
 import 'package:fb4_app/areas/schedule/viewmodels/add_official_schedule_page_viewmodel.dart';
 import 'package:fb4_app/config/themes/color_consts.dart';
@@ -7,7 +8,7 @@ import 'package:flutter/material.dart';
 
 class AddOfficialSchedulePage extends StatelessWidget {
   final TextStyle dialogOptionStyle =
-      TextStyle(fontSize: 18, fontWeight: FontWeight.w400);
+      const TextStyle(fontSize: 18, fontWeight: FontWeight.w400);
 
   void showModalForSelection<T>(BuildContext context, String title,
       List<T> items, List<String> itemDisplays, Function(T) onSelect) {
@@ -30,14 +31,14 @@ class AddOfficialSchedulePage extends StatelessWidget {
               child: Column(
                 children: [
                   Text(title,
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-                  Divider(),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 18)),
+                  const Divider(),
                   Expanded(
                     child: ListView.separated(
                       padding: const EdgeInsets.only(top: 12.0),
                       itemCount: itemDisplays.length,
-                      separatorBuilder: (context, index) => Divider(
+                      separatorBuilder: (context, index) => const Divider(
                         color: CupertinoColors.systemGrey,
                         height: 1,
                       ),
@@ -54,13 +55,13 @@ class AddOfficialSchedulePage extends StatelessWidget {
                     ),
                   ),
                   CupertinoButton(
-                      child: Text(
-                        "Abbrechen",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
                       onPressed: () {
                         Navigator.pop(context);
-                      }),
+                      },
+                      child: const Text(
+                        "Abbrechen",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      )),
                 ],
               ),
             ),
@@ -87,20 +88,20 @@ class AddOfficialSchedulePage extends StatelessWidget {
                         showCupertinoDialog(
                             context: context,
                             builder: (context) => CupertinoAlertDialog(
-                                  title: Text("Fehler"),
-                                  content: Text(
+                                  title: const Text("Fehler"),
+                                  content: const Text(
                                       "Es wurden nicht alle erforderlichen Felder ausgefüllt."),
                                   actions: [
                                     GestureDetector(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(16.0),
+                                      onTap: () => Navigator.pop(context),
+                                      child: const Padding(
+                                        padding: EdgeInsets.all(16.0),
                                         child: Text(
                                           "Schließen",
                                           textAlign: TextAlign.center,
                                           style: TextStyle(fontSize: 16),
                                         ),
                                       ),
-                                      onTap: () => Navigator.pop(context),
                                     )
                                   ],
                                 ));
@@ -111,22 +112,22 @@ class AddOfficialSchedulePage extends StatelessWidget {
                             groupString: viewModel.selectedGroup));
                       }
                     },
-                    child: Text("Spiechern",
+                    child: const Text("Spiechern",
                         style: TextStyle(color: CupertinoColors.white)))),
             child: SafeArea(
               child: Padding(
                 padding: const EdgeInsets.only(top: 16.0),
                 child: Builder(builder: (context) {
-                  if (viewModel.courses.length > 0) {
+                  if (viewModel.courses.isNotEmpty) {
                     return Column(children: [
                       CupertinoFormSection(
                           backgroundColor:
                               CupertinoColors.tertiarySystemBackground,
-                          header: Text('Erforderlich'),
+                          header: const Text('Erforderlich'),
                           children: [
                             CupertinoTextFormFieldRow(
-                              prefix: Padding(
-                                padding: const EdgeInsets.only(right: 50.0),
+                              prefix: const Padding(
+                                padding: EdgeInsets.only(right: 50.0),
                                 child: Text('Studiengang'),
                               ),
                               placeholder: 'Wählen',
@@ -139,7 +140,8 @@ class AddOfficialSchedulePage extends StatelessWidget {
                                     viewModel.courses
                                         .map((course) => course.name)
                                         .toList(), (course) {
-                                  viewModel.selectedCourse = course;
+                                  viewModel.selectedCourse =
+                                      course as CourseInfo;
                                   Navigator.of(context).pop();
                                 });
                               },
@@ -148,7 +150,7 @@ class AddOfficialSchedulePage extends StatelessWidget {
                               controller: viewModel.courseController,
                             ),
                             CupertinoTextFormFieldRow(
-                              prefix: Text('Semester'),
+                              prefix: const Text('Semester'),
                               placeholder: 'Wählen',
                               onTap: () {
                                 if (viewModel.selectedCourse != null) {
@@ -158,7 +160,8 @@ class AddOfficialSchedulePage extends StatelessWidget {
                                       viewModel.selectedCourse.grades,
                                       viewModel.selectedCourse.grades,
                                       (semester) {
-                                    viewModel.selectedSemester = semester;
+                                    viewModel.selectedSemester =
+                                        semester.toString();
                                     Navigator.of(context).pop();
                                   });
                                 } else {
@@ -166,14 +169,15 @@ class AddOfficialSchedulePage extends StatelessWidget {
                                       context: context,
                                       builder: (context) =>
                                           CupertinoAlertDialog(
-                                            title: Text("Fehler"),
-                                            content: Text(
+                                            title: const Text("Fehler"),
+                                            content: const Text(
                                                 "Bitte wähle zuerst einen Studiengang aus."),
                                             actions: [
                                               GestureDetector(
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(
-                                                      16.0),
+                                                onTap: () =>
+                                                    Navigator.pop(context),
+                                                child: const Padding(
+                                                  padding: EdgeInsets.all(16.0),
                                                   child: Text(
                                                     "Schließen",
                                                     textAlign: TextAlign.center,
@@ -181,8 +185,6 @@ class AddOfficialSchedulePage extends StatelessWidget {
                                                         TextStyle(fontSize: 16),
                                                   ),
                                                 ),
-                                                onTap: () =>
-                                                    Navigator.pop(context),
                                               )
                                             ],
                                           ));
@@ -198,10 +200,10 @@ class AddOfficialSchedulePage extends StatelessWidget {
                         child: CupertinoFormSection(
                             backgroundColor:
                                 CupertinoColors.tertiarySystemBackground,
-                            header: Text('Optional'),
+                            header: const Text('Optional'),
                             children: [
                               CupertinoTextFormFieldRow(
-                                prefix: Text('Gruppenkennung'),
+                                prefix: const Text('Gruppenkennung'),
                                 placeholder: 'Beispiel: C8',
                                 textAlign: TextAlign.end,
                                 controller: viewModel.groupController,
@@ -222,7 +224,7 @@ class AddOfficialSchedulePage extends StatelessWidget {
                       )
                     ]);
                   } else {
-                    return Center(child: CupertinoActivityIndicator());
+                    return const Center(child: CupertinoActivityIndicator());
                   }
                 }),
               ),

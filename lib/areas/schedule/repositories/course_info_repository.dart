@@ -10,10 +10,11 @@ class CourseInfoRepository {
             'https://ws.inf.fh-dortmund.de/fbws/current/rest/CourseOfStudy/?Accept=application/json')
         .then((result) {
       if (result.statusCode == 200) {
-        var data = jsonDecode(result.body) as Map;
+        final Map data = jsonDecode(result.body) as Map;
         return data.values
             .where((item) => item['grades'] != null)
-            .map<CourseInfo>((item) => CourseInfo.fromJson(item))
+            .map<CourseInfo>(
+                (item) => CourseInfo.fromJson(item as Map<String, dynamic>))
             .toList();
       } else {
         return [];

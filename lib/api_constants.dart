@@ -1,9 +1,9 @@
 class ApiConstants {
-  static final String shortMonday = "Mon";
-  static final String shortTuesday = "Tue";
-  static final String shortWednesday = "Wed";
-  static final String shortThursday = "Thu";
-  static final String shortFriday = "Fri";
+  static const String shortMonday = "Mon";
+  static const String shortTuesday = "Tue";
+  static const String shortWednesday = "Wed";
+  static const String shortThursday = "Thu";
+  static const String shortFriday = "Fri";
 
   static final List<String> shortWeekDayList = [
     shortMonday,

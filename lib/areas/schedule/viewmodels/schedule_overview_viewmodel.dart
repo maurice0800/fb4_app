@@ -87,13 +87,14 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
         hasItems = hasItems || element.keys.length > 0;
       });
 
-      persistentScheduleItems = new List.generate(
+      persistentScheduleItems = List.generate(
           5,
           (index) => ScheduleList(
                 items: generateListFromItems(
                     lists[index]
                         .values
-                        .map<ScheduleItem>((e) => ScheduleItem.fromJson(e))
+                        .map<ScheduleItem>((e) =>
+                            ScheduleItem.fromJson(e as Map<String, dynamic>))
                         .toList(),
                     ApiConstants.shortWeekDayList[index]),
                 weekday: ApiConstants.shortWeekDayList[index],

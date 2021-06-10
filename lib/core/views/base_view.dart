@@ -6,7 +6,7 @@ class BaseView<T extends ChangeNotifier> extends StatelessWidget {
   final Widget Function(BuildContext context, T value, Widget child) builder;
   final Function(T) onViewModelCreated;
 
-  const BaseView({this.builder, key, this.onViewModelCreated})
+  const BaseView({this.builder, Key key, this.onViewModelCreated})
       : super(key: key);
 
   @override

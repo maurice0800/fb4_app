@@ -15,15 +15,15 @@ class SettingsPage extends StatelessWidget {
     return CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
           backgroundColor: ColorConsts.mainOrange,
-          middle: Text("Einstellungen"),
+          middle: const Text("Einstellungen"),
         ),
         child: BaseView<SettingsPageViewModel>(
           onViewModelCreated: (viewModel) => viewModel.init(),
           builder: (context, viewModel, child) => CupertinoSettings(
             items: [
-              CSHeader("Stundenplan"),
+              const CSHeader("Stundenplan"),
               CSControl(
-                nameWidget: Text("Aktuellen Wochentag zuerst zeigen"),
+                nameWidget: const Text("Aktuellen Wochentag zuerst zeigen"),
                 contentWidget: CupertinoSwitch(
                   value: viewModel.goToCurrentDayInSchedule,
                   onChanged: (value) {
@@ -33,16 +33,16 @@ class SettingsPage extends StatelessWidget {
               ),
               CSButton(CSButtonType.DESTRUCTIVE, "Stundenplan löschen",
                   () async {
-                var result = await showConfirmDialog(
+                final result = await showConfirmDialog(
                     context, "Soll der Stundenplan wirklich gelöscht werden?");
                 if (result) {
                   viewModel.deleteSchedule(context);
                 }
                 Navigator.pop(context);
               }),
-              CSHeader("NRW-Ticket"),
+              const CSHeader("NRW-Ticket"),
               CSControl(
-                nameWidget: Text("Helligkeit erhöhen"),
+                nameWidget: const Text("Helligkeit erhöhen"),
                 contentWidget: CupertinoSwitch(
                   value: viewModel.increaseDisplayBrightnessInTicketview,
                   onChanged: (value) {
@@ -51,14 +51,14 @@ class SettingsPage extends StatelessWidget {
                 ),
               ),
               CSButton(CSButtonType.DESTRUCTIVE, "Ticket löschen", () async {
-                var result = await showConfirmDialog(
+                final result = await showConfirmDialog(
                     context, "Soll das Ticket wirklich gelöscht werden?");
                 if (result) {
                   viewModel.deleteTicket(context);
                 }
                 Navigator.pop(context);
               }),
-              CSHeader("ODS"),
+              const CSHeader("ODS"),
               CSButton(CSButtonType.DESTRUCTIVE, "Anmeldedaten löschen",
                   () async {
                 await viewModel.logoutOds();
@@ -66,9 +66,9 @@ class SettingsPage extends StatelessWidget {
                         context, "Erfolgreich", "Logout erfolgreich.")
                     .show();
               }),
-              CSHeader("Sonstiges"),
+              const CSHeader("Sonstiges"),
               CSControl(
-                nameWidget: Text("Benachrichtigungen bei News"),
+                nameWidget: const Text("Benachrichtigungen bei News"),
                 contentWidget: CupertinoSwitch(
                   value: viewModel.notificationOnNews,
                   onChanged: (value) => viewModel.notificationOnNews = value,
@@ -80,44 +80,40 @@ class SettingsPage extends StatelessWidget {
   }
 
   Future<bool> showConfirmDialog(BuildContext context, String message) {
-    Completer<bool> completer = Completer<bool>();
+    final Completer<bool> completer = Completer<bool>();
     showCupertinoDialog(
         context: context,
         builder: (context) => CupertinoAlertDialog(
-              title: Text("Bestätigung"),
+              title: const Text("Bestätigung"),
               content: Text(message),
               actions: [
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
-                  child: Container(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Text(
-                        "Ja",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-                  ),
                   onTap: () {
                     completer.complete(true);
                   },
+                  child: const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text(
+                      "Ja",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
                 ),
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
-                  child: Container(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Text(
-                        "Nein",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-                  ),
                   onTap: () {
                     completer.complete(false);
                   },
+                  child: const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text(
+                      "Nein",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
                 )
               ],
             ));

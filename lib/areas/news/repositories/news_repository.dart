@@ -8,8 +8,10 @@ class NewsRepository {
     return http.get('https://fb4app.hemacode.de/getNews.php').then((result) {
       if (result.statusCode == 200) {
         var data = jsonDecode(utf8.decode(result.bodyBytes));
-        List<NewsItem> items =
-            data.map<NewsItem>((item) => NewsItem.fromJson(item)).toList();
+        List<NewsItem> items = data
+            .map<NewsItem>(
+                (item) => NewsItem.fromJson(item as Map<String, dynamic>))
+            .toList() as List<NewsItem>;
         return items;
       } else {
         return [];

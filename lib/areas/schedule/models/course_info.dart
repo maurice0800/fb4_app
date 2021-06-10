@@ -7,10 +7,10 @@ class CourseInfo {
 
   factory CourseInfo.fromJson(Map<String, dynamic> json) {
     return CourseInfo(
-        name: json['name'],
-        shortName: json['sname'],
+        name: json['name'].toString(),
+        shortName: json['sname'].toString(),
         grades: json['grades']
             .map<String>((grade) => grade['grade'].toString())
-            .toList());
+            .toList() as List<String>);
   }
 }

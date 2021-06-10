@@ -13,16 +13,16 @@ class NewsItem {
         .replaceAll('\u0096', '\u2014')
         .replaceAll('\u0093', '"')
         .replaceAll('\u0094', '"')
-        .replaceAll(new RegExp('<[^>]*>'), '')
+        .replaceAll(RegExp('<[^>]*>'), '')
         .trim();
   }
 
   factory NewsItem.fromJson(Map<String, dynamic> json) {
-    var timeFormat = DateFormat("dd.MM.yyyy - hh:mm:ss");
+    final timeFormat = DateFormat("dd.MM.yyyy - hh:mm:ss");
     return NewsItem(
-        title: json['header'],
-        pubDate: timeFormat.parse(json['date']),
-        description: json['body'],
-        list: json['list']);
+        title: json['header'].toString(),
+        pubDate: timeFormat.parse(json['date'].toString()),
+        description: json['body'].toString(),
+        list: json['list'].toString());
   }
 }

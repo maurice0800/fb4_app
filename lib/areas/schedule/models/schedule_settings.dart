@@ -6,7 +6,7 @@ class ScheduleSettings {
 
   factory ScheduleSettings.fromJson(Map<String, dynamic> json) {
     return ScheduleSettings(
-        groupIdentifier: json['groupIdentifier'],
-        courseIdentifier: json['courseIdentifier']);
+        groupIdentifier: json['groupIdentifier'].toString(),
+        courseIdentifier: json['courseIdentifier'].toString());
   }
 }

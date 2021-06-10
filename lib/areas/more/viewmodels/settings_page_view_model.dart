@@ -14,23 +14,23 @@ class SettingsPageViewModel extends ChangeNotifier {
   bool _notificaitonOnNews = false;
   bool _goToCurrentWeekInSchedule = false;
 
-  init() {
+  void init() {
     SharedPreferences.getInstance().then((s) {
       _increaseDisplayBrightnessInTicketview = s.getBool(
               AppConstants.settingsIncreaseDisplayBrightnessInTicketview) ??
           false;
 
       _notificaitonOnNews =
-          s.get(AppConstants.settingsNotificationOnNews) ?? false;
+          s.getBool(AppConstants.settingsNotificationOnNews) ?? false;
 
       _goToCurrentWeekInSchedule =
-          s.get(AppConstants.settingsGoToCurrentDayInSchedule) ?? false;
+          s.getBool(AppConstants.settingsGoToCurrentDayInSchedule) ?? false;
 
       notifyListeners();
     });
   }
 
-  get increaseDisplayBrightnessInTicketview =>
+  bool get increaseDisplayBrightnessInTicketview =>
       _increaseDisplayBrightnessInTicketview;
 
   set increaseDisplayBrightnessInTicketview(bool val) {
@@ -40,7 +40,7 @@ class SettingsPageViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  get notificationOnNews => _notificaitonOnNews;
+  bool get notificationOnNews => _notificaitonOnNews;
 
   set notificationOnNews(bool val) {
     _notificaitonOnNews = val;
@@ -56,7 +56,7 @@ class SettingsPageViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  get goToCurrentDayInSchedule => _goToCurrentWeekInSchedule;
+  bool get goToCurrentDayInSchedule => _goToCurrentWeekInSchedule;
 
   set goToCurrentDayInSchedule(bool val) {
     _goToCurrentWeekInSchedule = val;
