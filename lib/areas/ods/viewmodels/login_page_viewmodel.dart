@@ -4,13 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class LoginPageViewModel extends ChangeNotifier {
-  final Function(String) onError;
   bool _isSaveCredentialsChecked = true;
   bool isLoggingIn = false;
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
-  LoginPageViewModel({this.onError});
 
   set isSaveCredentialsChecked(bool value) {
     _isSaveCredentialsChecked = value;
@@ -21,7 +18,7 @@ class LoginPageViewModel extends ChangeNotifier {
     return _isSaveCredentialsChecked;
   }
 
-  Future<bool> login() {
+  Future<bool?> login() {
     String username = usernameController.text;
     String password = passwordController.text;
 

@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AddCustomScheduleItemPage extends StatelessWidget {
-  const AddCustomScheduleItemPage({Key key}) : super(key: key);
+  const AddCustomScheduleItemPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +82,7 @@ class AddCustomScheduleItemPage extends StatelessWidget {
                       controller: viewModel.weekdayController,
                       readOnly: true,
                       onTap: () => _showWeekdayPicker(context).then((result) =>
-                          viewModel.weekdayController.text = result),
+                          viewModel.weekdayController.text = result ?? ""),
                       validator: (value) => value == "" ? "Pflichtfeld" : null,
                       style: TextStyle(fontSize: 16.0),
                     ),
@@ -100,7 +100,7 @@ class AddCustomScheduleItemPage extends StatelessWidget {
                       style: TextStyle(fontSize: 16.0),
                       validator: (value) => value == "" ? "Pflichtfeld" : null,
                       onTap: () => _showTimePicker(context)
-                          .then((result) => viewModel.setTimeBegin(result)),
+                          .then((result) => viewModel.setTimeBegin(result!)),
                     ),
                     CupertinoTextFormFieldRow(
                       prefix: SizedBox(
@@ -116,7 +116,7 @@ class AddCustomScheduleItemPage extends StatelessWidget {
                       style: TextStyle(fontSize: 16.0),
                       validator: (value) => value == "" ? "Pflichtfeld" : null,
                       onTap: () => _showTimePicker(context)
-                          .then((result) => viewModel.setTimeEnd(result)),
+                          .then((result) => viewModel.setTimeEnd(result!)),
                     ),
                     CupertinoTextFormFieldRow(
                       placeholder: "Raum",
@@ -158,7 +158,7 @@ class AddCustomScheduleItemPage extends StatelessWidget {
             ));
   }
 
-  Future<DateTime> _showTimePicker(BuildContext context) async {
+  Future<DateTime?> _showTimePicker(BuildContext context) async {
     return showCupertinoModalPopup<DateTime>(
       context: context,
       builder: (context) {
@@ -208,7 +208,7 @@ class AddCustomScheduleItemPage extends StatelessWidget {
     );
   }
 
-  Future<String> _showWeekdayPicker(BuildContext context) async {
+  Future<String?> _showWeekdayPicker(BuildContext context) async {
     return showCupertinoModalPopup<String>(
       context: context,
       builder: (context) {

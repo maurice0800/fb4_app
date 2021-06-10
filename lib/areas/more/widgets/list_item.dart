@@ -5,7 +5,8 @@ class NavigationListItem extends StatelessWidget {
   final Icon icon;
   final GestureTapCallback callback;
 
-  const NavigationListItem({Key key, this.icon, this.callback})
+  const NavigationListItem(
+      {Key? key, required this.icon, required this.callback})
       : super(key: key);
 
   @override

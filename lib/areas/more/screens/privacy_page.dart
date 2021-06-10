@@ -7,7 +7,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 class PrivacyPage extends StatelessWidget {
   final bool shouldAccept;
 
-  const PrivacyPage({Key key, this.shouldAccept = false}) : super(key: key);
+  const PrivacyPage({Key? key, this.shouldAccept = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

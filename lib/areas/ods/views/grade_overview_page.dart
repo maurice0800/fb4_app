@@ -16,7 +16,7 @@ class GradeOverViewPage extends StatelessWidget {
             backgroundColor: ColorConsts.mainOrange,
           ),
           child: SafeArea(
-            child: viewModel.exams != null
+            child: viewModel.exams.isNotEmpty
                 ? Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Material(
@@ -29,7 +29,7 @@ class GradeOverViewPage extends StatelessWidget {
                       color: CupertinoTheme.of(context).scaffoldBackgroundColor,
                       child: GroupListView(
                         countOfItemInSection: (section) =>
-                            viewModel.exams[section + 1].length,
+                            viewModel.exams[section + 1]?.length ?? 0,
                         sectionsCount: viewModel.exams.entries.length,
                         separatorBuilder: (context, index) => SizedBox(
                           height: 5.0,
@@ -49,7 +49,7 @@ class GradeOverViewPage extends StatelessWidget {
                               CupertinoTheme.of(context).barBackgroundColor,
                           title: Text(
                             viewModel
-                                .exams[index.section + 1][index.index].name,
+                                .exams[index.section + 1]![index.index].name,
                             style: TextStyle(
                               color: CupertinoTheme.of(context)
                                   .textTheme
@@ -58,11 +58,12 @@ class GradeOverViewPage extends StatelessWidget {
                             ),
                           ),
                           trailing: Text(
-                            viewModel.exams[index.section + 1][index.index]
+                            viewModel.exams[index.section + 1]![index.index]
                                         .grade !=
                                     ""
                                 ? viewModel
-                                    .exams[index.section + 1][index.index].grade
+                                    .exams[index.section + 1]![index.index]
+                                    .grade
                                     .padRight(2, ",0")
                                 : "-",
                             style: TextStyle(
@@ -81,16 +82,16 @@ class GradeOverViewPage extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Prüfungsart: ${viewModel.exams[index.section + 1][index.index].examKind}",
+                                      "Prüfungsart: ${viewModel.exams[index.section + 1]![index.index].examKind}",
                                     ),
                                     Text(
-                                        "Versuch: ${viewModel.exams[index.section + 1][index.index].tryCount}"),
+                                        "Versuch: ${viewModel.exams[index.section + 1]![index.index].tryCount}"),
                                     Text(
-                                        "ECTS: ${viewModel.exams[index.section + 1][index.index].ects}"),
+                                        "ECTS: ${viewModel.exams[index.section + 1]![index.index].ects}"),
                                     Text(
-                                        "Status: ${viewModel.exams[index.section + 1][index.index].status}"),
+                                        "Status: ${viewModel.exams[index.section + 1]![index.index].status}"),
                                     Text(
-                                        "Anmerkungen: ${viewModel.exams[index.section + 1][index.index].additional}"),
+                                        "Anmerkungen: ${viewModel.exams[index.section + 1]![index.index].additional}"),
                                   ],
                                 ),
                               ),

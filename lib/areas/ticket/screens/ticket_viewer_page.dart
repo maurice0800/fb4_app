@@ -9,7 +9,7 @@ class TicketViewerPage extends StatelessWidget {
   final TransformationController _transformationController =
       TransformationController();
 
-  TapDownDetails _tapDownDetails;
+  TapDownDetails? _tapDownDetails;
   bool _isZoomed = false;
 
   @override
@@ -41,7 +41,10 @@ class TicketViewerPage extends StatelessWidget {
                 style: TextStyle(color: CupertinoColors.white)),
             onPressed: () {
               FilePicker.platform.pickFiles().then((result) => {
-                    viewModel.extractImageFromPdf(result.files.first.path),
+                    if (result != null)
+                      {
+                        viewModel.extractImageFromPdf(result.files.first.path!),
+                      }
                   });
             })
       ],
@@ -65,7 +68,7 @@ class TicketViewerPage extends StatelessWidget {
                 onDoubleTapDown: (details) => _tapDownDetails = details,
                 child: InteractiveViewer(
                   transformationController: _transformationController,
-                  child: Image.memory(viewModel.imageBytes),
+                  child: Image.memory(viewModel.imageBytes!),
                 ),
               ),
             );
@@ -81,8 +84,8 @@ class TicketViewerPage extends StatelessWidget {
       _isZoomed = false;
     } else {
       _transformationController.value = Matrix4.identity()
-        ..translate(-_tapDownDetails.localPosition.dx,
-            -_tapDownDetails.localPosition.dy)
+        ..translate(-_tapDownDetails!.localPosition.dx,
+            -_tapDownDetails!.localPosition.dy)
         ..scale(2.0);
       _isZoomed = true;
     }

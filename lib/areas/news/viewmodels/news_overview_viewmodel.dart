@@ -10,7 +10,8 @@ class NewsOverviewViewModel extends ChangeNotifier {
   List<NewsItem> newsItems = [];
   bool isLoading = false;
 
-  Future fetchNewsItems({Function(String) onError, bool alwaysRefresh = true}) {
+  Future fetchNewsItems(
+      {required Function(String) onError, bool alwaysRefresh = true}) {
     if (alwaysRefresh || newsItems.length == 0) {
       isLoading = true;
       notifyListeners();

@@ -18,11 +18,9 @@ class ScheduleOverview extends StatelessWidget {
             navigationBar: buildNavigationBar(context, viewModel),
             child: SafeArea(child: Builder(builder: (context) {
               if (viewModel.hasItems) {
-                WidgetsBinding.instance.addPostFrameCallback((_) async {
-                  if (viewModel.aferNextRender != null) {
-                    viewModel.aferNextRender();
-                    viewModel.aferNextRender = null;
-                  }
+                WidgetsBinding.instance?.addPostFrameCallback((_) async {
+                  viewModel.aferNextRender();
+                  viewModel.aferNextRender = () {};
                 });
                 return Column(
                   children: [
@@ -42,7 +40,7 @@ class ScheduleOverview extends StatelessWidget {
                             child: ValueListenableBuilder<int>(
                               valueListenable: viewModel.controllerPageNotifier,
                               builder:
-                                  (BuildContext context, value, Widget child) {
+                                  (BuildContext context, value, Widget? child) {
                                 return CupertinoSegmentedControl(
                                     groupValue: value,
                                     pressedColor: ColorConsts.mainOrange,
@@ -168,8 +166,12 @@ class ScheduleOverview extends StatelessWidget {
                                                 builder: (context) =>
                                                     AddOfficialSchedulePage())
                                             .then((result) {
-                                          viewModel.getScheduleListsFromServer(
-                                              result as SelectedCourseInfo);
+                                          if (result != null) {
+                                            viewModel
+                                                .getScheduleListsFromServer(
+                                                    result
+                                                        as SelectedCourseInfo);
+                                          }
                                         });
                                       },
                                       child: Text("Offizieller Stundenplan")),

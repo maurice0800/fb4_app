@@ -37,7 +37,7 @@ void main() async {
 
   runApp(FB4App(controller: appTabController));
 
-  WidgetsBinding.instance
+  WidgetsBinding.instance!
       .addObserver(AppStateObserver(controller: appTabController));
 
   await notificationManager.init();
@@ -72,12 +72,12 @@ void registerDependencies() {
 class FB4App extends StatelessWidget {
   final CupertinoTabController controller;
 
-  const FB4App({Key key, this.controller}) : super(key: key);
+  const FB4App({Key? key, required this.controller}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     bool darkMode =
-        SchedulerBinding.instance.window.platformBrightness == Brightness.dark;
+        SchedulerBinding.instance!.window.platformBrightness == Brightness.dark;
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);

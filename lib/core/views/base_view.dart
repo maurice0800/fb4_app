@@ -3,10 +3,10 @@ import 'package:provider/provider.dart';
 import 'package:kiwi/kiwi.dart';
 
 class BaseView<T extends ChangeNotifier> extends StatelessWidget {
-  final Widget Function(BuildContext context, T value, Widget child) builder;
-  final Function(T) onViewModelCreated;
+  final Widget Function(BuildContext context, T value, Widget? child) builder;
+  final Function(T)? onViewModelCreated;
 
-  const BaseView({this.builder, Key key, this.onViewModelCreated})
+  const BaseView({required this.builder, Key? key, this.onViewModelCreated})
       : super(key: key);
 
   @override
@@ -14,7 +14,7 @@ class BaseView<T extends ChangeNotifier> extends StatelessWidget {
     T viewModel = KiwiContainer().resolve<T>();
 
     if (onViewModelCreated != null) {
-      onViewModelCreated(viewModel);
+      onViewModelCreated!(viewModel);
     }
 
     return ChangeNotifierProvider<T>.value(

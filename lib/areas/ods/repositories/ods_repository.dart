@@ -5,21 +5,21 @@ import 'package:html/parser.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class OdsRepository {
-  static String cachedToken;
+  static String cachedToken = "";
   static FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
   static Future<Map<int, List<ExamInfoModel>>> getExamInfos(
       {bool firstTry = true}) async {
-    if (cachedToken == null) {
+    if (cachedToken == "") {
       var username = await secureStorage.read(key: 'odsUsername');
       var password = await secureStorage.read(key: 'odsPassword');
 
       cachedToken =
-          await OdsAuthenticationService.getAuthToken(username, password);
+          await OdsAuthenticationService.getAuthToken(username!, password!);
     }
 
-    var result = await http
-        .get('https://ods.fh-dortmund.de/ods?Sicht=DSTL&SIDD=$cachedToken');
+    var result = await http.get(Uri.parse(
+        'https://ods.fh-dortmund.de/ods?Sicht=DSTL&SIDD=$cachedToken'));
 
     var resultHtml = parse(result.body);
     var resultMap = Map<int, List<ExamInfoModel>>();
@@ -57,12 +57,12 @@ class OdsRepository {
         resultMap.putIfAbsent(
             int.parse(payload[1].text.trim()), () => <ExamInfoModel>[]);
 
-        resultMap[int.parse(payload[1].text.trim())].add(result);
+        resultMap[int.parse(payload[1].text.trim())]?.add(result);
       }
       return resultMap;
     } catch (e) {
       if (firstTry) {
-        cachedToken = null;
+        cachedToken = "";
         return getExamInfos(firstTry: false);
       } else {
         return Future.error(

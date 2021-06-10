@@ -1,10 +1,10 @@
 import 'package:fb4_app/app_constants.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class PushNotificationsManager {
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-  Function(String) onRoute;
+  Function(String)? onRoute;
   bool _initialized = false;
 
   PushNotificationsManager();
@@ -14,37 +14,37 @@ class PushNotificationsManager {
   }
 
   Future<void> init() async {
+    await Firebase.initializeApp();
     var prefs = await SharedPreferences.getInstance();
 
     if (!_initialized) {
       if (prefs.getBool(AppConstants.settingsNotificationOnNews) ?? false) {
-        await _firebaseMessaging.requestNotificationPermissions(
-            IosNotificationSettings(
-                alert: true, provisional: false, sound: true, badge: true));
+        await FirebaseMessaging.instance.requestPermission(
+            alert: true, provisional: false, sound: true, badge: true);
 
-        _firebaseMessaging.subscribeToTopic("Aktuelles");
+        FirebaseMessaging.instance.subscribeToTopic("Aktuelles");
       } else {
         return;
       }
 
-      _firebaseMessaging.configure(
-        onResume: (Map<String, dynamic> message) async {
-          if (onRoute != null) {
-            onRoute(message['route'].toString());
-          }
-        },
-        onLaunch: (Map<String, dynamic> message) async {
-          if (onRoute != null) {
-            onRoute(message['route'].toString());
-          }
-        },
-      );
+      // FirebaseMessaging.onMessage(
+      //   onResume: (Map<String, dynamic> message) async {
+      //     if (onRoute != null) {
+      //       onRoute(message['route'].toString());
+      //     }
+      //   },
+      //   onLaunch: (Map<String, dynamic> message) async {
+      //     if (onRoute != null) {
+      //       onRoute(message['route'].toString());
+      //     }
+      //   },
+      // );
 
       _initialized = true;
     }
   }
 
   void unsubscribe() {
-    _firebaseMessaging.unsubscribeFromTopic("Aktuelles");
+    FirebaseMessaging.instance.unsubscribeFromTopic("Aktuelles");
   }
 }

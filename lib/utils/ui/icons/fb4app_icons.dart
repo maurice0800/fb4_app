@@ -23,7 +23,7 @@ class FB4Icons {
   FB4Icons._();
 
   static const _kFontFam = 'Fb4app';
-  static const String _kFontPkg = null;
+  static const String? _kFontPkg = null;
 
   static const IconData food =
       IconData(0xf0f5, fontFamily: _kFontFam, fontPackage: _kFontPkg);

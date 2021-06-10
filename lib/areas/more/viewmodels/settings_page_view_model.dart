@@ -82,6 +82,6 @@ class SettingsPageViewModel extends ChangeNotifier {
   Future<void> logoutOds() async {
     await FlutterSecureStorage().delete(key: "odsUsername");
     await FlutterSecureStorage().delete(key: "odsPassword");
-    OdsRepository.cachedToken = null;
+    OdsRepository.cachedToken = "";
   }
 }

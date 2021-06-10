@@ -10,8 +10,9 @@ class NewsOverview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseView<NewsOverviewViewModel>(
-        onViewModelCreated: (viewModel) =>
-            viewModel.fetchNewsItems(alwaysRefresh: false),
+        onViewModelCreated: (viewModel) => viewModel.fetchNewsItems(
+            alwaysRefresh: false,
+            onError: (message) => showErrorDialog(context, message)),
         builder: (context, viewModel, child) => CupertinoPageScaffold(
               navigationBar: CupertinoNavigationBar(
                 backgroundColor: ColorConsts.mainOrange,

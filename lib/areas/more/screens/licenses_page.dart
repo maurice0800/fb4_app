@@ -4,7 +4,7 @@ import 'package:fb4_app/core/views/base_view.dart';
 import 'package:flutter/cupertino.dart';
 
 class LicensesPage extends StatelessWidget {
-  const LicensesPage({Key key}) : super(key: key);
+  const LicensesPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -7,11 +7,11 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pdf_render/pdf_render.dart';
 
 class TicketOverviewViewModel extends ChangeNotifier {
-  String filePath;
+  String? filePath;
   bool isImageAvailable = false;
   bool isImageProcessing = false;
-  Uint8List imageBytes;
-  double prevBrightness;
+  Uint8List? imageBytes;
+  double? prevBrightness;
 
   Future init() async {
     if (imageBytes == null) {
@@ -31,15 +31,23 @@ class TicketOverviewViewModel extends ChangeNotifier {
   }
 
   Future loadImageData() {
-    return File(filePath).readAsBytes().then((data) {
-      imageBytes = data;
-      isImageAvailable = true;
-      notifyListeners();
-    });
+    if (filePath != null) {
+      return File(filePath!).readAsBytes().then((data) {
+        imageBytes = data;
+        isImageAvailable = true;
+        notifyListeners();
+      });
+    }
+
+    return Future.value();
   }
 
   Future<bool> getIsImageAvailable() {
-    return File(filePath).exists();
+    if (filePath != null) {
+      return File(filePath!).exists();
+    }
+
+    return Future.value(false);
   }
 
   Future extractImageFromPdf(String pdfPath) async {
@@ -66,7 +74,7 @@ class TicketOverviewViewModel extends ChangeNotifier {
 
     getApplicationDocumentsDirectory().then((directory) {
       File(directory.path + "/semester_ticket.dat")
-          .writeAsBytes(rawImageBytes.buffer.asUint8List(
+          .writeAsBytes(rawImageBytes!.buffer.asUint8List(
               rawImageBytes.offsetInBytes, rawImageBytes.lengthInBytes))
           .then((result) {
         loadImageData();
@@ -76,9 +84,13 @@ class TicketOverviewViewModel extends ChangeNotifier {
   }
 
   Future deleteTicket() {
-    return File(filePath).delete().then((result) {
-      isImageAvailable = false;
-      notifyListeners();
-    });
+    if (isImageAvailable) {
+      return File(filePath!).delete().then((result) {
+        isImageAvailable = false;
+        notifyListeners();
+      });
+    }
+
+    return Future.value();
   }
 }

@@ -6,19 +6,19 @@ class AddOfficialSchedulePageViewModel extends ChangeNotifier {
   CourseInfoRepository repository = CourseInfoRepository();
   List<CourseInfo> courses = [];
 
-  CourseInfo _selectedCourse;
+  CourseInfo? _selectedCourse;
   String _selectedSemester = "";
 
   TextEditingController courseController = TextEditingController();
   TextEditingController semesterController = TextEditingController();
   TextEditingController groupController = TextEditingController();
 
-  set selectedCourse(CourseInfo info) {
+  set selectedCourse(CourseInfo? info) {
     _selectedCourse = info;
-    courseController.text = info.name;
+    courseController.text = info!.name;
   }
 
-  CourseInfo get selectedCourse => _selectedCourse;
+  CourseInfo? get selectedCourse => _selectedCourse;
 
   set selectedGroup(String group) {
     groupController.text = group;

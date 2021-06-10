@@ -3,7 +3,8 @@ class CourseInfo {
   final String shortName;
   final List<String> grades;
 
-  CourseInfo({this.name, this.shortName, this.grades});
+  CourseInfo(
+      {required this.name, required this.shortName, required this.grades});
 
   factory CourseInfo.fromJson(Map<String, dynamic> json) {
     return CourseInfo(

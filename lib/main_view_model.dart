@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class MainViewModel extends ChangeNotifier {
   bool isInitialized = false;
-  bool shouldShowPrivacyPolicy;
+  bool shouldShowPrivacyPolicy = true;
 
   Future init() async {
     return SharedPreferences.getInstance().then((s) {

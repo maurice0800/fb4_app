@@ -7,8 +7,8 @@ class ScheduleRepository {
   Future<List<ScheduleItem>> getScheduleItems(
       String semester, String grade) async {
     return http
-        .get(
-            'https://ws.inf.fh-dortmund.de/fbws/current/rest/CourseOfStudy/$semester/$grade/Events?Accept=application/json&studentSet=*')
+        .get(Uri.parse(
+            'https://ws.inf.fh-dortmund.de/fbws/current/rest/CourseOfStudy/$semester/$grade/Events?Accept=application/json&studentSet=*'))
         .then((result) {
       if (result.statusCode == 200) {
         final data = jsonDecode(result.body);

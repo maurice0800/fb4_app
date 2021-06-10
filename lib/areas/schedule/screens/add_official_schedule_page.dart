@@ -74,6 +74,7 @@ class AddOfficialSchedulePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseView<AddOfficialSchedulePageViewModel>(
+        onViewModelCreated: (viewModel) => viewModel.init(),
         builder: (context, viewModel, child) => CupertinoPageScaffold(
             navigationBar: CupertinoNavigationBar(
                 backgroundColor: ColorConsts.mainOrange,
@@ -107,7 +108,7 @@ class AddOfficialSchedulePage extends StatelessWidget {
                                 ));
                       } else {
                         Navigator.of(context).pop(SelectedCourseInfo(
-                            viewModel.selectedCourse.shortName,
+                            viewModel.selectedCourse!.shortName,
                             viewModel.selectedSemester,
                             groupString: viewModel.selectedGroup));
                       }
@@ -157,8 +158,8 @@ class AddOfficialSchedulePage extends StatelessWidget {
                                   showModalForSelection(
                                       context,
                                       "Semester wählen",
-                                      viewModel.selectedCourse.grades,
-                                      viewModel.selectedCourse.grades,
+                                      viewModel.selectedCourse!.grades,
+                                      viewModel.selectedCourse!.grades,
                                       (semester) {
                                     viewModel.selectedSemester =
                                         semester.toString();
@@ -212,7 +213,7 @@ class AddOfficialSchedulePage extends StatelessWidget {
                                 validator: (input) {
                                   if (input == "" ||
                                       RegExp('^[A-Z][0-9]+\$')
-                                          .hasMatch(input)) {
+                                          .hasMatch(input!)) {
                                     return null;
                                   }
                                   return "Muss folgendes beeinhalten:\n- Genau einen Buchstaben \n- Mindestens eine Zahl";

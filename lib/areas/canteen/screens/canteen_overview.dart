@@ -2,7 +2,7 @@ import 'package:fb4_app/config/themes/color_consts.dart';
 import 'package:flutter/cupertino.dart';
 
 class CanteenOverview extends StatelessWidget {
-  const CanteenOverview({Key key}) : super(key: key);
+  const CanteenOverview({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

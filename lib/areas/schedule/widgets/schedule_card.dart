@@ -11,11 +11,11 @@ class ScheduleCard extends StatefulWidget {
   bool isChecked = false;
 
   ScheduleCard(
-      {this.item,
-      this.editMode,
-      this.onItemSelected,
-      this.onItemDeselected,
-      this.isChecked});
+      {required this.item,
+      required this.editMode,
+      required this.onItemSelected,
+      required this.onItemDeselected,
+      required this.isChecked});
 
   @override
   State<StatefulWidget> createState() => ScheduleCardState();
@@ -40,7 +40,7 @@ class ScheduleCardState extends State<ScheduleCard> {
           height: 90,
           child: Container(
               decoration: BoxDecoration(
-                  color: widget.item.userIsInGroup ?? true
+                  color: widget.item.userIsInGroup
                       ? widget.item.color
                       : ColorConsts.mainOrange.withAlpha(168),
                   borderRadius: BorderRadius.circular(4)),
@@ -51,6 +51,7 @@ class ScheduleCardState extends State<ScheduleCard> {
                     widget.editMode
                         ? CupertinoCheckBox(
                             isChecked: widget.isChecked,
+                            onChanged: (value) {},
                           )
                         : Container(),
                     Column(
@@ -93,7 +94,7 @@ class ScheduleCardState extends State<ScheduleCard> {
                             maxLines: 1,
                           ),
                           Text(
-                            '${widget.item.studentSet ?? "*"} | ${widget.item.lecturerName} (${widget.item.lecturerId})',
+                            '${widget.item.studentSet == "" ? "*" : widget.item.studentSet} | ${widget.item.lecturerName} (${widget.item.lecturerId})',
                             style: TextStyle(
                               color: CupertinoColors.white,
                               fontSize: 14,

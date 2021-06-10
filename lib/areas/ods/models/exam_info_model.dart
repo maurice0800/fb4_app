@@ -8,11 +8,11 @@ class ExamInfoModel {
   final String additional;
 
   ExamInfoModel(
-      {this.name,
-      this.examKind,
-      this.tryCount,
-      this.grade,
-      this.ects,
-      this.status,
-      this.additional});
+      {required this.name,
+      required this.examKind,
+      required this.tryCount,
+      required this.grade,
+      required this.ects,
+      required this.status,
+      required this.additional});
 }

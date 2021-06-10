@@ -17,7 +17,7 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
   final ScheduleListController internalController = ScheduleListController();
   final PageController pageViewController = PageController();
   final ValueNotifier<int> controllerPageNotifier = ValueNotifier(0);
-  Function() aferNextRender;
+  Function() aferNextRender = () {};
   bool editMode = false;
   bool isLoading = false;
   bool hasItems = false;
@@ -31,7 +31,7 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
     };
 
     internalController.onItemChanged = (item) {
-      var currentPage = pageViewController.page.floor();
+      var currentPage = pageViewController.page!.floor();
       resyncWithDatabase();
       aferNextRender = () {
         pageViewController.jumpToPage(currentPage);
@@ -119,6 +119,7 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
           (index) => ScheduleList(
                 items: [],
                 weekday: ApiConstants.shortWeekDayList[index],
+                controller: ScheduleListController(),
               ));
       await resyncWithDatabase();
     }
@@ -198,26 +199,28 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
           .toList()[0];
 
       // When the the first letter is the same as the input letter from the user we have to check the number
-      if (info.groupLetter.codeUnitAt(0) == matches.group(1).codeUnitAt(0)) {
+      if (info.groupLetter.codeUnitAt(0) == matches.group(1)?.codeUnitAt(0)) {
         if (matches.group(2) == null || matches.group(2) == "") {
           return true;
         } else {
-          return int.parse(info.groupNumber) >= int.parse(matches.group(2));
+          return int.parse(info.groupNumber) >=
+              int.parse(matches.group(2).toString());
         }
       }
 
       // Also check the last letter
-      if (info.groupLetter.codeUnitAt(0) == matches.group(3).codeUnitAt(0)) {
+      if (info.groupLetter.codeUnitAt(0) == matches.group(3)?.codeUnitAt(0)) {
         if (matches.group(4) == null || matches.group(4) == "") {
           return true;
         } else {
-          return int.parse(info.groupNumber) <= int.parse(matches.group(4));
+          return int.parse(info.groupNumber) <=
+              int.parse(matches.group(4).toString());
         }
       }
 
       // Just check letters because the number does not matter when the given letter is inbetween the student set
-      if (info.groupLetter.codeUnitAt(0) > matches.group(1).codeUnitAt(0)) {
-        if (info.groupLetter.codeUnitAt(0) < matches.group(3).codeUnitAt(0)) {
+      if (info.groupLetter.codeUnitAt(0) > matches.group(1)!.codeUnitAt(0)) {
+        if (info.groupLetter.codeUnitAt(0) < matches.group(3)!.codeUnitAt(0)) {
           return true;
         }
       }

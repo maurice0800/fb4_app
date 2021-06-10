@@ -6,7 +6,7 @@ import 'package:fb4_app/utils/ui/widgets/cupertino_checkbox.dart';
 import 'package:flutter/cupertino.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key key}) : super(key: key);
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +70,7 @@ class LoginPage extends StatelessWidget {
                     ? CupertinoActivityIndicator()
                     : Text("Login"),
                 onPressed: () async {
-                  bool result = await viewModel.login();
+                  bool result = await viewModel.login() ?? false;
 
                   if (result) {
                     Navigator.pop(context);

@@ -4,7 +4,7 @@ import 'package:flutter_cupertino_settings/flutter_cupertino_settings.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LinksDownloadsPage extends StatelessWidget {
-  const LinksDownloadsPage({Key key}) : super(key: key);
+  const LinksDownloadsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

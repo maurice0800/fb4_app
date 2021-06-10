@@ -8,7 +8,8 @@ class NewsCard extends StatelessWidget {
   final NewsItem item;
   final bool noWrap;
 
-  const NewsCard({Key key, this.item, this.noWrap = false}) : super(key: key);
+  const NewsCard({Key? key, required this.item, this.noWrap = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

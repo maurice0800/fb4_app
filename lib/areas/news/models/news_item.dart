@@ -6,7 +6,11 @@ class NewsItem {
   final String list;
   final String description;
 
-  NewsItem({this.title, this.pubDate, this.list, this.description});
+  NewsItem(
+      {required this.title,
+      required this.pubDate,
+      required this.list,
+      required this.description});
 
   static String replaceSpecialChars(String input) {
     return input

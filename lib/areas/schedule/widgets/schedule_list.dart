@@ -12,7 +12,10 @@ class ScheduleList extends StatefulWidget {
   final ScheduleListController controller;
 
   const ScheduleList(
-      {Key key, this.weekday, this.items = const [], this.controller})
+      {Key? key,
+      required this.weekday,
+      this.items = const [],
+      required this.controller})
       : super(key: key);
 
   @override
@@ -94,8 +97,13 @@ class ScheduleListState extends State<ScheduleList>
                                     setState(() {
                                       widget.items[index].color = color;
                                     });
-                                    widget.controller
-                                        .onItemChanged(widget.items[index]);
+
+                                    if (widget.controller.onItemChanged !=
+                                        null) {
+                                      widget.controller
+                                          .onItemChanged!(widget.items[index]);
+                                    }
+
                                     Navigator.of(context).pop();
                                   }),
                               actions: [
@@ -113,7 +121,7 @@ class ScheduleListState extends State<ScheduleList>
                 CupertinoActionSheetAction(
                   onPressed: () async {
                     if (widget.controller.onItemRemoved != null) {
-                      widget.controller.onItemRemoved(widget.items[index]);
+                      widget.controller.onItemRemoved!(widget.items[index]);
                     }
                     widget.items.removeAt(index);
                     Navigator.pop(context);

@@ -12,24 +12,26 @@ class ScheduleItem implements Comparable {
   String timeEnd;
   String weekday;
   String roomId;
-  bool userIsInGroup;
+  bool userIsInGroup = true;
   bool editMode;
-  Color color = ColorConsts.mainOrange;
+  Color color;
 
   ScheduleItem(
-      {this.name,
-      this.courseType,
-      this.lecturerId,
-      this.lecturerName,
-      this.studentSet,
-      this.timeBegin,
-      this.timeEnd,
-      this.weekday,
-      this.roomId,
+      {required this.name,
+      required this.courseType,
+      required this.lecturerId,
+      required this.lecturerName,
+      this.studentSet = "",
+      required this.timeBegin,
+      required this.timeEnd,
+      required this.weekday,
+      required this.roomId,
       this.editMode = false,
-      this.color});
+      this.color = ColorConsts.mainOrange});
 
   factory ScheduleItem.fromJson(Map<String, dynamic> json) {
+    final color = json['color'];
+
     return ScheduleItem(
       name: json['name'].toString(),
       courseType: json['courseType'].toString(),
@@ -40,8 +42,9 @@ class ScheduleItem implements Comparable {
       timeEnd: json['timeEnd'].toString().padLeft(4, '0'),
       weekday: json['weekday'].toString(),
       roomId: json['roomId'].toString(),
-      color: Color(
-          int.parse(json['color'].toString()) ?? ColorConsts.mainOrange.value),
+      color: color != null
+          ? Color(int.parse(color.toString()))
+          : ColorConsts.mainOrange,
     );
   }
 

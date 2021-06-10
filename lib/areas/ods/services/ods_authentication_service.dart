@@ -3,7 +3,8 @@ import 'package:html/parser.dart';
 
 class OdsAuthenticationService {
   static Future<String> getAuthToken(String username, String password) async {
-    var loginResult = await http.post('https://ods.fh-dortmund.de/ods', body: {
+    var loginResult =
+        await http.post(Uri.parse('https://ods.fh-dortmund.de/ods'), body: {
       'LIMod': '',
       'HttpRequest_PathFile': '/',
       'HttpRequest_Path': '/',
@@ -19,9 +20,9 @@ class OdsAuthenticationService {
 
     for (var element in metaTags) {
       if (element.attributes.containsKey('content')) {
-        if (element.attributes['content'].contains('URL')) {
+        if (element.attributes['content']!.contains('URL')) {
           var contentString = element.attributes['content'];
-          return contentString.substring(contentString.indexOf('SIDD=') + 5);
+          return contentString!.substring(contentString.indexOf('SIDD=') + 5);
         }
       }
     }

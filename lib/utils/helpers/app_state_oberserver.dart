@@ -1,6 +1,6 @@
+import 'package:brightness_volume/brightness_volume.dart';
 import 'package:fb4_app/app_constants.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:screen/screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppStateObserver extends WidgetsBindingObserver {
@@ -8,7 +8,7 @@ class AppStateObserver extends WidgetsBindingObserver {
   double _prevBrightness = 0.0;
   int prevIndex = 0;
 
-  AppStateObserver({this.controller}) {
+  AppStateObserver({required this.controller}) {
     SharedPreferences.getInstance().then((sharedPrefs) {
       controller.addListener(() async {
         if (controller.index == 3) {
@@ -16,14 +16,14 @@ class AppStateObserver extends WidgetsBindingObserver {
           if ((sharedPrefs.getBool(
                   AppConstants.settingsIncreaseDisplayBrightnessInTicketview) ??
               false)) {
-            _prevBrightness = await Screen.brightness;
-            Screen.setBrightness(100.0);
+            _prevBrightness = await BVUtils.brightness;
+            BVUtils.setBrightness(100.0);
           }
         } else if (prevIndex == 3) {
           if ((sharedPrefs.getBool(
                   AppConstants.settingsIncreaseDisplayBrightnessInTicketview) ??
               false)) {
-            Screen.setBrightness(_prevBrightness);
+            BVUtils.setBrightness(_prevBrightness);
           }
         }
 
@@ -36,18 +36,18 @@ class AppStateObserver extends WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.resumed) {
       var sharedPrefs = await SharedPreferences.getInstance();
-      _prevBrightness = await Screen.brightness;
+      _prevBrightness = await BVUtils.brightness;
 
       if ((sharedPrefs.getBool(
               AppConstants.settingsIncreaseDisplayBrightnessInTicketview) ??
           false)) {
         if (controller.index == 3) {
-          Screen.setBrightness(100.0);
+          BVUtils.setBrightness(100.0);
         }
       }
     } else if (state == AppLifecycleState.inactive) {
       if (prevIndex == 3) {
-        Screen.setBrightness(_prevBrightness);
+        BVUtils.setBrightness(_prevBrightness);
       }
     }
   }

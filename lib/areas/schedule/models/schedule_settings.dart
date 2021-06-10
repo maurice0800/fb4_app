@@ -2,7 +2,8 @@ class ScheduleSettings {
   String courseIdentifier;
   String groupIdentifier;
 
-  ScheduleSettings({this.courseIdentifier, this.groupIdentifier});
+  ScheduleSettings(
+      {required this.courseIdentifier, required this.groupIdentifier});
 
   factory ScheduleSettings.fromJson(Map<String, dynamic> json) {
     return ScheduleSettings(
