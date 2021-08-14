@@ -20,8 +20,7 @@ class CupertinoCheckBox extends StatelessWidget {
         padding: const EdgeInsets.only(right: 8.0),
         child: GestureDetector(
           onTap: () => onChanged(!isChecked),
-          child: Container(
-              child: Row(
+          child: Row(
             children: [
               Icon(
                 isChecked
@@ -32,7 +31,7 @@ class CupertinoCheckBox extends StatelessWidget {
               const SizedBox(width: 10),
               Text(caption),
             ],
-          )),
+          ),
         ));
   }
 }

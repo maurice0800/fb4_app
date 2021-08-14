@@ -11,7 +11,7 @@ class LicensesPage extends StatelessWidget {
     return BaseView<LicensesPageViewModel>(
       onViewModelCreated: (viewModel) => viewModel.load(),
       builder: (context, viewModel, child) => CupertinoPageScaffold(
-        navigationBar: CupertinoNavigationBar(
+        navigationBar: const CupertinoNavigationBar(
           middle: Text("Lizenzen"),
           backgroundColor: ColorConsts.mainOrange,
         ),

@@ -13,7 +13,7 @@ class LoginPage extends StatelessWidget {
     return BaseView<LoginPageViewModel>(
       builder: (context, viewModel, child) => CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
-          middle: Text("Login"),
+          middle: const Text("Login"),
           backgroundColor: CupertinoTheme.of(context).primaryColor,
         ),
         child: SafeArea(
@@ -29,28 +29,29 @@ class LoginPage extends StatelessWidget {
                   color: CupertinoTheme.of(context).primaryColor,
                 ),
               ),
-              Text("Mobile"),
-              SizedBox(height: 40),
+              const Text("Mobile"),
+              const SizedBox(height: 40),
               CupertinoTextField(
                 placeholder: 'Benutzername',
                 controller: viewModel.usernameController,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               CupertinoTextField(
                 placeholder: 'Passwort',
                 controller: viewModel.passwordController,
                 obscureText: true,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               CupertinoCheckBox(
                 isChecked: viewModel.isSaveCredentialsChecked,
                 onChanged: (value) =>
                     viewModel.isSaveCredentialsChecked = value,
                 caption: "Logindaten speichern",
+                fillColor: CupertinoTheme.of(context).primaryColor,
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Row(
-                children: [
+                children: const [
                   Icon(CupertinoIcons.padlock),
                   SizedBox(
                     width: 10,
@@ -64,13 +65,10 @@ class LoginPage extends StatelessWidget {
                   )
                 ],
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               CupertinoButton(
-                child: viewModel.isLoggingIn
-                    ? CupertinoActivityIndicator()
-                    : Text("Login"),
                 onPressed: () async {
-                  bool result = await viewModel.login() ?? false;
+                  final result = await viewModel.login() ?? false;
 
                   if (result) {
                     Navigator.pop(context);
@@ -85,6 +83,9 @@ class LoginPage extends StatelessWidget {
                   }
                 },
                 color: CupertinoTheme.of(context).primaryColor,
+                child: viewModel.isLoggingIn
+                    ? const CupertinoActivityIndicator()
+                    : const Text("Login"),
               ),
             ],
           ),

@@ -4,35 +4,36 @@ import 'package:http/http.dart' as http;
 import 'package:html/parser.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class OdsRepository {
+mixin OdsRepository {
   static String cachedToken = "";
-  static FlutterSecureStorage secureStorage = FlutterSecureStorage();
+  static FlutterSecureStorage secureStorage = const FlutterSecureStorage();
 
   static Future<Map<int, List<ExamInfoModel>>> getExamInfos(
       {bool firstTry = true}) async {
     if (cachedToken == "") {
-      var username = await secureStorage.read(key: 'odsUsername');
-      var password = await secureStorage.read(key: 'odsPassword');
+      final username = await secureStorage.read(key: 'odsUsername');
+      final password = await secureStorage.read(key: 'odsPassword');
 
       cachedToken =
           await OdsAuthenticationService.getAuthToken(username!, password!);
     }
 
-    var result = await http.get(Uri.parse(
+    final result = await http.get(Uri.parse(
         'https://ods.fh-dortmund.de/ods?Sicht=DSTL&SIDD=$cachedToken'));
 
-    var resultHtml = parse(result.body);
-    var resultMap = Map<int, List<ExamInfoModel>>();
+    final resultHtml = parse(result.body);
+    final resultMap = <int, List<ExamInfoModel>>{};
 
     try {
-      for (var examRow in resultHtml
+      for (final examRow in resultHtml
           .getElementsByTagName('table')
           .where((e) => e.className == 'maintable')
           .first
-          .children[0]
+          .children
+          .first
           .children
           .skip(1)) {
-        var payload = examRow.getElementsByTagName('td');
+        final payload = examRow.getElementsByTagName('td');
 
         // Skip iteration when current row is a sub heading
         if (payload.first.attributes.containsKey('colspan')) {
@@ -44,7 +45,7 @@ class OdsRepository {
           continue;
         }
 
-        var result = ExamInfoModel(
+        final result = ExamInfoModel(
           name: payload[0].text.trim(),
           examKind: payload[5].text.trim(),
           tryCount: payload[4].text.trim(),

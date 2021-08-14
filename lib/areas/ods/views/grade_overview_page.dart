@@ -11,7 +11,7 @@ class GradeOverViewPage extends StatelessWidget {
     return BaseView<GradeOverviewPageViewModel>(
       onViewModelCreated: (viewModel) => viewModel.getGradeList(),
       builder: (context, viewModel, child) => CupertinoPageScaffold(
-          navigationBar: CupertinoNavigationBar(
+          navigationBar: const CupertinoNavigationBar(
             middle: Text("Notenübersicht"),
             backgroundColor: ColorConsts.mainOrange,
           ),
@@ -31,14 +31,14 @@ class GradeOverViewPage extends StatelessWidget {
                         countOfItemInSection: (section) =>
                             viewModel.exams[section + 1]?.length ?? 0,
                         sectionsCount: viewModel.exams.entries.length,
-                        separatorBuilder: (context, index) => SizedBox(
+                        separatorBuilder: (context, index) => const SizedBox(
                           height: 5.0,
                         ),
                         groupHeaderBuilder: (context, section) => Padding(
                           padding:
                               const EdgeInsets.only(top: 12.0, bottom: 4.0),
                           child: Text("${section + 1}. Semester",
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 18,
                               )),
                         ),
@@ -76,24 +76,21 @@ class GradeOverViewPage extends StatelessWidget {
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                width: double.infinity,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Prüfungsart: ${viewModel.exams[index.section + 1]![index.index].examKind}",
-                                    ),
-                                    Text(
-                                        "Versuch: ${viewModel.exams[index.section + 1]![index.index].tryCount}"),
-                                    Text(
-                                        "ECTS: ${viewModel.exams[index.section + 1]![index.index].ects}"),
-                                    Text(
-                                        "Status: ${viewModel.exams[index.section + 1]![index.index].status}"),
-                                    Text(
-                                        "Anmerkungen: ${viewModel.exams[index.section + 1]![index.index].additional}"),
-                                  ],
-                                ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Prüfungsart: ${viewModel.exams[index.section + 1]![index.index].examKind}",
+                                  ),
+                                  Text(
+                                      "Versuch: ${viewModel.exams[index.section + 1]![index.index].tryCount}"),
+                                  Text(
+                                      "ECTS: ${viewModel.exams[index.section + 1]![index.index].ects}"),
+                                  Text(
+                                      "Status: ${viewModel.exams[index.section + 1]![index.index].status}"),
+                                  Text(
+                                      "Anmerkungen: ${viewModel.exams[index.section + 1]![index.index].additional}"),
+                                ],
                               ),
                             ),
                           ],
@@ -101,7 +98,7 @@ class GradeOverViewPage extends StatelessWidget {
                       ),
                     ),
                   )
-                : Center(
+                : const Center(
                     child: CupertinoActivityIndicator(),
                   ),
           )),
@@ -112,21 +109,20 @@ class GradeOverViewPage extends StatelessWidget {
     showCupertinoDialog(
         context: context,
         builder: (context) => CupertinoAlertDialog(
-              title: Text("Fehler"),
+              title: const Text("Fehler"),
               content: Text(
-                  "Beim Abrufen der News ist ein Fehler aufgetreten:\n" +
-                      message),
+                  "Beim Abrufen der News ist ein Fehler aufgetreten:\n$message"),
               actions: [
                 GestureDetector(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                  onTap: () => Navigator.pop(context),
+                  child: const Padding(
+                    padding: EdgeInsets.all(16.0),
                     child: Text(
                       "Schließen",
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 16),
                     ),
                   ),
-                  onTap: () => Navigator.pop(context),
                 )
               ],
             ));

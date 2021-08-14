@@ -15,7 +15,7 @@ class NewsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (!noWrap)
+        if (!noWrap) {
           showCupertinoDialog(
             context: context,
             barrierDismissible: true,
@@ -34,45 +34,41 @@ class NewsCard extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20.0, vertical: 16.0),
-                    child: Container(
-                      child: IntrinsicHeight(
-                        child: Column(
-                          children: [
-                            Text(item.title,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 18)),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                              child: Divider(
-                                color: ColorConsts.mainOrange,
-                                thickness: 2,
-                              ),
+                    child: IntrinsicHeight(
+                      child: Column(
+                        children: [
+                          Text(item.title,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18)),
+                          const Padding(
+                            padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
+                            child: Divider(
+                              color: ColorConsts.mainOrange,
+                              thickness: 2,
                             ),
-                            Expanded(
-                              child: SingleChildScrollView(
-                                child: Text(item.description +
-                                    "\n\n" +
-                                    '(${item.list})'),
-                              ),
+                          ),
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Text(
+                                  item.description + "\n\n" + '(${item.list})'),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
-                              child: Divider(
-                                color: ColorConsts.mainOrange,
-                                thickness: 2,
-                              ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.only(top: 8.0),
+                            child: Divider(
+                              color: ColorConsts.mainOrange,
+                              thickness: 2,
                             ),
-                            CupertinoButton(
-                                child: Text(
-                                  "Schließen",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                }),
-                          ],
-                        ),
+                          ),
+                          CupertinoButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text(
+                                "Schließen",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              )),
+                        ],
                       ),
                     ),
                   ),
@@ -80,6 +76,7 @@ class NewsCard extends StatelessWidget {
               ),
             )),
           );
+        }
       },
       child: Card(
           color: CupertinoTheme.of(context).primaryContrastingColor,
@@ -91,9 +88,9 @@ class NewsCard extends StatelessWidget {
                 Text(item.title,
                     softWrap: true,
                     maxLines: noWrap == false ? 3 : 999999,
-                    style: TextStyle(fontWeight: FontWeight.bold)
+                    style: const TextStyle(fontWeight: FontWeight.bold)
                         .merge(CupertinoTheme.of(context).textTheme.textStyle)),
-                Divider(
+                const Divider(
                   color: ColorConsts.mainOrange,
                   thickness: 2,
                 ),
@@ -104,15 +101,20 @@ class NewsCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: CupertinoTheme.of(context).textTheme.textStyle,
                 ),
-                Divider(
+                const Divider(
                   color: ColorConsts.mainOrange,
                   thickness: 2,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(item.list,
-                        style: CupertinoTheme.of(context).textTheme.textStyle),
+                    Flexible(
+                      child: Text(
+                        item.list,
+                        style: CupertinoTheme.of(context).textTheme.textStyle,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
                     Text(
                       DateFormat('dd.MM.yyyy HH:mm').format(item.pubDate),
                       style: CupertinoTheme.of(context).textTheme.textStyle,
