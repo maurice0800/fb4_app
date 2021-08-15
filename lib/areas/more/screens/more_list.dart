@@ -5,6 +5,7 @@ import 'package:fb4_app/areas/more/screens/settings_page.dart';
 import 'package:fb4_app/areas/more/viewmodels/licenses_page_viewmodel.dart';
 import 'package:fb4_app/areas/more/viewmodels/privacy_page_viewmodel.dart';
 import 'package:fb4_app/areas/more/viewmodels/settings_page_view_model.dart';
+import 'package:fb4_app/areas/ods/viewmodels/grades_overview_page_viewmodel.dart';
 import 'package:fb4_app/areas/ods/views/grade_overview_page.dart';
 import 'package:fb4_app/areas/ods/views/login_page.dart';
 import 'package:fb4_app/config/themes/color_consts.dart';
@@ -12,6 +13,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cupertino_settings/flutter_cupertino_settings.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:kiwi/kiwi.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -83,7 +85,11 @@ class MoreList extends StatelessWidget {
               title: "Notenübersicht",
               onPressed: () async {
                 if (await FlutterSecureStorage()
-                    .containsKey(key: 'odsUsername')) {
+                        .containsKey(key: 'odsUsername') ||
+                    KiwiContainer()
+                        .resolve<GradeOverviewPageViewModel>()
+                        .exams
+                        .isNotEmpty) {
                   Navigator.push(
                     context,
                     CupertinoPageRoute(

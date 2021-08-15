@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class LoginPageViewModel extends ChangeNotifier {
-  bool _isSaveCredentialsChecked = true;
+  bool _isSaveCredentialsChecked = false;
   bool isLoggingIn = false;
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -38,6 +38,7 @@ class LoginPageViewModel extends ChangeNotifier {
         }
 
         OdsRepository.cachedToken = token;
+        isLoggingIn = false;
         return true;
       }
     }).onError((error, stackTrace) {
