@@ -26,7 +26,7 @@ dependencies:
   provider: ^5.0.0
   flutter_cupertino_settings: ^0.5.0
   http: ^0.13.3
-  equatable: ^2.0.2
+  equatable: ^2.0.3
   xml: ^5.1.2
   intl: ^0.17.0
   firebase_messaging: ^10.0.1
@@ -42,7 +42,7 @@ dependencies:
   flutter_markdown: ^0.6.2
   quick_actions: ^0.6.0+2
   modal_bottom_sheet: ^2.0.0
-  flutter_colorpicker: ^0.5.0
+  flutter_colorpicker: ^0.4.0
   html: ^0.15.0
   group_list_view: ^1.1.1
   flutter_secure_storage: ^4.2.0
