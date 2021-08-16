@@ -14,14 +14,19 @@ class MainViewModel extends ChangeNotifier {
         shouldShowPrivacyPolicy = false;
       }
 
+      if (s.getString(AppConstants.privacyPolicyAcceptedVersion) != "1.1") {
+        shouldShowPrivacyPolicy = true;
+      }
+
       isInitialized = true;
       notifyListeners();
     });
   }
 
   void acceptPrivacyPolicy() async {
-    await SharedPreferences.getInstance()
-        .then((s) => s.setBool(AppConstants.privacyPolicyAccepted, true));
+    final instance = await SharedPreferences.getInstance();
+    instance.setBool(AppConstants.privacyPolicyAccepted, true);
+    instance.setString(AppConstants.privacyPolicyAcceptedVersion, "1.1");
 
     shouldShowPrivacyPolicy = false;
     notifyListeners();
