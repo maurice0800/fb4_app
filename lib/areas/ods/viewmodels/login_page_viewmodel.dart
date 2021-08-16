@@ -37,6 +37,9 @@ class LoginPageViewModel extends ChangeNotifier {
           FlutterSecureStorage().write(key: 'odsPassword', value: password);
         }
 
+        usernameController.text = "";
+        passwordController.text = "";
+
         OdsRepository.cachedToken = token;
         isLoggingIn = false;
         return true;

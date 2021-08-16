@@ -1,5 +1,6 @@
 import 'package:fb4_app/app_constants.dart';
 import 'package:fb4_app/areas/ods/repositories/ods_repository.dart';
+import 'package:fb4_app/areas/ods/viewmodels/grades_overview_page_viewmodel.dart';
 import 'package:fb4_app/areas/schedule/viewmodels/schedule_overview_viewmodel.dart';
 import 'package:fb4_app/areas/ticket/viewmodels/ticket_overview_viewmodel.dart';
 import 'package:fb4_app/utils/plugins/push_notification_manager.dart';
@@ -81,5 +82,6 @@ class SettingsPageViewModel extends ChangeNotifier {
     await const FlutterSecureStorage().delete(key: "odsUsername");
     await const FlutterSecureStorage().delete(key: "odsPassword");
     OdsRepository.cachedToken = "";
+    KiwiContainer().resolve<GradeOverviewPageViewModel>().exams.clear();
   }
 }
