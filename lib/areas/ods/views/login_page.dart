@@ -91,7 +91,8 @@ class LoginPage extends StatelessWidget {
               ]),
               const SizedBox(height: 32),
               Padding(
-                padding: const EdgeInsets.only(left: 20.0, bottom: 20.0),
+                padding: const EdgeInsets.only(
+                    left: 20.0, bottom: 20.0, right: 20.0),
                 child: Row(
                   children: const [
                     Icon(CupertinoIcons.padlock),
@@ -100,7 +101,7 @@ class LoginPage extends StatelessWidget {
                     ),
                     Flexible(
                       child: Text(
-                        "Die Logindaten werden verschlüsselt auf deinem Gerät in der Keychain gespeichert.",
+                        "Die Logindaten werden verschlüsselt in der Keychain auf deinem Gerät gespeichert.",
                         softWrap: true,
                         overflow: TextOverflow.visible,
                       ),
