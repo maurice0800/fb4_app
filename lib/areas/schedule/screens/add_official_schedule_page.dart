@@ -113,7 +113,7 @@ class AddOfficialSchedulePage extends StatelessWidget {
                             groupString: viewModel.selectedGroup));
                       }
                     },
-                    child: const Text("Spiechern",
+                    child: const Text("Speichern",
                         style: TextStyle(color: CupertinoColors.white)))),
             child: SafeArea(
               child: Padding(
