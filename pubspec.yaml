@@ -40,9 +40,9 @@ dependencies:
   shared_preferences: ^2.0.6
   brightness_volume: ^1.0.3
   flutter_markdown: ^0.6.2
-  quick_actions: ^0.6.0+2
+  quick_actions: ^0.6.0+7
   modal_bottom_sheet: ^2.0.0
-  flutter_colorpicker: ^0.4.0
+  flutter_colorpicker: ^0.5.0
   html: ^0.15.0
   group_list_view: ^1.1.1
   flutter_secure_storage: ^4.2.0

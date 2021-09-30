@@ -29,13 +29,14 @@ class NewsOverview extends StatelessWidget {
                             child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text("Es ist ein Fehler aufgetreten."),
-                              SizedBox(
+                              const Text("Es ist ein Fehler aufgetreten."),
+                              const SizedBox(
                                 height: 10,
                               ),
                               CupertinoButton.filled(
-                                  child: Text("Nochmal versuchen"),
+                                  child: const Text("Nochmal versuchen"),
                                   onPressed: () {
+                                    viewModel.hasError = false;
                                     viewModel
                                       ..fetchNewsItems(
                                           onError: (message) => showErrorDialog(
