@@ -8,16 +8,16 @@ class QuickActionsManager {
 
   QuickActionsManager(this.tabController);
 
-  init() {
+  init() async {
+    quickActions.initialize((shortcutType) {
+      tabController.index = 3;
+    });
+
     quickActions.setShortcutItems(<ShortcutItem>[
       const ShortcutItem(
           type: AppConstants.quickActionTicket,
           localizedTitle: 'Ticket anzeigen',
           icon: 'ticket'),
     ]);
-
-    quickActions.initialize((shortcutType) {
-      tabController.index = 3;
-    });
   }
 }

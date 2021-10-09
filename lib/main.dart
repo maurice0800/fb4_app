@@ -17,6 +17,7 @@ import 'package:fb4_app/config/themes/dark_theme.dart';
 import 'package:fb4_app/main_view_model.dart';
 import 'package:fb4_app/utils/helpers/app_state_oberserver.dart';
 import 'package:fb4_app/utils/plugins/push_notification_manager.dart';
+import 'package:fb4_app/utils/plugins/quick_actions_manager.dart';
 import 'package:fb4_app/utils/ui/icons/fb4app_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -30,12 +31,14 @@ import 'areas/canteen/screens/canteen_overview.dart';
 import 'config/themes/light_theme.dart';
 
 void main() async {
-  var appTabController = CupertinoTabController();
-  var notificationManager = PushNotificationsManager();
+  final appTabController = CupertinoTabController();
+  final notificationManager = PushNotificationsManager();
+  final quickActionsManager = QuickActionsManager(appTabController);
 
   registerDependencies();
 
   runApp(FB4App(controller: appTabController));
+  quickActionsManager.init();
 
   WidgetsBinding.instance!
       .addObserver(AppStateObserver(controller: appTabController));
