@@ -27,4 +27,6 @@ class AppConstants {
   static const settingsGoToCurrentDayInSchedule = "goToCurrentDayInSchedule";
 
   static const privacyPolicyAcceptedVersion = "privacyPolicyAcceptedVersion";
+
+  static const pinnedNewsItems = "pinnedNewsItems";
 }

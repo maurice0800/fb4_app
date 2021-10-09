@@ -29,4 +29,15 @@ class NewsItem {
         description: json['body'].toString(),
         list: json['list'].toString());
   }
+
+  Map<String, dynamic> toJson() {
+    final timeFormat = DateFormat("dd.MM.yyyy - hh:mm:ss");
+
+    return {
+      "header": title,
+      "date": timeFormat.format(pubDate),
+      "body": description,
+      "list": list,
+    };
+  }
 }

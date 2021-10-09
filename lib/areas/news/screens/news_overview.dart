@@ -1,18 +1,22 @@
+import 'dart:math';
+
 import 'package:fb4_app/areas/news/viewmodels/news_overview_viewmodel.dart';
 import 'package:fb4_app/areas/news/widgets/news_card.dart';
 import 'package:fb4_app/config/themes/color_consts.dart';
 import 'package:fb4_app/core/views/base_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'dart:math';
 
 class NewsOverview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseView<NewsOverviewViewModel>(
-        onViewModelCreated: (viewModel) => viewModel.fetchNewsItems(
-            alwaysRefresh: false,
-            onError: (message) => showErrorDialog(context, message)),
+        onViewModelCreated: (viewModel) {
+          viewModel.fetchNewsItems(
+              alwaysRefresh: false,
+              onError: (message) => _showErrorDialog(context, message));
+          viewModel.loadPinnedItemsCache();
+        },
         builder: (context, viewModel, child) => CupertinoPageScaffold(
               navigationBar: CupertinoNavigationBar(
                 backgroundColor: ColorConsts.mainOrange,
@@ -37,10 +41,9 @@ class NewsOverview extends StatelessWidget {
                                   child: const Text("Nochmal versuchen"),
                                   onPressed: () {
                                     viewModel.hasError = false;
-                                    viewModel
-                                      ..fetchNewsItems(
-                                          onError: (message) => showErrorDialog(
-                                              context, message));
+                                    viewModel.fetchNewsItems(
+                                        onError: (message) =>
+                                            _showErrorDialog(context, message));
                                   })
                             ],
                           ))
@@ -48,55 +51,71 @@ class NewsOverview extends StatelessWidget {
                             CupertinoSliverRefreshControl(onRefresh: () {
                               return viewModel.fetchNewsItems(
                                   onError: (message) =>
-                                      showErrorDialog(context, message));
-                            }, builder: (context, mode, d1, d2, d3) {
-                              const Curve opacityCurve =
-                                  Interval(0.0, 0.35, curve: Curves.easeInOut);
-                              return Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
-                                child: Opacity(
-                                  opacity:
-                                      opacityCurve.transform(min(d1 / d2, 1.0)),
-                                  child: CupertinoActivityIndicator
-                                      .partiallyRevealed(
-                                          radius: 14.0,
-                                          progress: min(d1 / d2, 1.0)),
-                                ),
-                              );
+                                      _showErrorDialog(context, message));
                             }),
+                            if (viewModel.pinnedItems.isNotEmpty)
+                              const SliverToBoxAdapter(
+                                child: Padding(
+                                  padding:
+                                      EdgeInsets.only(left: 14.0, top: 12.0),
+                                  child: Text("Angepinnte Elemente",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                              ),
                             SliverToBoxAdapter(
                               child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: ListView.separated(
                                       shrinkWrap: true,
-                                      physics: ScrollPhysics(),
-                                      itemBuilder: (context, index) => NewsCard(
-                                          item: viewModel.newsItems[index]),
-                                      separatorBuilder: (context, itemCount) =>
-                                          SizedBox(height: 5),
+                                      physics: const ScrollPhysics(),
+                                      itemBuilder: (context, index) =>
+                                          _buildPinnedNewsItem(
+                                              context, index, viewModel),
+                                      separatorBuilder: (context, index) =>
+                                          const SizedBox(height: 5),
+                                      itemCount: viewModel.pinnedItems.length)),
+                            ),
+                            if (viewModel.pinnedItems.isNotEmpty)
+                              const SliverToBoxAdapter(
+                                child: Divider(
+                                  color: CupertinoColors.lightBackgroundGray,
+                                  thickness: 2,
+                                ),
+                              ),
+                            SliverToBoxAdapter(
+                              child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ListView.separated(
+                                      shrinkWrap: true,
+                                      physics: const ScrollPhysics(),
+                                      itemBuilder: (context, index) =>
+                                          _buildNewsItem(
+                                              context, index, viewModel),
+                                      separatorBuilder: (context, index) =>
+                                          const SizedBox(height: 5),
                                       itemCount: viewModel.newsItems.length)),
-                            )
+                            ),
                           ]);
                   } else {
-                    return Center(child: CupertinoActivityIndicator());
+                    return const Center(child: CupertinoActivityIndicator());
                   }
                 },
               )),
             ));
   }
 
-  void showErrorDialog(BuildContext context, String message) {
+  void _showErrorDialog(BuildContext context, String message) {
     showCupertinoDialog(
         context: context,
         builder: (context) => CupertinoAlertDialog(
-              title: Text("Fehler"),
+              title: const Text("Fehler"),
               content: Text(
-                  "Beim Abrufen der News ist ein Fehler aufgetreten:\n" +
-                      message),
+                  "Beim Abrufen der News ist ein Fehler aufgetreten:\n$message"),
               actions: [
                 GestureDetector(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                  child: const Padding(
+                    padding: EdgeInsets.all(16.0),
                     child: Text(
                       "Schließen",
                       textAlign: TextAlign.center,
@@ -107,5 +126,45 @@ class NewsOverview extends StatelessWidget {
                 )
               ],
             ));
+  }
+
+  Widget _buildNewsItem(
+      BuildContext context, int index, NewsOverviewViewModel viewModel) {
+    return GestureDetector(
+      onLongPress: () {
+        showCupertinoModalPopup(
+            context: context,
+            builder: (builder) => CupertinoActionSheet(actions: [
+                  CupertinoActionSheetAction(
+                    onPressed: () {
+                      viewModel.pinNewsItem(viewModel.newsItems[index]);
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text("Element anpinnen"),
+                  )
+                ]));
+      },
+      child: NewsCard(item: viewModel.newsItems[index]),
+    );
+  }
+
+  Widget _buildPinnedNewsItem(
+      BuildContext context, int index, NewsOverviewViewModel viewModel) {
+    return GestureDetector(
+      onLongPress: () {
+        showCupertinoModalPopup(
+            context: context,
+            builder: (builder) => CupertinoActionSheet(actions: [
+                  CupertinoActionSheetAction(
+                    onPressed: () {
+                      viewModel.unpinNewsItem(index);
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text("Element ablösen"),
+                  )
+                ]));
+      },
+      child: NewsCard(item: viewModel.pinnedItems[index]),
+    );
   }
 }
