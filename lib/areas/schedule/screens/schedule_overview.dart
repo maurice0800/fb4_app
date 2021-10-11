@@ -14,99 +14,105 @@ class ScheduleOverview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseView<ScheduleOverviewViewModel>(
-        builder: (context, viewModel, child) => CupertinoPageScaffold(
-            navigationBar: buildNavigationBar(context, viewModel),
-            child: SafeArea(child: Builder(builder: (context) {
-              if (viewModel.hasItems) {
-                WidgetsBinding.instance?.addPostFrameCallback((_) async {
-                  viewModel.aferNextRender();
-                  viewModel.aferNextRender = () {};
-                });
-                return Column(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          color: ColorConsts.mainOrange,
-                          border: Border(
-                              bottom: BorderSide(
-                                  color: CupertinoTheme.brightnessOf(context) ==
-                                          Brightness.light
-                                      ? CupertinoColors.systemGrey5
-                                      : ColorConsts.mainOrange))),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(children: [
-                          Expanded(
-                            child: ValueListenableBuilder<int>(
-                              valueListenable: viewModel.controllerPageNotifier,
-                              builder:
-                                  (BuildContext context, value, Widget? child) {
-                                return CupertinoSegmentedControl(
-                                    groupValue: value,
-                                    pressedColor: ColorConsts.mainOrange,
-                                    borderColor: CupertinoColors.white,
-                                    unselectedColor: ColorConsts.mainOrange,
-                                    selectedColor: CupertinoColors.white,
-                                    children: const <int, Widget>{
-                                      0: Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: Text('Mo')),
-                                      1: Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: Text('Di')),
-                                      2: Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: Text('Mi')),
-                                      3: Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: Text('Do')),
-                                      4: Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: Text('Fr')),
+        builder: (context, viewModel, child) => CupertinoScaffold(
+              body: CupertinoPageScaffold(
+                  navigationBar: buildNavigationBar(context, viewModel),
+                  child: SafeArea(child: Builder(builder: (context) {
+                    if (viewModel.hasItems) {
+                      WidgetsBinding.instance?.addPostFrameCallback((_) async {
+                        viewModel.aferNextRender();
+                        viewModel.aferNextRender = () {};
+                      });
+                      return Column(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                                color: ColorConsts.mainOrange,
+                                border: Border(
+                                    bottom: BorderSide(
+                                        color: CupertinoTheme.brightnessOf(
+                                                    context) ==
+                                                Brightness.light
+                                            ? CupertinoColors.systemGrey5
+                                            : ColorConsts.mainOrange))),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(children: [
+                                Expanded(
+                                  child: ValueListenableBuilder<int>(
+                                    valueListenable:
+                                        viewModel.controllerPageNotifier,
+                                    builder: (BuildContext context, value,
+                                        Widget? child) {
+                                      return CupertinoSegmentedControl(
+                                          groupValue: value,
+                                          pressedColor: ColorConsts.mainOrange,
+                                          borderColor: CupertinoColors.white,
+                                          unselectedColor:
+                                              ColorConsts.mainOrange,
+                                          selectedColor: CupertinoColors.white,
+                                          children: const <int, Widget>{
+                                            0: Padding(
+                                                padding: EdgeInsets.all(8.0),
+                                                child: Text('Mo')),
+                                            1: Padding(
+                                                padding: EdgeInsets.all(8.0),
+                                                child: Text('Di')),
+                                            2: Padding(
+                                                padding: EdgeInsets.all(8.0),
+                                                child: Text('Mi')),
+                                            3: Padding(
+                                                padding: EdgeInsets.all(8.0),
+                                                child: Text('Do')),
+                                            4: Padding(
+                                                padding: EdgeInsets.all(8.0),
+                                                child: Text('Fr')),
+                                          },
+                                          onValueChanged: (val) {
+                                            viewModel.controllerPageNotifier
+                                                    .value =
+                                                int.parse(val.toString());
+                                            scrollClickedPageIntoView(val,
+                                                viewModel.pageViewController);
+                                          });
                                     },
-                                    onValueChanged: (val) {
-                                      viewModel.controllerPageNotifier.value =
-                                          int.parse(val.toString());
-                                      scrollClickedPageIntoView(
-                                          val, viewModel.pageViewController);
-                                    });
-                              },
+                                  ),
+                                ),
+                              ]),
                             ),
                           ),
-                        ]),
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: PageView(
-                            controller: viewModel.pageViewController,
-                            onPageChanged: (index) =>
-                                viewModel.controllerPageNotifier.value = index,
-                            children: <Widget>[
-                              viewModel.displayScheduleItems[0],
-                              viewModel.displayScheduleItems[1],
-                              viewModel.displayScheduleItems[2],
-                              viewModel.displayScheduleItems[3],
-                              viewModel.displayScheduleItems[4],
-                            ]),
-                      ),
-                    ),
-                  ],
-                );
-              } else if (viewModel.isLoading) {
-                return Center(
-                  child: CupertinoActivityIndicator(),
-                );
-              } else {
-                return Center(
-                    child: Text(
-                  "Noch kein Stundenplan angelegt. Lege deinen ersten Stundenplan an, indem du auf das Plus-Symbol tippst!",
-                  style: CupertinoTheme.of(context).textTheme.textStyle,
-                  textAlign: TextAlign.center,
-                ));
-              }
-            }))));
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: PageView(
+                                  controller: viewModel.pageViewController,
+                                  onPageChanged: (index) => viewModel
+                                      .controllerPageNotifier.value = index,
+                                  children: <Widget>[
+                                    viewModel.displayScheduleItems[0],
+                                    viewModel.displayScheduleItems[1],
+                                    viewModel.displayScheduleItems[2],
+                                    viewModel.displayScheduleItems[3],
+                                    viewModel.displayScheduleItems[4],
+                                  ]),
+                            ),
+                          ),
+                        ],
+                      );
+                    } else if (viewModel.isLoading) {
+                      return Center(
+                        child: CupertinoActivityIndicator(),
+                      );
+                    } else {
+                      return Center(
+                          child: Text(
+                        "Noch kein Stundenplan angelegt. Lege deinen ersten Stundenplan an, indem du auf das Plus-Symbol tippst!",
+                        style: CupertinoTheme.of(context).textTheme.textStyle,
+                        textAlign: TextAlign.center,
+                      ));
+                    }
+                  }))),
+            ));
   }
 
   void scrollClickedPageIntoView(index, controller) async {
@@ -161,10 +167,14 @@ class ScheduleOverview extends StatelessWidget {
                                   CupertinoActionSheetAction(
                                       onPressed: () {
                                         Navigator.pop(context);
-                                        showCupertinoModalBottomSheet(
-                                                context: context,
-                                                builder: (context) =>
-                                                    AddOfficialSchedulePage())
+                                        CupertinoScaffold
+                                                .showCupertinoModalBottomSheet(
+                                                    expand: true,
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                    context: context,
+                                                    builder: (context) =>
+                                                        AddOfficialSchedulePage())
                                             .then((result) {
                                           if (result != null) {
                                             viewModel
@@ -178,10 +188,11 @@ class ScheduleOverview extends StatelessWidget {
                                   CupertinoActionSheetAction(
                                       onPressed: () {
                                         Navigator.pop(context);
-                                        showCupertinoModalBottomSheet(
-                                                context: context,
-                                                builder: (context) =>
-                                                    AddCustomScheduleItemPage())
+                                        CupertinoScaffold
+                                                .showCupertinoModalBottomSheet(
+                                                    context: context,
+                                                    builder: (context) =>
+                                                        AddCustomScheduleItemPage())
                                             .then((result) =>
                                                 viewModel.addCustomItem(
                                                     result as ScheduleItem));
