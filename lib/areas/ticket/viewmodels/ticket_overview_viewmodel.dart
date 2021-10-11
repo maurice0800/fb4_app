@@ -54,16 +54,16 @@ class TicketOverviewViewModel extends ChangeNotifier {
     isImageProcessing = true;
     notifyListeners();
 
-    var rawImageBytes = await PdfDocument.openFile(pdfPath).then((file) {
+    final rawImageBytes = await PdfDocument.openFile(pdfPath).then((file) {
       return file.getPage(1).then((page) {
         return page
             .render(
-                x: 360,
+                x: 400,
                 y: 120,
-                width: 2000,
-                height: 2800,
-                fullWidth: 4800,
-                fullHeight: 6000)
+                width: 1900,
+                height: 1800,
+                fullWidth: 4200,
+                fullHeight: 4300)
             .then((fragment) {
           return fragment
               .createImageIfNotAvailable()

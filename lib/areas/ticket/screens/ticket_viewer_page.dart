@@ -37,9 +37,9 @@ class TicketViewerPage extends StatelessWidget {
             "Du hast noch kein Ticket ausgewählt.",
             style: CupertinoTheme.of(context).textTheme.textStyle,
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           CupertinoButton.filled(
-              child: Text("Ticket wählen",
+              child: const Text("Ticket wählen",
                   style: TextStyle(color: CupertinoColors.white)),
               onPressed: () {
                 FilePicker.platform.pickFiles().then((result) => {
@@ -60,7 +60,7 @@ class TicketViewerPage extends StatelessWidget {
         onViewModelCreated: (viewModel) => viewModel.init(),
         builder: (context, viewModel, child) {
           if (viewModel.isImageProcessing) {
-            return Center(
+            return const Center(
               child: CupertinoActivityIndicator(),
             );
           }
@@ -70,9 +70,12 @@ class TicketViewerPage extends StatelessWidget {
               child: GestureDetector(
                 onDoubleTap: _handleDoubleTap,
                 onDoubleTapDown: (details) => _tapDownDetails = details,
-                child: InteractiveViewer(
-                  transformationController: _transformationController,
-                  child: Image.memory(viewModel.imageBytes!),
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(minHeight: 1000),
+                  child: InteractiveViewer(
+                    transformationController: _transformationController,
+                    child: Image.memory(viewModel.imageBytes!),
+                  ),
                 ),
               ),
             );
@@ -90,7 +93,7 @@ class TicketViewerPage extends StatelessWidget {
       _transformationController.value = Matrix4.identity()
         ..translate(-_tapDownDetails!.localPosition.dx,
             -_tapDownDetails!.localPosition.dy)
-        ..scale(2.0);
+        ..scale(2.2);
       _isZoomed = true;
     }
   }
