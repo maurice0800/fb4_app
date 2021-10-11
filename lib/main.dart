@@ -62,7 +62,7 @@ void registerDependencies() {
       (container) => LicensesPageViewModel());
   KiwiContainer().registerSingleton<PrivacyPageViewModel>(
       (container) => PrivacyPageViewModel());
-  KiwiContainer().registerSingleton<AddCustomScheduleItemPageViewModel>(
+  KiwiContainer().registerFactory<AddCustomScheduleItemPageViewModel>(
       (container) => AddCustomScheduleItemPageViewModel());
   KiwiContainer().registerSingleton<SettingsPageViewModel>(
       (container) => SettingsPageViewModel());

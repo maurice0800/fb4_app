@@ -5,10 +5,10 @@ import 'package:fb4_app/areas/schedule/screens/add_official_schedule_page.dart';
 import 'package:fb4_app/areas/schedule/viewmodels/schedule_overview_viewmodel.dart';
 import 'package:fb4_app/config/themes/color_consts.dart';
 import 'package:fb4_app/core/views/base_view.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class ScheduleOverview extends StatelessWidget {
   @override
@@ -20,7 +20,9 @@ class ScheduleOverview extends StatelessWidget {
                   child: SafeArea(child: Builder(builder: (context) {
                     if (viewModel.hasItems) {
                       WidgetsBinding.instance?.addPostFrameCallback((_) async {
-                        viewModel.aferNextRender();
+                        if (viewModel.aferNextRender != null) {
+                          viewModel.aferNextRender();
+                        }
                         viewModel.aferNextRender = () {};
                       });
                       return Column(
@@ -72,7 +74,9 @@ class ScheduleOverview extends StatelessWidget {
                                             viewModel.controllerPageNotifier
                                                     .value =
                                                 int.parse(val.toString());
-                                            scrollClickedPageIntoView(val,
+                                            scrollClickedPageIntoView(
+                                                viewModel.controllerPageNotifier
+                                                    .value,
                                                 viewModel.pageViewController);
                                           });
                                     },
@@ -100,7 +104,7 @@ class ScheduleOverview extends StatelessWidget {
                         ],
                       );
                     } else if (viewModel.isLoading) {
-                      return Center(
+                      return const Center(
                         child: CupertinoActivityIndicator(),
                       );
                     } else {
@@ -115,13 +119,9 @@ class ScheduleOverview extends StatelessWidget {
             ));
   }
 
-  void scrollClickedPageIntoView(index, controller) async {
+  Future scrollClickedPageIntoView(int index, PageController controller) async {
     controller.animateToPage(index,
-        curve: Curves.ease, duration: Duration(milliseconds: 100));
-  }
-
-  void handlePageChanged(int value) async {
-    // controllerPageNotifier.value = value;
+        curve: Curves.ease, duration: const Duration(milliseconds: 100));
   }
 
   ObstructingPreferredSizeWidget buildNavigationBar(
@@ -184,7 +184,8 @@ class ScheduleOverview extends StatelessWidget {
                                           }
                                         });
                                       },
-                                      child: Text("Offizieller Stundenplan")),
+                                      child: const Text(
+                                          "Offizieller Stundenplan")),
                                   CupertinoActionSheetAction(
                                       onPressed: () {
                                         Navigator.pop(context);
@@ -192,21 +193,26 @@ class ScheduleOverview extends StatelessWidget {
                                                 .showCupertinoModalBottomSheet(
                                                     context: context,
                                                     builder: (context) =>
-                                                        AddCustomScheduleItemPage())
-                                            .then((result) =>
-                                                viewModel.addCustomItem(
-                                                    result as ScheduleItem));
+                                                        const AddCustomScheduleItemPage())
+                                            .then((result) => {
+                                                  if (result != null)
+                                                    {
+                                                      viewModel.addCustomItem(
+                                                          result
+                                                              as ScheduleItem)
+                                                    }
+                                                });
                                       },
-                                      child: Text("Eigener Eintrag")),
+                                      child: const Text("Eigener Eintrag")),
                                 ],
                               ));
                     },
+                    padding: EdgeInsets.zero,
                     child: Icon(CupertinoIcons.add,
                         color: CupertinoTheme.of(context)
                             .textTheme
                             .navTitleTextStyle
                             .color),
-                    padding: EdgeInsets.zero,
                   ),
                 ]);
         }));

@@ -35,7 +35,7 @@ class ScheduleListState extends State<ScheduleList>
             Expanded(
               child: ListView.separated(
                 itemCount: widget.items.length,
-                separatorBuilder: (context, index) => SizedBox(height: 5),
+                separatorBuilder: (context, index) => const SizedBox(height: 5),
                 itemBuilder: (context, index) => GestureDetector(
                   onLongPress: () => widget.items[index].editMode == false
                       ? showContextMenu(context, index)
@@ -66,9 +66,9 @@ class ScheduleListState extends State<ScheduleList>
                     showCupertinoDialog(
                         context: context,
                         builder: (context) => CupertinoAlertDialog(
-                              title: Text("Farbe wählen"),
+                              title: const Text("Farbe wählen"),
                               content: BlockPicker(
-                                  availableColors: [
+                                  availableColors: const [
                                     Colors.red,
                                     Colors.pink,
                                     Colors.purple,
@@ -108,7 +108,7 @@ class ScheduleListState extends State<ScheduleList>
                                   }),
                               actions: [
                                 CupertinoDialogAction(
-                                  child: Text("Abbrechen"),
+                                  child: const Text("Abbrechen"),
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                   },
@@ -116,7 +116,7 @@ class ScheduleListState extends State<ScheduleList>
                               ],
                             ));
                   },
-                  child: Text("Farbe ändern"),
+                  child: const Text("Farbe ändern"),
                 ),
                 CupertinoActionSheetAction(
                   onPressed: () async {
@@ -126,8 +126,8 @@ class ScheduleListState extends State<ScheduleList>
                     widget.items.removeAt(index);
                     Navigator.pop(context);
                   },
-                  child: Text("Eintrag entfernen"),
                   isDestructiveAction: true,
+                  child: const Text("Eintrag entfernen"),
                 ),
               ],
             ));

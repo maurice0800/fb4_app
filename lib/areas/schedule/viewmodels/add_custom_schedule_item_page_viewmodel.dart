@@ -24,24 +24,22 @@ class AddCustomScheduleItemPageViewModel extends ChangeNotifier {
   }
 
   bool validate() {
-    return (nameController.text.length > 0 &&
-        weekdayController.text.length > 0 &&
-        timeBeginController.text.length > 0 &&
-        timeEndController.text.length > 0 &&
-        roomController.text.length > 0 &&
-        lecturerController.text.length > 0 &&
-        shortlecturerController.text.length > 0);
+    return nameController.text.isNotEmpty &&
+        weekdayController.text.isNotEmpty &&
+        timeBeginController.text.isNotEmpty &&
+        timeEndController.text.isNotEmpty &&
+        roomController.text.isNotEmpty &&
+        lecturerController.text.isNotEmpty &&
+        shortlecturerController.text.isNotEmpty;
   }
 
   void setTimeBegin(DateTime time) {
-    timeBeginController.text = time.hour.toString().padLeft(2, '0') +
-        ":" +
-        time.minute.toString().padLeft(2, '0');
+    timeBeginController.text =
+        "${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}";
   }
 
   void setTimeEnd(DateTime time) {
-    timeEndController.text = time.hour.toString().padLeft(2, '0') +
-        ":" +
-        time.minute.toString().padLeft(2, '0');
+    timeEndController.text =
+        "${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}";
   }
 }

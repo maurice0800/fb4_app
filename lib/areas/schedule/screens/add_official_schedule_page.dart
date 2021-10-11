@@ -78,6 +78,15 @@ class AddOfficialSchedulePage extends StatelessWidget {
         builder: (context, viewModel, child) => CupertinoPageScaffold(
             navigationBar: CupertinoNavigationBar(
                 backgroundColor: ColorConsts.mainOrange,
+                leading: Padding(
+                  padding: const EdgeInsets.only(top: 14.0),
+                  child: GestureDetector(
+                      onTap: Navigator.of(context).pop,
+                      child: const Text("Abbrechen",
+                          style: TextStyle(
+                            color: CupertinoColors.white,
+                          ))),
+                ),
                 middle: Text("Hinzufügen",
                     style:
                         CupertinoTheme.of(context).textTheme.navTitleTextStyle),
@@ -114,7 +123,9 @@ class AddOfficialSchedulePage extends StatelessWidget {
                       }
                     },
                     child: const Text("Speichern",
-                        style: TextStyle(color: CupertinoColors.white)))),
+                        style: TextStyle(
+                            color: CupertinoColors.white,
+                            fontWeight: FontWeight.bold)))),
             child: SafeArea(
               child: Padding(
                 padding: const EdgeInsets.only(top: 16.0),

@@ -14,8 +14,17 @@ class AddCustomScheduleItemPage extends StatelessWidget {
         builder: (context, viewModel, child) => CupertinoPageScaffold(
               navigationBar: CupertinoNavigationBar(
                 backgroundColor: ColorConsts.mainOrange,
-                middle: Text("Eigener Eintrag",
-                    style: TextStyle(fontWeight: FontWeight.normal)),
+                leading: Padding(
+                  padding: const EdgeInsets.only(top: 14.0),
+                  child: GestureDetector(
+                      onTap: Navigator.of(context).pop,
+                      child: const Text("Abbrechen",
+                          style: TextStyle(
+                            color: CupertinoColors.white,
+                          ))),
+                ),
+                middle: const Text("Eigener Eintrag",
+                    style: TextStyle(fontWeight: FontWeight.bold)),
                 trailing: GestureDetector(
                   onTap: () {
                     if (viewModel.validate()) {
@@ -24,13 +33,13 @@ class AddCustomScheduleItemPage extends StatelessWidget {
                       showCupertinoDialog(
                           context: context,
                           builder: (context) => CupertinoAlertDialog(
-                                title: Text("Fehler"),
-                                content: Text(
+                                title: const Text("Fehler"),
+                                content: const Text(
                                     "Es wurden nicht alle erforderlichen Felder ausgefüllt."),
                                 actions: [
                                   GestureDetector(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(16.0),
+                                    child: const Padding(
+                                      padding: EdgeInsets.all(16.0),
                                       child: Text(
                                         "Schließen",
                                         textAlign: TextAlign.center,
@@ -43,7 +52,7 @@ class AddCustomScheduleItemPage extends StatelessWidget {
                               ));
                     }
                   },
-                  child: Text(
+                  child: const Text(
                     "Speichern",
                     style: TextStyle(
                       color: CupertinoColors.white,
@@ -54,8 +63,8 @@ class AddCustomScheduleItemPage extends StatelessWidget {
               ),
               child: CupertinoFormSection(
                   backgroundColor: CupertinoColors.tertiarySystemBackground,
-                  header: Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
+                  header: const Padding(
+                    padding: EdgeInsets.only(left: 8.0),
                     child: Text(
                       'Kursdetails',
                       style: TextStyle(fontSize: 16.0),
@@ -65,13 +74,12 @@ class AddCustomScheduleItemPage extends StatelessWidget {
                     CupertinoTextFormFieldRow(
                       controller: viewModel.nameController,
                       placeholder: "Kursname",
-                      textAlign: TextAlign.start,
                       validator: (value) => value == "" ? "Pflichtfeld" : null,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
-                      style: TextStyle(fontSize: 16.0),
+                      style: const TextStyle(fontSize: 16.0),
                     ),
                     CupertinoTextFormFieldRow(
-                      prefix: SizedBox(
+                      prefix: const SizedBox(
                         width: 100,
                         child: Text(
                           "Tag",
@@ -84,10 +92,10 @@ class AddCustomScheduleItemPage extends StatelessWidget {
                       onTap: () => _showWeekdayPicker(context).then((result) =>
                           viewModel.weekdayController.text = result ?? ""),
                       validator: (value) => value == "" ? "Pflichtfeld" : null,
-                      style: TextStyle(fontSize: 16.0),
+                      style: const TextStyle(fontSize: 16.0),
                     ),
                     CupertinoTextFormFieldRow(
-                      prefix: SizedBox(
+                      prefix: const SizedBox(
                         width: 100,
                         child: Text(
                           "Startzeit",
@@ -97,13 +105,13 @@ class AddCustomScheduleItemPage extends StatelessWidget {
                       placeholder: "Auswählen",
                       readOnly: true,
                       controller: viewModel.timeBeginController,
-                      style: TextStyle(fontSize: 16.0),
+                      style: const TextStyle(fontSize: 16.0),
                       validator: (value) => value == "" ? "Pflichtfeld" : null,
                       onTap: () => _showTimePicker(context)
                           .then((result) => viewModel.setTimeBegin(result!)),
                     ),
                     CupertinoTextFormFieldRow(
-                      prefix: SizedBox(
+                      prefix: const SizedBox(
                         width: 100,
                         child: Text(
                           "Endzeit",
@@ -113,7 +121,7 @@ class AddCustomScheduleItemPage extends StatelessWidget {
                       placeholder: "Auswählen",
                       readOnly: true,
                       controller: viewModel.timeEndController,
-                      style: TextStyle(fontSize: 16.0),
+                      style: const TextStyle(fontSize: 16.0),
                       validator: (value) => value == "" ? "Pflichtfeld" : null,
                       onTap: () => _showTimePicker(context)
                           .then((result) => viewModel.setTimeEnd(result!)),
@@ -121,7 +129,7 @@ class AddCustomScheduleItemPage extends StatelessWidget {
                     CupertinoTextFormFieldRow(
                       placeholder: "Raum",
                       controller: viewModel.roomController,
-                      style: TextStyle(fontSize: 16.0),
+                      style: const TextStyle(fontSize: 16.0),
                       validator: (value) => value == "" ? "Pflichtfeld" : null,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                     ),
@@ -132,7 +140,7 @@ class AddCustomScheduleItemPage extends StatelessWidget {
                           child: CupertinoTextFormFieldRow(
                             placeholder: "Lehrender",
                             controller: viewModel.lecturerController,
-                            style: TextStyle(fontSize: 16.0),
+                            style: const TextStyle(fontSize: 16.0),
                             validator: (value) =>
                                 value == "" ? "Pflichtfeld" : null,
                             autovalidateMode:
@@ -144,7 +152,7 @@ class AddCustomScheduleItemPage extends StatelessWidget {
                           child: CupertinoTextFormFieldRow(
                             placeholder: "Kürzel",
                             controller: viewModel.shortlecturerController,
-                            style: TextStyle(fontSize: 16.0),
+                            style: const TextStyle(fontSize: 16.0),
                             validator: (value) =>
                                 value == "" ? "Pflichtfeld" : null,
                             autovalidateMode:
@@ -163,42 +171,38 @@ class AddCustomScheduleItemPage extends StatelessWidget {
       context: context,
       builder: (context) {
         DateTime pickedTime = DateTime.now();
-        return Container(
+        return SizedBox(
           height: 250,
           child: Column(
             children: <Widget>[
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    CupertinoButton(
-                      child: Text('Abbrechen'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    CupertinoButton(
-                      child: Text('Fertig'),
-                      onPressed: () {
-                        Navigator.of(context).pop(pickedTime);
-                      },
-                    ),
-                  ],
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  CupertinoButton(
+                    child: const Text('Abbrechen'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  CupertinoButton(
+                    child: const Text('Fertig'),
+                    onPressed: () {
+                      Navigator.of(context).pop(pickedTime);
+                    },
+                  ),
+                ],
               ),
-              Divider(
+              const Divider(
                 height: 0,
                 thickness: 1,
               ),
               Expanded(
-                child: Container(
-                  child: CupertinoDatePicker(
-                    use24hFormat: true,
-                    mode: CupertinoDatePickerMode.time,
-                    onDateTimeChanged: (DateTime dateTime) {
-                      pickedTime = dateTime;
-                    },
-                  ),
+                child: CupertinoDatePicker(
+                  use24hFormat: true,
+                  mode: CupertinoDatePickerMode.time,
+                  onDateTimeChanged: (DateTime dateTime) {
+                    pickedTime = dateTime;
+                  },
                 ),
               ),
             ],
@@ -213,45 +217,41 @@ class AddCustomScheduleItemPage extends StatelessWidget {
       context: context,
       builder: (context) {
         String tempWeekday = ApiConstants.longWeekDays.keys.first;
-        return Container(
+        return SizedBox(
           height: 250,
           child: Column(
             children: <Widget>[
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    CupertinoButton(
-                      child: Text('Abbrechen'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    CupertinoButton(
-                      child: Text('Fertig'),
-                      onPressed: () {
-                        Navigator.of(context).pop(tempWeekday);
-                      },
-                    ),
-                  ],
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  CupertinoButton(
+                    child: const Text('Abbrechen'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  CupertinoButton(
+                    child: const Text('Fertig'),
+                    onPressed: () {
+                      Navigator.of(context).pop(tempWeekday);
+                    },
+                  ),
+                ],
               ),
-              Divider(
+              const Divider(
                 height: 0,
                 thickness: 1,
               ),
               Expanded(
-                child: Container(
-                  child: CupertinoPicker(
-                    children: ApiConstants.longWeekDays.keys
-                        .map((e) => Center(child: Text(e)))
-                        .toList(),
-                    itemExtent: 36,
-                    onSelectedItemChanged: (index) {
-                      tempWeekday =
-                          ApiConstants.longWeekDays.keys.elementAt(index);
-                    },
-                  ),
+                child: CupertinoPicker(
+                  itemExtent: 36,
+                  onSelectedItemChanged: (index) {
+                    tempWeekday =
+                        ApiConstants.longWeekDays.keys.elementAt(index);
+                  },
+                  children: ApiConstants.longWeekDays.keys
+                      .map((e) => Center(child: Text(e)))
+                      .toList(),
                 ),
               ),
             ],

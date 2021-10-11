@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_function_literals_in_foreach_calls, prefer_for_elements_to_map_fromiterable
+
 import 'dart:math';
 
 import 'package:fb4_app/api_constants.dart';
@@ -17,6 +19,7 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
   final ScheduleListController internalController = ScheduleListController();
   final PageController pageViewController = PageController();
   final ValueNotifier<int> controllerPageNotifier = ValueNotifier(0);
+  // ignore: prefer_function_declarations_over_variables
   Function() aferNextRender = () {};
   bool editMode = false;
   bool isLoading = false;
@@ -27,11 +30,16 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
   ScheduleOverviewViewModel() {
     getScheduleListsFromDatabase();
     internalController.onItemRemoved = (item) {
+      final currentPage = pageViewController.page!.floor();
       resyncWithDatabase();
+      aferNextRender = () {
+        pageViewController.jumpToPage(currentPage);
+        controllerPageNotifier.value = currentPage;
+      };
     };
 
     internalController.onItemChanged = (item) {
-      var currentPage = pageViewController.page!.floor();
+      final currentPage = pageViewController.page!.floor();
       resyncWithDatabase();
       aferNextRender = () {
         pageViewController.jumpToPage(currentPage);
@@ -40,21 +48,21 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
     };
   }
 
-  void getScheduleListsFromServer(SelectedCourseInfo info) async {
+  Future getScheduleListsFromServer(SelectedCourseInfo info) async {
     isLoading = true;
     notifyListeners();
 
     editMode = true;
     hasItems = true;
 
-    var items =
+    final items =
         await repository.getScheduleItems(info.shortName, info.semester);
 
     items.forEach((element) {
       element.userIsInGroup = isGroupInScheduleItem(info, element);
     });
 
-    displayScheduleItems = new List.generate(
+    displayScheduleItems = List.generate(
         5,
         (index) => ScheduleList(
               items: persistentScheduleItems[index].items +
@@ -78,11 +86,11 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
     hasItems = false;
     notifyListeners();
 
-    var lists = await jsonStore.getListLike("schedule%") ?? [];
+    final lists = await jsonStore.getListLike("schedule%") ?? [];
 
     if (lists.length == 5) {
       lists.forEach((element) {
-        hasItems = hasItems || element.keys.length > 0;
+        hasItems = hasItems || element.keys.isNotEmpty;
       });
 
       persistentScheduleItems = List.generate(
@@ -115,7 +123,6 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
       persistentScheduleItems = List.generate(
           5,
           (index) => ScheduleList(
-                items: [],
                 weekday: ApiConstants.shortWeekDayList[index],
                 controller: ScheduleListController(),
               ));
@@ -124,26 +131,25 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
 
     lists.clear();
     isLoading = false;
-    controllerPageNotifier.value = 0;
     notifyListeners();
   }
 
   Future saveAllItemsToDatabase() async {
     jsonStore.deleteLike("schedule%");
-    var batch = await jsonStore.startBatch();
+    final batch = await jsonStore.startBatch();
     persistentScheduleItems.forEach((element) {
-      var itemsMap = Map.fromIterable(
+      final itemsMap = Map.fromIterable(
         (element.items).map((e) => e.toJson()),
         key: (item) => item.hashCode.toString(),
         value: (item) => item,
       );
-      jsonStore.setItem("schedule-" + element.weekday, itemsMap);
+      jsonStore.setItem("schedule-${element.weekday}", itemsMap);
     });
 
     await jsonStore.commitBatch(batch);
   }
 
-  void addSelectedItemsToList() async {
+  Future addSelectedItemsToList() async {
     if (internalController.selectedItems.isNotEmpty) {
       internalController.selectedItems.forEach((newItem) {
         persistentScheduleItems
@@ -171,7 +177,7 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
     return items;
   }
 
-  void addCustomItem(ScheduleItem result) async {
+  Future addCustomItem(ScheduleItem result) async {
     persistentScheduleItems
         .firstWhere((element) => element.weekday == result.weekday)
         .items
@@ -190,7 +196,7 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
       return info.groupNumber.codeUnitAt(0) == item.studentSet.codeUnitAt(0);
     } else {
       // Get matches from student set
-      var matches = RegExp('^([A-Z])([0-9]*)-([A-Z])([0-9]*)\$')
+      final matches = RegExp('^([A-Z])([0-9]*)-([A-Z])([0-9]*)\$')
           .allMatches(item.studentSet)
           .toList()[0];
 
@@ -230,7 +236,7 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
     await getScheduleListsFromDatabase();
   }
 
-  void deleteItemFromDatabase(ScheduleItem item) async {
+  Future deleteItemFromDatabase(ScheduleItem item) async {
     persistentScheduleItems.forEach((element) {
       element.items.remove(item);
     });
