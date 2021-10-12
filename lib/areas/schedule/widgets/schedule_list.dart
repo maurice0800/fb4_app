@@ -68,6 +68,22 @@ class ScheduleListState extends State<ScheduleList>
                         builder: (context) => CupertinoAlertDialog(
                               title: const Text("Farbe wählen"),
                               content: BlockPicker(
+                                  layoutBuilder: (context, colors, child) =>
+                                      SizedBox(
+                                        height: 365,
+                                        width: 300,
+                                        child: GridView.count(
+                                          controller: ScrollController(
+                                              initialScrollOffset: 30),
+                                          crossAxisCount: 4,
+                                          crossAxisSpacing: 5.0,
+                                          mainAxisSpacing: 5.0,
+                                          children: colors
+                                              .map(
+                                                  (Color color) => child(color))
+                                              .toList(),
+                                        ),
+                                      ),
                                   availableColors: const [
                                     Colors.red,
                                     Colors.pink,
