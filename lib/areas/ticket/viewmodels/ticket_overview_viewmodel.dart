@@ -59,11 +59,11 @@ class TicketOverviewViewModel extends ChangeNotifier {
         return page
             .render(
                 x: 400,
-                y: 120,
-                width: 1900,
-                height: 1800,
-                fullWidth: 4200,
-                fullHeight: 4300)
+                y: 200,
+                width: 1800,
+                height: 1300,
+                fullHeight: 5656,
+                fullWidth: 4000)
             .then((fragment) {
           return fragment
               .createImageIfNotAvailable()
