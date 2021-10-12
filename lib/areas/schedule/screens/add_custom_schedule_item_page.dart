@@ -78,53 +78,108 @@ class AddCustomScheduleItemPage extends StatelessWidget {
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       style: const TextStyle(fontSize: 16.0),
                     ),
-                    CupertinoTextFormFieldRow(
-                      prefix: const SizedBox(
-                        width: 100,
-                        child: Text(
-                          "Tag",
-                          style: TextStyle(fontSize: 16.0),
+                    Row(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(left: 26.0),
+                          child: SizedBox(
+                            width: 100,
+                            child: Text(
+                              "Wochentag",
+                              style: TextStyle(fontSize: 16.0),
+                            ),
+                          ),
                         ),
-                      ),
-                      placeholder: "Auswählen",
-                      controller: viewModel.weekdayController,
-                      readOnly: true,
-                      onTap: () => _showWeekdayPicker(context).then((result) =>
-                          viewModel.weekdayController.text = result ?? ""),
-                      validator: (value) => value == "" ? "Pflichtfeld" : null,
-                      style: const TextStyle(fontSize: 16.0),
+                        Container(
+                          height: 42,
+                          width: 1,
+                          color: CupertinoTheme.of(context).brightness ==
+                                  Brightness.light
+                              ? CupertinoColors.systemGrey5
+                              : CupertinoColors.secondaryLabel,
+                        ),
+                        Expanded(
+                          child: CupertinoTextFormFieldRow(
+                            placeholder: "Auswählen",
+                            controller: viewModel.weekdayController,
+                            readOnly: true,
+                            onTap: () => _showWeekdayPicker(context).then(
+                                (result) => viewModel.weekdayController.text =
+                                    result ?? ""),
+                            validator: (value) =>
+                                value == "" ? "Pflichtfeld" : null,
+                            style: const TextStyle(fontSize: 16.0),
+                          ),
+                        ),
+                      ],
                     ),
-                    CupertinoTextFormFieldRow(
-                      prefix: const SizedBox(
-                        width: 100,
-                        child: Text(
-                          "Startzeit",
-                          style: TextStyle(fontSize: 16.0),
+                    Row(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(left: 26.0),
+                          child: SizedBox(
+                            width: 100,
+                            child: Text(
+                              "Startzeit",
+                              style: TextStyle(fontSize: 16.0),
+                            ),
+                          ),
                         ),
-                      ),
-                      placeholder: "Auswählen",
-                      readOnly: true,
-                      controller: viewModel.timeBeginController,
-                      style: const TextStyle(fontSize: 16.0),
-                      validator: (value) => value == "" ? "Pflichtfeld" : null,
-                      onTap: () => _showTimePicker(context)
-                          .then((result) => viewModel.setTimeBegin(result!)),
+                        Container(
+                          height: 42,
+                          width: 1,
+                          color: CupertinoTheme.of(context).brightness ==
+                                  Brightness.light
+                              ? CupertinoColors.systemGrey5
+                              : CupertinoColors.secondaryLabel,
+                        ),
+                        Expanded(
+                          child: CupertinoTextFormFieldRow(
+                            placeholder: "Auswählen",
+                            readOnly: true,
+                            controller: viewModel.timeBeginController,
+                            style: const TextStyle(fontSize: 16.0),
+                            validator: (value) =>
+                                value == "" ? "Pflichtfeld" : null,
+                            onTap: () => _showTimePicker(context).then(
+                                (result) => viewModel.setTimeBegin(result!)),
+                          ),
+                        ),
+                      ],
                     ),
-                    CupertinoTextFormFieldRow(
-                      prefix: const SizedBox(
-                        width: 100,
-                        child: Text(
-                          "Endzeit",
-                          style: TextStyle(fontSize: 16.0),
+                    Row(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(left: 26.0),
+                          child: SizedBox(
+                            width: 100,
+                            child: Text(
+                              "Endzeit",
+                              style: TextStyle(fontSize: 16.0),
+                            ),
+                          ),
                         ),
-                      ),
-                      placeholder: "Auswählen",
-                      readOnly: true,
-                      controller: viewModel.timeEndController,
-                      style: const TextStyle(fontSize: 16.0),
-                      validator: (value) => value == "" ? "Pflichtfeld" : null,
-                      onTap: () => _showTimePicker(context)
-                          .then((result) => viewModel.setTimeEnd(result!)),
+                        Container(
+                          height: 42,
+                          width: 1,
+                          color: CupertinoTheme.of(context).brightness ==
+                                  Brightness.light
+                              ? CupertinoColors.systemGrey5
+                              : CupertinoColors.secondaryLabel,
+                        ),
+                        Expanded(
+                          child: CupertinoTextFormFieldRow(
+                            placeholder: "Auswählen",
+                            readOnly: true,
+                            controller: viewModel.timeEndController,
+                            style: const TextStyle(fontSize: 16.0),
+                            validator: (value) =>
+                                value == "" ? "Pflichtfeld" : null,
+                            onTap: () => _showTimePicker(context).then(
+                                (result) => viewModel.setTimeEnd(result!)),
+                          ),
+                        ),
+                      ],
                     ),
                     CupertinoTextFormFieldRow(
                       placeholder: "Raum",
@@ -146,6 +201,14 @@ class AddCustomScheduleItemPage extends StatelessWidget {
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                           ),
+                        ),
+                        Container(
+                          height: 42,
+                          width: 1,
+                          color: CupertinoTheme.of(context).brightness ==
+                                  Brightness.light
+                              ? CupertinoColors.systemGrey5
+                              : CupertinoColors.secondaryLabel,
                         ),
                         Expanded(
                           flex: 7,

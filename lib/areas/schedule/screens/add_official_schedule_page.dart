@@ -140,7 +140,8 @@ class AddOfficialSchedulePage extends StatelessWidget {
                             CupertinoTextFormFieldRow(
                               prefix: const Padding(
                                 padding: EdgeInsets.only(right: 50.0),
-                                child: Text('Studiengang'),
+                                child: Text('Studiengang',
+                                    style: TextStyle(fontSize: 16.0)),
                               ),
                               placeholder: 'Wählen',
                               onTap: () {
@@ -162,7 +163,8 @@ class AddOfficialSchedulePage extends StatelessWidget {
                               controller: viewModel.courseController,
                             ),
                             CupertinoTextFormFieldRow(
-                              prefix: const Text('Semester'),
+                              prefix: const Text('Semester',
+                                  style: TextStyle(fontSize: 16.0)),
                               placeholder: 'Wählen',
                               onTap: () {
                                 if (viewModel.selectedCourse != null) {
@@ -215,7 +217,8 @@ class AddOfficialSchedulePage extends StatelessWidget {
                             header: const Text('Optional'),
                             children: [
                               CupertinoTextFormFieldRow(
-                                prefix: const Text('Gruppenkennung'),
+                                prefix: const Text('Gruppenkennung',
+                                    style: TextStyle(fontSize: 16.0)),
                                 placeholder: 'Beispiel: C8',
                                 textAlign: TextAlign.end,
                                 controller: viewModel.groupController,
