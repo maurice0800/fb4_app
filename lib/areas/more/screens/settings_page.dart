@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:fb4_app/areas/more/screens/select_canteens_page.dart';
 import 'package:fb4_app/areas/more/viewmodels/settings_page_view_model.dart';
 import 'package:fb4_app/config/themes/color_consts.dart';
 import 'package:fb4_app/core/views/base_view.dart';
 import 'package:fb4_app/utils/helpers/cupertino_info_dialog.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_cupertino_settings/flutter_cupertino_settings.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -23,7 +25,8 @@ class SettingsPage extends StatelessWidget {
             items: [
               const CSHeader("Stundenplan"),
               CSControl(
-                nameWidget: const Text("Aktuellen Wochentag zuerst zeigen"),
+                nameWidget: const Text("Aktuellen Wochentag zuerst zeigen",
+                    style: TextStyle(fontWeight: FontWeight.normal)),
                 contentWidget: CupertinoSwitch(
                   value: viewModel.goToCurrentDayInSchedule,
                   onChanged: (value) {
@@ -42,7 +45,8 @@ class SettingsPage extends StatelessWidget {
               }),
               const CSHeader("NRW-Ticket"),
               CSControl(
-                nameWidget: const Text("Helligkeit erhöhen"),
+                nameWidget: const Text("Helligkeit erhöhen",
+                    style: TextStyle(fontWeight: FontWeight.normal)),
                 contentWidget: CupertinoSwitch(
                   value: viewModel.increaseDisplayBrightnessInTicketview,
                   onChanged: (value) {
@@ -58,6 +62,17 @@ class SettingsPage extends StatelessWidget {
                 }
                 Navigator.pop(context);
               }),
+              const CSHeader("Mensa"),
+              CSButton(
+                  CSButtonType(
+                      CupertinoTheme.of(context).textTheme.textStyle.color ??
+                          CupertinoColors.activeBlue,
+                      Alignment.centerLeft),
+                  "Mensen auswählen", () async {
+                Navigator.of(context).push(CupertinoPageRoute(
+                  builder: (context) => const SelectCanteensPage(),
+                ));
+              }),
               const CSHeader("ODS"),
               CSButton(CSButtonType.DESTRUCTIVE, "Anmeldedaten löschen",
                   () async {
@@ -68,7 +83,8 @@ class SettingsPage extends StatelessWidget {
               }),
               const CSHeader("Sonstiges"),
               CSControl(
-                nameWidget: const Text("Benachrichtigungen bei News"),
+                nameWidget: const Text("Benachrichtigungen bei News",
+                    style: TextStyle(fontWeight: FontWeight.normal)),
                 contentWidget: CupertinoSwitch(
                   value: viewModel.notificationOnNews,
                   onChanged: (value) => viewModel.notificationOnNews = value,

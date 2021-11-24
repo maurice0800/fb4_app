@@ -1,3 +1,4 @@
+// ignore: avoid_classes_with_only_static_members
 class AppConstants {
   static final List<String> weekdays = [
     "Montag",
@@ -29,4 +30,6 @@ class AppConstants {
   static const privacyPolicyAcceptedVersion = "privacyPolicyAcceptedVersion";
 
   static const pinnedNewsItems = "pinnedNewsItems";
+
+  static const settingsEnabledCanteens = "settingsEnabledCanteens";
 }
