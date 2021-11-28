@@ -15,6 +15,7 @@ import 'package:fb4_app/areas/schedule/viewmodels/schedule_overview_viewmodel.da
 import 'package:fb4_app/areas/ticket/screens/ticket_viewer_page.dart';
 import 'package:fb4_app/areas/ticket/viewmodels/ticket_overview_viewmodel.dart';
 import 'package:fb4_app/config/themes/dark_theme.dart';
+import 'package:fb4_app/core/settings/settings_service.dart';
 import 'package:fb4_app/main_view_model.dart';
 import 'package:fb4_app/utils/helpers/app_state_oberserver.dart';
 import 'package:fb4_app/utils/plugins/push_notification_manager.dart';
@@ -57,38 +58,44 @@ void main() async {
 }
 
 void registerDependencies() async {
-  final settings = await SharedPreferences.getInstance();
-  KiwiContainer().registerInstance<SharedPreferences>(settings);
+  Future registerDependencies() async {
+    WidgetsFlutterBinding.ensureInitialized();
 
-  KiwiContainer().registerSingleton<ScheduleOverviewViewModel>(
-      (container) => ScheduleOverviewViewModel());
-  KiwiContainer().registerSingleton<AddOfficialSchedulePageViewModel>(
-      (container) => AddOfficialSchedulePageViewModel());
-  KiwiContainer().registerSingleton<NewsOverviewViewModel>(
-      (container) => NewsOverviewViewModel());
-  KiwiContainer().registerSingleton<TicketOverviewViewModel>(
-      (container) => TicketOverviewViewModel());
-  KiwiContainer().registerSingleton<LicensesPageViewModel>(
-      (container) => LicensesPageViewModel());
-  KiwiContainer().registerSingleton<PrivacyPageViewModel>(
-      (container) => PrivacyPageViewModel());
-  KiwiContainer().registerFactory<AddCustomScheduleItemPageViewModel>(
-      (container) => AddCustomScheduleItemPageViewModel());
-  KiwiContainer().registerSingleton<SettingsPageViewModel>(
-      (container) => SettingsPageViewModel());
-  KiwiContainer().registerSingleton<LoginPageViewModel>(
-      (container) => LoginPageViewModel());
-  KiwiContainer().registerSingleton<GradeOverviewPageViewModel>(
-      (container) => GradeOverviewPageViewModel());
-  KiwiContainer().registerSingleton<SelectCanteensPageViewModel>(
-      (container) => SelectCanteensPageViewModel());
-  KiwiContainer().registerSingleton<CanteensRepository>(
-      (container) => CanteensRepository());
-  KiwiContainer().registerSingleton<CanteenOverviewViewModel>((container) {
-    return CanteenOverviewViewModel()..loadEnabledCanteensFromSettings();
-  });
-  KiwiContainer()
-      .registerSingleton<MealsRepository>((container) => MealsRepository());
+    final settings = await SharedPreferences.getInstance();
+    KiwiContainer().registerInstance<SharedPreferences>(settings);
+
+    KiwiContainer()
+        .registerSingleton<SettingsService>((container) => SettingsService());
+    KiwiContainer().registerSingleton<ScheduleOverviewViewModel>(
+        (container) => ScheduleOverviewViewModel());
+    KiwiContainer().registerSingleton<AddOfficialSchedulePageViewModel>(
+        (container) => AddOfficialSchedulePageViewModel());
+    KiwiContainer().registerSingleton<NewsOverviewViewModel>(
+        (container) => NewsOverviewViewModel());
+    KiwiContainer().registerSingleton<TicketOverviewViewModel>(
+        (container) => TicketOverviewViewModel());
+    KiwiContainer().registerSingleton<LicensesPageViewModel>(
+        (container) => LicensesPageViewModel());
+    KiwiContainer().registerSingleton<PrivacyPageViewModel>(
+        (container) => PrivacyPageViewModel());
+    KiwiContainer().registerFactory<AddCustomScheduleItemPageViewModel>(
+        (container) => AddCustomScheduleItemPageViewModel());
+    KiwiContainer().registerSingleton<SettingsPageViewModel>(
+        (container) => SettingsPageViewModel());
+    KiwiContainer().registerSingleton<LoginPageViewModel>(
+        (container) => LoginPageViewModel());
+    KiwiContainer().registerSingleton<GradeOverviewPageViewModel>(
+        (container) => GradeOverviewPageViewModel());
+    KiwiContainer().registerSingleton<SelectCanteensPageViewModel>(
+        (container) => SelectCanteensPageViewModel());
+    KiwiContainer().registerSingleton<CanteensRepository>(
+        (container) => CanteensRepository());
+    KiwiContainer().registerSingleton<CanteenOverviewViewModel>((container) {
+      return CanteenOverviewViewModel()..loadEnabledCanteensFromSettings();
+    });
+    KiwiContainer()
+        .registerSingleton<MealsRepository>((container) => MealsRepository());
+  }
 }
 
 class FB4App extends StatelessWidget {
