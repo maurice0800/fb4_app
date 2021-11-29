@@ -25,7 +25,8 @@ class SelectCanteensPage extends StatelessWidget {
                         (c) => CSControl(
                           nameWidget: Text(c.name),
                           contentWidget: CupertinoSwitch(
-                              value: viewModel.selectedCanteens.contains(c),
+                              value: viewModel.selectedCanteens
+                                  .any((element) => element.id == c.id),
                               onChanged: (value) =>
                                   viewModel.setSelectedState(c, value)),
                         ),

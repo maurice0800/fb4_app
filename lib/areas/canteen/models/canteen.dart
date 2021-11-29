@@ -12,4 +12,8 @@ class Canteen {
       city: json["city"].toString(),
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {"id": id, "name": name, "city": city};
+  }
 }

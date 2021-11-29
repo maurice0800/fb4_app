@@ -20,7 +20,6 @@ class SettingsPage extends StatelessWidget {
           middle: const Text("Einstellungen"),
         ),
         child: BaseView<SettingsPageViewModel>(
-          onViewModelCreated: (viewModel) => viewModel.init(),
           builder: (context, viewModel, child) => CupertinoSettings(
             items: [
               const CSHeader("Stundenplan"),

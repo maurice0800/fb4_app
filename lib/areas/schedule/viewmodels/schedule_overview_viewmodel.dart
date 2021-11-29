@@ -9,8 +9,10 @@ import 'package:fb4_app/areas/schedule/models/schedule_list_controller.dart';
 import 'package:fb4_app/areas/schedule/models/selected_course_info.dart';
 import 'package:fb4_app/areas/schedule/repositories/schedule_repository.dart';
 import 'package:fb4_app/areas/schedule/widgets/schedule_list.dart';
+import 'package:fb4_app/core/settings/settings_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:json_store/json_store.dart';
+import 'package:kiwi/kiwi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ScheduleOverviewViewModel extends ChangeNotifier {
@@ -19,6 +21,7 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
   final ScheduleListController internalController = ScheduleListController();
   final PageController pageViewController = PageController();
   final ValueNotifier<int> controllerPageNotifier = ValueNotifier(0);
+  late final SettingsService _settingsService;
   // ignore: prefer_function_declarations_over_variables
   Function() aferNextRender = () {};
   bool editMode = false;
@@ -28,6 +31,8 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
   List<ScheduleList> displayScheduleItems = [];
 
   ScheduleOverviewViewModel() {
+    _settingsService = KiwiContainer().resolve<SettingsService>();
+
     getScheduleListsFromDatabase();
     internalController.onItemRemoved = (item) {
       final currentPage = pageViewController.page!.floor();
@@ -109,7 +114,7 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
       persistentScheduleItems.forEach((element) => element.items.sort());
       displayScheduleItems = persistentScheduleItems.toList();
 
-      if ((await SharedPreferences.getInstance())
+      if (_settingsService
               .getBool(AppConstants.settingsGoToCurrentDayInSchedule) ??
           false) {
         if (!editMode) {

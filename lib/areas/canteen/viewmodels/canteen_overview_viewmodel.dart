@@ -6,6 +6,7 @@ import 'package:fb4_app/areas/canteen/models/canteen.dart';
 import 'package:fb4_app/areas/canteen/models/meal.dart';
 import 'package:fb4_app/areas/canteen/repositories/meals_repository.dart';
 import 'package:fb4_app/areas/more/viewmodels/select_canteens_page_viewmodel.dart';
+import 'package:fb4_app/core/settings/settings_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
@@ -13,18 +14,24 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class CanteenOverviewViewModel extends ChangeNotifier {
   late List<Canteen> enabledCanteens;
-  late MealsRepository _mealsRepository;
-  late ValueNotifier<DateTime> currentDate =
+  late final MealsRepository _mealsRepository;
+  late final ValueNotifier<DateTime> currentDate =
       ValueNotifier<DateTime>(DateTime.now());
-  late PageController pageController;
+  late final PageController pageController;
+  late final SettingsService _settingsService;
 
   CanteenOverviewViewModel() {
-    enabledCanteens =
-        KiwiContainer().resolve<SelectCanteensPageViewModel>().selectedCanteens;
-
+    _settingsService = KiwiContainer().resolve<SettingsService>();
     _mealsRepository = KiwiContainer().resolve<MealsRepository>();
-
     pageController = PageController(initialPage: 7);
+
+    _settingsService.settingsChangedEvent.listen((e) {
+      if (e.settingName == AppConstants.settingsEnabledCanteens) {
+        loadEnabledCanteensFromSettings();
+      }
+    });
+
+    loadEnabledCanteensFromSettings();
   }
 
   Future<Map<Canteen, List<Meal>>> getMealsForCanteensAtDateIndex(
@@ -43,14 +50,18 @@ class CanteenOverviewViewModel extends ChangeNotifier {
   }
 
   void loadEnabledCanteensFromSettings() {
-    final settings = KiwiContainer().resolve<SharedPreferences>();
-
-    if (settings.containsKey(AppConstants.settingsEnabledCanteens)) {
+    if (_settingsService.containsKey(AppConstants.settingsEnabledCanteens)) {
       try {
         final settingsString =
-            settings.getString(AppConstants.settingsEnabledCanteens);
-        enabledCanteens = jsonDecode(settingsString!) as List<Canteen>;
+            _settingsService.getString(AppConstants.settingsEnabledCanteens);
+        enabledCanteens = (jsonDecode(settingsString!) as List)
+            .map((x) => Canteen.fromJson(x as Map<String, dynamic>))
+            .toList();
+
+        enabledCanteens.sort((a, b) => a.id - b.id);
       } finally {}
+    } else {
+      enabledCanteens = [];
     }
 
     notifyListeners();

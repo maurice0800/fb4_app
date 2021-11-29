@@ -38,11 +38,12 @@ import 'areas/more/viewmodels/select_canteens_page_viewmodel.dart';
 import 'config/themes/light_theme.dart';
 
 void main() async {
-  final appTabController = CupertinoTabController();
+  await registerDependencies();
+
   final notificationManager = PushNotificationsManager();
+  final appTabController = CupertinoTabController();
   final quickActionsManager = QuickActionsManager(appTabController);
 
-  registerDependencies();
   await initializeDateFormatting("de_DE");
 
   runApp(FB4App(controller: appTabController));
@@ -57,45 +58,43 @@ void main() async {
   });
 }
 
-void registerDependencies() async {
-  Future registerDependencies() async {
-    WidgetsFlutterBinding.ensureInitialized();
+Future registerDependencies() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-    final settings = await SharedPreferences.getInstance();
-    KiwiContainer().registerInstance<SharedPreferences>(settings);
+  final settings = await SharedPreferences.getInstance();
+  KiwiContainer().registerInstance<SharedPreferences>(settings);
+  KiwiContainer()
+      .registerSingleton<SettingsService>((container) => SettingsService());
 
-    KiwiContainer()
-        .registerSingleton<SettingsService>((container) => SettingsService());
-    KiwiContainer().registerSingleton<ScheduleOverviewViewModel>(
-        (container) => ScheduleOverviewViewModel());
-    KiwiContainer().registerSingleton<AddOfficialSchedulePageViewModel>(
-        (container) => AddOfficialSchedulePageViewModel());
-    KiwiContainer().registerSingleton<NewsOverviewViewModel>(
-        (container) => NewsOverviewViewModel());
-    KiwiContainer().registerSingleton<TicketOverviewViewModel>(
-        (container) => TicketOverviewViewModel());
-    KiwiContainer().registerSingleton<LicensesPageViewModel>(
-        (container) => LicensesPageViewModel());
-    KiwiContainer().registerSingleton<PrivacyPageViewModel>(
-        (container) => PrivacyPageViewModel());
-    KiwiContainer().registerFactory<AddCustomScheduleItemPageViewModel>(
-        (container) => AddCustomScheduleItemPageViewModel());
-    KiwiContainer().registerSingleton<SettingsPageViewModel>(
-        (container) => SettingsPageViewModel());
-    KiwiContainer().registerSingleton<LoginPageViewModel>(
-        (container) => LoginPageViewModel());
-    KiwiContainer().registerSingleton<GradeOverviewPageViewModel>(
-        (container) => GradeOverviewPageViewModel());
-    KiwiContainer().registerSingleton<SelectCanteensPageViewModel>(
-        (container) => SelectCanteensPageViewModel());
-    KiwiContainer().registerSingleton<CanteensRepository>(
-        (container) => CanteensRepository());
-    KiwiContainer().registerSingleton<CanteenOverviewViewModel>((container) {
-      return CanteenOverviewViewModel()..loadEnabledCanteensFromSettings();
-    });
-    KiwiContainer()
-        .registerSingleton<MealsRepository>((container) => MealsRepository());
-  }
+  KiwiContainer().registerSingleton<ScheduleOverviewViewModel>(
+      (container) => ScheduleOverviewViewModel());
+  KiwiContainer().registerSingleton<AddOfficialSchedulePageViewModel>(
+      (container) => AddOfficialSchedulePageViewModel());
+  KiwiContainer().registerSingleton<NewsOverviewViewModel>(
+      (container) => NewsOverviewViewModel());
+  KiwiContainer().registerSingleton<TicketOverviewViewModel>(
+      (container) => TicketOverviewViewModel());
+  KiwiContainer().registerSingleton<LicensesPageViewModel>(
+      (container) => LicensesPageViewModel());
+  KiwiContainer().registerSingleton<PrivacyPageViewModel>(
+      (container) => PrivacyPageViewModel());
+  KiwiContainer().registerFactory<AddCustomScheduleItemPageViewModel>(
+      (container) => AddCustomScheduleItemPageViewModel());
+  KiwiContainer().registerSingleton<SettingsPageViewModel>(
+      (container) => SettingsPageViewModel());
+  KiwiContainer().registerSingleton<LoginPageViewModel>(
+      (container) => LoginPageViewModel());
+  KiwiContainer().registerSingleton<GradeOverviewPageViewModel>(
+      (container) => GradeOverviewPageViewModel());
+  KiwiContainer().registerSingleton<SelectCanteensPageViewModel>(
+      (container) => SelectCanteensPageViewModel());
+  KiwiContainer().registerSingleton<CanteensRepository>(
+      (container) => CanteensRepository());
+  KiwiContainer().registerSingleton<CanteenOverviewViewModel>((container) {
+    return CanteenOverviewViewModel()..loadEnabledCanteensFromSettings();
+  });
+  KiwiContainer()
+      .registerSingleton<MealsRepository>((container) => MealsRepository());
 }
 
 class FB4App extends StatelessWidget {
@@ -112,63 +111,55 @@ class FB4App extends StatelessWidget {
     ]);
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider(create: (context) => MainViewModel()..init()),
+          ChangeNotifierProvider(create: (context) => MainViewModel()),
         ],
         child: Consumer<MainViewModel>(
           builder: (context, viewModel, child) => CupertinoApp(
             debugShowCheckedModeBanner: false,
             theme: darkMode ? DarkTheme.themeData : LightTheme.themeData,
-            home: viewModel.isInitialized
-                ? (viewModel.shouldShowPrivacyPolicy
-                    ? ChangeNotifierProvider(
-                        create: (context) => PrivacyPageViewModel()..load(),
-                        child: PrivacyPage(
-                          shouldAccept: true,
-                        ),
-                      )
-                    : CupertinoTabScaffold(
-                        controller: controller,
-                        tabBar: CupertinoTabBar(currentIndex: 0, items: [
-                          BottomNavigationBarItem(
-                              icon: Icon(CupertinoIcons.calendar),
-                              label: 'Stundenplan'),
-                          BottomNavigationBarItem(
-                              icon: Icon(CupertinoIcons.news), label: 'News'),
-                          BottomNavigationBarItem(
-                              icon: Padding(
-                                  padding: const EdgeInsets.only(top: 6.0),
-                                  child: Icon(FB4Icons.food, size: 25)),
-                              label: 'Mensa'),
-                          BottomNavigationBarItem(
-                              icon: Icon(CupertinoIcons.ticket),
-                              label: 'Semesterticket'),
-                          BottomNavigationBarItem(
-                              icon: Icon(CupertinoIcons.ellipsis),
-                              label: 'Mehr'),
-                        ]),
-                        tabBuilder: (context, index) {
-                          switch (index) {
-                            case 0:
-                              return ScheduleOverview();
-                            case 1:
-                              return NewsOverview();
-                            case 2:
-                              return CanteenOverview();
-                            case 3:
-                              return TicketViewerPage();
-                            case 4:
-                              return MoreList();
-                            default:
-                              throw Exception(
-                                  "User tried to open an invalid page.");
-                          }
-                        },
-                      ))
-                : CupertinoPageScaffold(
-                    child: SafeArea(
-                    child: Center(
-                      child: CupertinoActivityIndicator(),
+            home: (viewModel.shouldShowPrivacyPolicy
+                ? ChangeNotifierProvider(
+                    create: (context) => PrivacyPageViewModel()..load(),
+                    child: PrivacyPage(
+                      shouldAccept: true,
                     ),
+                  )
+                : CupertinoTabScaffold(
+                    controller: controller,
+                    tabBar: CupertinoTabBar(currentIndex: 0, items: [
+                      BottomNavigationBarItem(
+                          icon: Icon(CupertinoIcons.calendar),
+                          label: 'Stundenplan'),
+                      BottomNavigationBarItem(
+                          icon: Icon(CupertinoIcons.news), label: 'News'),
+                      BottomNavigationBarItem(
+                          icon: Padding(
+                              padding: const EdgeInsets.only(top: 6.0),
+                              child: Icon(FB4Icons.food, size: 25)),
+                          label: 'Mensa'),
+                      BottomNavigationBarItem(
+                          icon: Icon(CupertinoIcons.ticket),
+                          label: 'Semesterticket'),
+                      BottomNavigationBarItem(
+                          icon: Icon(CupertinoIcons.ellipsis), label: 'Mehr'),
+                    ]),
+                    tabBuilder: (context, index) {
+                      switch (index) {
+                        case 0:
+                          return ScheduleOverview();
+                        case 1:
+                          return NewsOverview();
+                        case 2:
+                          return CanteenOverview();
+                        case 3:
+                          return TicketViewerPage();
+                        case 4:
+                          return MoreList();
+                        default:
+                          throw Exception(
+                              "User tried to open an invalid page.");
+                      }
+                    },
                   )),
           ),
         ));

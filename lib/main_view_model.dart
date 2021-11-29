@@ -1,32 +1,31 @@
 import 'package:fb4_app/app_constants.dart';
 import 'package:flutter/material.dart';
+import 'package:kiwi/kiwi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'core/settings/settings_service.dart';
+
 class MainViewModel extends ChangeNotifier {
-  bool isInitialized = false;
+  late final SettingsService _settingsService;
   bool shouldShowPrivacyPolicy = true;
 
-  Future init() async {
-    return SharedPreferences.getInstance().then((s) {
-      if (!(s.getBool(AppConstants.privacyPolicyAccepted) ?? false)) {
-        shouldShowPrivacyPolicy = true;
-      } else {
-        shouldShowPrivacyPolicy = false;
-      }
+  MainViewModel() {
+    _settingsService = KiwiContainer().resolve<SettingsService>();
 
-      if (s.getString(AppConstants.privacyPolicyAcceptedVersion) != "1.1") {
-        shouldShowPrivacyPolicy = true;
-      }
+    shouldShowPrivacyPolicy =
+        !(_settingsService.getBool(AppConstants.privacyPolicyAccepted) ??
+            false);
 
-      isInitialized = true;
-      notifyListeners();
-    });
+    if (_settingsService.getString(AppConstants.privacyPolicyAcceptedVersion) !=
+        "1.1") {
+      shouldShowPrivacyPolicy = true;
+    }
   }
 
-  void acceptPrivacyPolicy() async {
-    final instance = await SharedPreferences.getInstance();
-    instance.setBool(AppConstants.privacyPolicyAccepted, true);
-    instance.setString(AppConstants.privacyPolicyAcceptedVersion, "1.1");
+  void acceptPrivacyPolicy() {
+    _settingsService.saveBool(AppConstants.privacyPolicyAccepted, true);
+    _settingsService.saveString(
+        AppConstants.privacyPolicyAcceptedVersion, "1.1");
 
     shouldShowPrivacyPolicy = false;
     notifyListeners();

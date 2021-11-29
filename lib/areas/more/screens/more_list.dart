@@ -49,10 +49,7 @@ class MoreList extends StatelessWidget {
               title: 'Einstellungen',
               onPressed: () {
                 Navigator.of(context).push(CupertinoPageRoute(
-                    builder: (context) => ChangeNotifierProvider(
-                          create: (context) => SettingsPageViewModel()..init(),
-                          child: SettingsPage(),
-                        )));
+                    builder: (context) => const SettingsPage()));
               },
             ),
             CSLink(

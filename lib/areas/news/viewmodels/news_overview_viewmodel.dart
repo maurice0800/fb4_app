@@ -4,15 +4,22 @@ import 'dart:io';
 import 'package:fb4_app/app_constants.dart';
 import 'package:fb4_app/areas/news/models/news_item.dart';
 import 'package:fb4_app/areas/news/repositories/news_repository.dart';
+import 'package:fb4_app/core/settings/settings_service.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:kiwi/kiwi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NewsOverviewViewModel extends ChangeNotifier {
-  NewsRepository repository = new NewsRepository();
+  NewsRepository repository = NewsRepository();
+  late final SettingsService _settingsService;
   bool hasError = false;
   List<NewsItem> newsItems = [];
   List<NewsItem> pinnedItems = [];
   bool isLoading = false;
+
+  NewsOverviewViewModel() {
+    _settingsService = KiwiContainer().resolve<SettingsService>();
+  }
 
   Future fetchNewsItems(
       {required Function(String) onError, bool alwaysRefresh = true}) {
@@ -38,30 +45,28 @@ class NewsOverviewViewModel extends ChangeNotifier {
     return Future.value();
   }
 
-  Future pinNewsItem(NewsItem item) async {
+  void pinNewsItem(NewsItem item) {
     pinnedItems.add(item);
-    await _savePinnedItemsCache();
+    _savePinnedItemsCache();
     notifyListeners();
   }
 
-  Future unpinNewsItem(int index) async {
+  void unpinNewsItem(int index) {
     pinnedItems.removeAt(index);
-    await _savePinnedItemsCache();
+    _savePinnedItemsCache();
     notifyListeners();
   }
 
-  Future _savePinnedItemsCache() async {
-    final s = await SharedPreferences.getInstance();
-    s.setString(AppConstants.pinnedNewsItems,
+  void _savePinnedItemsCache() {
+    _settingsService.saveString(AppConstants.pinnedNewsItems,
         jsonEncode(pinnedItems.map((e) => e.toJson()).toList()));
   }
 
-  Future loadPinnedItemsCache() async {
+  void loadPinnedItemsCache() {
     if (pinnedItems.isEmpty) {
-      final s = await SharedPreferences.getInstance();
-
-      if (s.containsKey(AppConstants.pinnedNewsItems)) {
-        final itemsMap = jsonDecode(s.getString(AppConstants.pinnedNewsItems)!)
+      if (_settingsService.containsKey(AppConstants.pinnedNewsItems)) {
+        final itemsMap = jsonDecode(
+                _settingsService.getString(AppConstants.pinnedNewsItems)!)
             as List<dynamic>;
 
         if (itemsMap.isNotEmpty) {

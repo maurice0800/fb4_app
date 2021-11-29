@@ -4,7 +4,6 @@ import 'package:fb4_app/areas/canteen/models/canteen.dart';
 import 'package:fb4_app/areas/canteen/models/meal.dart';
 import 'package:http/http.dart' as http;
 import 'package:quiver/core.dart';
-import 'package:tuple/tuple.dart';
 
 class MealsRepository {
   final Map<int, List<Meal>> cache = {};

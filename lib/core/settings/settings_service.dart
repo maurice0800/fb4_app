@@ -34,4 +34,8 @@ class SettingsService {
   bool? getBool(String key) {
     return _sharedPreferences?.getBool(key);
   }
+
+  bool containsKey(String pinnedNewsItems) {
+    return _sharedPreferences?.containsKey(pinnedNewsItems) ?? false;
+  }
 }

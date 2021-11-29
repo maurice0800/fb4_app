@@ -1,13 +1,28 @@
 import 'package:fb4_app/app_constants.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:fb4_app/core/settings/settings_service.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:kiwi/kiwi.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PushNotificationsManager {
+  late final SettingsService _settingsService;
   Function(String)? onRoute;
   bool _initialized = false;
 
-  PushNotificationsManager();
+  PushNotificationsManager() {
+    _settingsService = KiwiContainer().resolve<SettingsService>();
+
+    _settingsService.settingsChangedEvent.listen((e) {
+      if (e.settingName == AppConstants.settingsNotificationOnNews) {
+        if (e.newValue == true) {
+          init();
+        } else {
+          unsubscribe();
+        }
+      }
+    });
+  }
 
   void setRouteHandler(Function(String) func) {
     onRoute = func;
@@ -15,10 +30,10 @@ class PushNotificationsManager {
 
   Future<void> init() async {
     await Firebase.initializeApp();
-    var prefs = await SharedPreferences.getInstance();
 
     if (!_initialized) {
-      if (prefs.getBool(AppConstants.settingsNotificationOnNews) ?? false) {
+      if (_settingsService.getBool(AppConstants.settingsNotificationOnNews) ??
+          false) {
         await FirebaseMessaging.instance.requestPermission(
             alert: true, provisional: false, sound: true, badge: true);
 
