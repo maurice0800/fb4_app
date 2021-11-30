@@ -61,11 +61,8 @@ class MoreList extends StatelessWidget {
               onPressed: () => Navigator.push(
                   context,
                   CupertinoPageRoute(
-                      builder: (context) => ChangeNotifierProvider(
-                            create: (context) =>
-                                LicensesPageViewModel()..load(),
-                            child: LicensesPage(),
-                          ))),
+                    builder: (context) => LicensesPage(),
+                  )),
             ),
             CSLink(
               title: "Datenschutz",
@@ -143,7 +140,7 @@ class MoreList extends StatelessWidget {
                         style: TextStyle(fontSize: 24),
                       ),
                       SizedBox(height: 10),
-                      Text("Version: 1.1.0"),
+                      Text("Version: 1.2.0"),
                       SizedBox(height: 10),
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0),
