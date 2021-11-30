@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 class GradeOverviewPageViewModel extends ChangeNotifier {
   Map<int, List<ExamInfoModel>> exams = {};
 
-  getGradeList() async {
+  Future getGradeList() async {
     if (exams.isEmpty) {
       exams = await OdsRepository.getExamInfos().catchError((error) {});
       notifyListeners();

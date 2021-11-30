@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class Meal {
   final String name;
   final String category;

@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 class PrivacyPageViewModel extends ChangeNotifier {
   String licenseText = "";
 
-  void load() async {
+  Future load() async {
     licenseText = await rootBundle.loadString('assets/privacy');
     notifyListeners();
   }

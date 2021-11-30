@@ -1,15 +1,20 @@
 import 'package:fb4_app/areas/ticket/viewmodels/ticket_overview_viewmodel.dart';
 import 'package:fb4_app/config/themes/color_consts.dart';
 import 'package:fb4_app/core/views/base_view.dart';
-
-import 'package:flutter/cupertino.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/cupertino.dart';
 
-class TicketViewerPage extends StatelessWidget {
+class TicketViewerPage extends StatefulWidget {
+  @override
+  State<TicketViewerPage> createState() => _TicketViewerPageState();
+}
+
+class _TicketViewerPageState extends State<TicketViewerPage> {
   final TransformationController _transformationController =
       TransformationController();
 
-  TapDownDetails? _tapDownDetails;
+  late TapDownDetails? _tapDownDetails;
+
   bool _isZoomed = false;
 
   @override

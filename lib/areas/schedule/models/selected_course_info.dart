@@ -6,11 +6,11 @@ class SelectedCourseInfo {
 
   SelectedCourseInfo(this.shortName, this.semester, {String groupString = ""}) {
     if (groupString != "") {
-      this.groupLetter = groupString.substring(0, 1);
-      this.groupNumber = groupString.substring(1);
+      groupLetter = groupString.substring(0, 1);
+      groupNumber = groupString.substring(1);
     } else {
-      this.groupLetter = "";
-      this.groupNumber = "";
+      groupLetter = "";
+      groupNumber = "";
     }
   }
 }

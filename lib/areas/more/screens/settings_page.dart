@@ -15,9 +15,9 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-        navigationBar: CupertinoNavigationBar(
+        navigationBar: const CupertinoNavigationBar(
           backgroundColor: ColorConsts.mainOrange,
-          middle: const Text("Einstellungen"),
+          middle: Text("Einstellungen"),
         ),
         child: BaseView<SettingsPageViewModel>(
           builder: (context, viewModel, child) => CupertinoSettings(

@@ -21,6 +21,7 @@ class SettingsService {
         .add(SettingsChangedEvent(settingName: key, newValue: value));
   }
 
+  // ignore: avoid_positional_boolean_parameters
   void saveBool(String key, bool value) {
     _sharedPreferences?.setBool(key, value);
     _streamController

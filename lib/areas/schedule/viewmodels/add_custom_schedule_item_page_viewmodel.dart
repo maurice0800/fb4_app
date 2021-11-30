@@ -19,7 +19,7 @@ class AddCustomScheduleItemPageViewModel extends ChangeNotifier {
         lecturerName: lecturerController.text,
         timeBegin: timeBeginController.text.replaceFirst(':', ''),
         timeEnd: timeEndController.text.replaceFirst(':', ''),
-        weekday: ApiConstants.longWeekDays[weekdayController.text]!,
+        weekday: longWeekDays[weekdayController.text]!,
         roomId: roomController.text);
   }
 

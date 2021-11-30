@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:fb4_app/areas/news/viewmodels/news_overview_viewmodel.dart';
 import 'package:fb4_app/areas/news/widgets/news_card.dart';
 import 'package:fb4_app/config/themes/color_consts.dart';

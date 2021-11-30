@@ -3,7 +3,6 @@ import 'package:fb4_app/core/settings/settings_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class PushNotificationsManager {
   late final SettingsService _settingsService;
@@ -24,18 +23,13 @@ class PushNotificationsManager {
     });
   }
 
-  void setRouteHandler(Function(String) func) {
-    onRoute = func;
-  }
-
   Future<void> init() async {
     await Firebase.initializeApp();
 
     if (!_initialized) {
       if (_settingsService.getBool(AppConstants.settingsNotificationOnNews) ??
           false) {
-        await FirebaseMessaging.instance.requestPermission(
-            alert: true, provisional: false, sound: true, badge: true);
+        await FirebaseMessaging.instance.requestPermission();
 
         FirebaseMessaging.instance.subscribeToTopic("Aktuelles");
       } else {

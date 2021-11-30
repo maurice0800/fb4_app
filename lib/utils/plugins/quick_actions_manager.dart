@@ -3,15 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:quick_actions/quick_actions.dart';
 
 class QuickActionsManager {
-  final QuickActions quickActions = QuickActions();
+  final QuickActions quickActions = const QuickActions();
   final CupertinoTabController tabController;
 
   QuickActionsManager(this.tabController);
 
-  init() async {
-    quickActions.initialize((shortcutType) {
-      tabController.index = 3;
-    });
+  Future init() async {
+    quickActions.initialize((shortcutType) => tabController.index = 3);
 
     quickActions.setShortcutItems(<ShortcutItem>[
       const ShortcutItem(

@@ -7,7 +7,6 @@ import 'package:fb4_app/areas/news/repositories/news_repository.dart';
 import 'package:fb4_app/core/settings/settings_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class NewsOverviewViewModel extends ChangeNotifier {
   NewsRepository repository = NewsRepository();

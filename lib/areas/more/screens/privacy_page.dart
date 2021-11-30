@@ -14,7 +14,7 @@ class PrivacyPage extends StatelessWidget {
     return BaseView<PrivacyPageViewModel>(
       onViewModelCreated: (viewModel) => viewModel.load(),
       builder: (context, viewModel, child) => CupertinoPageScaffold(
-        navigationBar: CupertinoNavigationBar(
+        navigationBar: const CupertinoNavigationBar(
           middle: Text("Datenschutz"),
           backgroundColor: ColorConsts.mainOrange,
         ),
@@ -32,14 +32,13 @@ class PrivacyPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                shouldAccept
-                    ? Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: CupertinoButton.filled(
-                            child: Text("Akzeptieren"),
-                            onPressed: () => viewModel.acceptPolicy(context)),
-                      )
-                    : Container(),
+                if (shouldAccept)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: CupertinoButton.filled(
+                        child: const Text("Akzeptieren"),
+                        onPressed: () => viewModel.acceptPolicy(context)),
+                  )
               ],
             ),
           ),

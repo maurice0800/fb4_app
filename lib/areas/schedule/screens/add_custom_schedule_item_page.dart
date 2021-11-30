@@ -279,7 +279,7 @@ class AddCustomScheduleItemPage extends StatelessWidget {
     return showCupertinoModalPopup<String>(
       context: context,
       builder: (context) {
-        String tempWeekday = ApiConstants.longWeekDays.keys.first;
+        String tempWeekday = longWeekDays.keys.first;
         return SizedBox(
           height: 250,
           child: Column(
@@ -309,10 +309,9 @@ class AddCustomScheduleItemPage extends StatelessWidget {
                 child: CupertinoPicker(
                   itemExtent: 36,
                   onSelectedItemChanged: (index) {
-                    tempWeekday =
-                        ApiConstants.longWeekDays.keys.elementAt(index);
+                    tempWeekday = longWeekDays.keys.elementAt(index);
                   },
-                  children: ApiConstants.longWeekDays.keys
+                  children: longWeekDays.keys
                       .map((e) => Center(child: Text(e)))
                       .toList(),
                 ),

@@ -13,7 +13,6 @@ import 'package:fb4_app/core/settings/settings_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:json_store/json_store.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ScheduleOverviewViewModel extends ChangeNotifier {
   final JsonStore jsonStore = JsonStore();
@@ -71,8 +70,8 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
         5,
         (index) => ScheduleList(
               items: persistentScheduleItems[index].items +
-                  markListForEdit(generateListFromItems(
-                      items, ApiConstants.shortWeekDayList[index])),
+                  markListForEdit(
+                      generateListFromItems(items, shortWeekDayList[index])),
               weekday: AppConstants.weekdays[index],
               controller: internalController,
             ));
@@ -107,8 +106,8 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
                         .map<ScheduleItem>((e) =>
                             ScheduleItem.fromJson(e as Map<String, dynamic>))
                         .toList(),
-                    ApiConstants.shortWeekDayList[index]),
-                weekday: ApiConstants.shortWeekDayList[index],
+                    shortWeekDayList[index]),
+                weekday: shortWeekDayList[index],
                 controller: internalController,
               ));
       persistentScheduleItems.forEach((element) => element.items.sort());
@@ -128,7 +127,7 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
       persistentScheduleItems = List.generate(
           5,
           (index) => ScheduleList(
-                weekday: ApiConstants.shortWeekDayList[index],
+                weekday: shortWeekDayList[index],
                 controller: ScheduleListController(),
               ));
       await resyncWithDatabase();

@@ -49,8 +49,8 @@ class NewsCard extends StatelessWidget {
                           ),
                           Expanded(
                             child: SingleChildScrollView(
-                              child: Text(
-                                  item.description + "\n\n" + '(${item.list})'),
+                              child:
+                                  Text("${item.description}\n\n${item.list}"),
                             ),
                           ),
                           const Padding(

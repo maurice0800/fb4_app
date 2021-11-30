@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-
 import 'package:fb4_app/areas/more/viewmodels/licenses_page_viewmodel.dart';
 import 'package:fb4_app/config/themes/color_consts.dart';
 import 'package:fb4_app/core/views/base_view.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 class LicensesPage extends StatelessWidget {
   const LicensesPage({Key? key}) : super(key: key);

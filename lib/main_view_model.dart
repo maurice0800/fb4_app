@@ -1,8 +1,6 @@
 import 'package:fb4_app/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:kiwi/kiwi.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import 'core/settings/settings_service.dart';
 
 class MainViewModel extends ChangeNotifier {

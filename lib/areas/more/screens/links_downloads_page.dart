@@ -9,13 +9,13 @@ class LinksDownloadsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
+      navigationBar: const CupertinoNavigationBar(
         backgroundColor: ColorConsts.mainOrange,
         middle: Text("Links / Downloads"),
       ),
       child: CupertinoSettings(
         items: [
-          CSHeader("Links"),
+          const CSHeader("Links"),
           CSLink(
             title: "Studierbar",
             onPressed: () => launch("https://www.studierbar.de"),
@@ -45,7 +45,7 @@ class LinksDownloadsPage extends StatelessWidget {
             onPressed: () =>
                 launch("https://studwebmailer.fh-dortmund.de/gw/webacc"),
           ),
-          CSHeader("Downloads"),
+          const CSHeader("Downloads"),
           CSLink(
             title: "Prüfungsplan",
             onPressed: () =>

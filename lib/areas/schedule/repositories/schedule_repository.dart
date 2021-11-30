@@ -12,7 +12,7 @@ class ScheduleRepository {
         .then((result) {
       if (result.statusCode == 200) {
         final data = jsonDecode(result.body);
-        List<ScheduleItem> items = data
+        final List<ScheduleItem> items = data
             .map<ScheduleItem>(
                 (item) => ScheduleItem.fromJson(item as Map<String, dynamic>))
             .toList() as List<ScheduleItem>;

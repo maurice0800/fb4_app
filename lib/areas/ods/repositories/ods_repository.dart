@@ -1,8 +1,8 @@
 import 'package:fb4_app/areas/ods/models/exam_info_model.dart';
 import 'package:fb4_app/areas/ods/services/ods_authentication_service.dart';
-import 'package:http/http.dart' as http;
-import 'package:html/parser.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:html/parser.dart';
+import 'package:http/http.dart' as http;
 
 mixin OdsRepository {
   static String cachedToken = "";
@@ -14,8 +14,7 @@ mixin OdsRepository {
       final username = await secureStorage.read(key: 'odsUsername');
       final password = await secureStorage.read(key: 'odsPassword');
 
-      cachedToken =
-          await OdsAuthenticationService.getAuthToken(username!, password!);
+      cachedToken = await getAuthToken(username!, password!);
     }
 
     final result = await http.get(Uri.parse(

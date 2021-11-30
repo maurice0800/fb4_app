@@ -37,7 +37,7 @@ import 'areas/canteen/viewmodels/canteen_overview_viewmodel.dart';
 import 'areas/more/viewmodels/select_canteens_page_viewmodel.dart';
 import 'config/themes/light_theme.dart';
 
-void main() async {
+Future main() async {
   await registerDependencies();
 
   final notificationManager = PushNotificationsManager();
@@ -53,9 +53,9 @@ void main() async {
       .addObserver(AppStateObserver(controller: appTabController));
 
   await notificationManager.init();
-  notificationManager.setRouteHandler((route) {
+  notificationManager.onRoute = (route) {
     appTabController.index = 1;
-  });
+  };
 }
 
 Future registerDependencies() async {
@@ -104,29 +104,30 @@ class FB4App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool darkMode =
+    final bool darkMode =
         SchedulerBinding.instance!.window.platformBrightness == Brightness.dark;
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
     return MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (context) => MainViewModel()),
-        ],
-        child: Consumer<MainViewModel>(
-          builder: (context, viewModel, child) => CupertinoApp(
-            debugShowCheckedModeBanner: false,
-            theme: darkMode ? DarkTheme.themeData : LightTheme.themeData,
-            home: (viewModel.shouldShowPrivacyPolicy
-                ? ChangeNotifierProvider(
-                    create: (context) => PrivacyPageViewModel()..load(),
-                    child: PrivacyPage(
-                      shouldAccept: true,
-                    ),
-                  )
-                : CupertinoTabScaffold(
-                    controller: controller,
-                    tabBar: CupertinoTabBar(currentIndex: 0, items: [
+      providers: [
+        ChangeNotifierProvider(create: (context) => MainViewModel()),
+      ],
+      child: Consumer<MainViewModel>(
+        builder: (context, viewModel, child) => CupertinoApp(
+          debugShowCheckedModeBanner: false,
+          theme: darkMode ? darkThemeData : lightThemeData,
+          home: viewModel.shouldShowPrivacyPolicy
+              ? ChangeNotifierProvider(
+                  create: (context) => PrivacyPageViewModel()..load(),
+                  child: const PrivacyPage(
+                    shouldAccept: true,
+                  ),
+                )
+              : CupertinoTabScaffold(
+                  controller: controller,
+                  tabBar: CupertinoTabBar(
+                    items: const [
                       BottomNavigationBarItem(
                           icon: Icon(CupertinoIcons.calendar),
                           label: 'Stundenplan'),
@@ -134,7 +135,7 @@ class FB4App extends StatelessWidget {
                           icon: Icon(CupertinoIcons.news), label: 'News'),
                       BottomNavigationBarItem(
                           icon: Padding(
-                              padding: const EdgeInsets.only(top: 6.0),
+                              padding: EdgeInsets.only(top: 6.0),
                               child: Icon(FB4Icons.food, size: 25)),
                           label: 'Mensa'),
                       BottomNavigationBarItem(
@@ -142,26 +143,27 @@ class FB4App extends StatelessWidget {
                           label: 'Semesterticket'),
                       BottomNavigationBarItem(
                           icon: Icon(CupertinoIcons.ellipsis), label: 'Mehr'),
-                    ]),
-                    tabBuilder: (context, index) {
-                      switch (index) {
-                        case 0:
-                          return ScheduleOverview();
-                        case 1:
-                          return NewsOverview();
-                        case 2:
-                          return CanteenOverview();
-                        case 3:
-                          return TicketViewerPage();
-                        case 4:
-                          return MoreList();
-                        default:
-                          throw Exception(
-                              "User tried to open an invalid page.");
-                      }
-                    },
-                  )),
-          ),
-        ));
+                    ],
+                  ),
+                  tabBuilder: (context, index) {
+                    switch (index) {
+                      case 0:
+                        return ScheduleOverview();
+                      case 1:
+                        return NewsOverview();
+                      case 2:
+                        return const CanteenOverview();
+                      case 3:
+                        return TicketViewerPage();
+                      case 4:
+                        return const MoreList();
+                      default:
+                        throw Exception("User tried to open an invalid page.");
+                    }
+                  },
+                ),
+        ),
+      ),
+    );
   }
 }

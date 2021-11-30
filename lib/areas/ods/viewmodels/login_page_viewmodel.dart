@@ -19,8 +19,8 @@ class LoginPageViewModel extends ChangeNotifier {
   }
 
   Future<bool?> login() {
-    String username = usernameController.text;
-    String password = passwordController.text;
+    final username = usernameController.text;
+    final password = passwordController.text;
 
     if (username.isEmpty || password.isEmpty) {
       return Future.value(false);
@@ -29,12 +29,13 @@ class LoginPageViewModel extends ChangeNotifier {
     isLoggingIn = true;
     notifyListeners();
 
-    return OdsAuthenticationService.getAuthToken(username, password)
-        .then((token) {
+    return getAuthToken(username, password).then((token) {
       if (token.isNotEmpty) {
         if (isSaveCredentialsChecked) {
-          FlutterSecureStorage().write(key: 'odsUsername', value: username);
-          FlutterSecureStorage().write(key: 'odsPassword', value: password);
+          const FlutterSecureStorage()
+              .write(key: 'odsUsername', value: username);
+          const FlutterSecureStorage()
+              .write(key: 'odsPassword', value: password);
         }
 
         usernameController.text = "";

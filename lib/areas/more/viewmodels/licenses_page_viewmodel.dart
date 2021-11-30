@@ -1,7 +1,6 @@
 import 'package:fb4_app/oss_licenses.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 
 class LicensesPageViewModel extends ChangeNotifier {
   List<LicenseInfo> licenses = [];

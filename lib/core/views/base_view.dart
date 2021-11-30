@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:provider/provider.dart';
 
 class BaseView<T extends ChangeNotifier> extends StatelessWidget {
   final Widget Function(BuildContext context, T value, Widget? child) builder;
@@ -11,7 +11,7 @@ class BaseView<T extends ChangeNotifier> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    T viewModel = KiwiContainer().resolve<T>();
+    final viewModel = KiwiContainer().resolve<T>();
 
     if (onViewModelCreated != null) {
       onViewModelCreated!(viewModel);

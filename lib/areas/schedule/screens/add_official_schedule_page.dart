@@ -146,15 +146,14 @@ class AddOfficialSchedulePage extends StatelessWidget {
                               placeholder: 'Wählen',
                               onTap: () {
                                 viewModel.selectedSemester = "";
-                                showModalForSelection(
+                                showModalForSelection<CourseInfo>(
                                     context,
                                     "Studiengang wählen",
                                     viewModel.courses,
                                     viewModel.courses
                                         .map((course) => course.name)
                                         .toList(), (course) {
-                                  viewModel.selectedCourse =
-                                      course as CourseInfo;
+                                  viewModel.selectedCourse = course;
                                   Navigator.of(context).pop();
                                 });
                               },

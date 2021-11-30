@@ -17,7 +17,7 @@ class TicketOverviewViewModel extends ChangeNotifier {
     if (imageBytes == null) {
       isImageProcessing = true;
       filePath = await getApplicationDocumentsDirectory()
-          .then((dir) => dir.path + "/semester_ticket.dat");
+          .then((dir) => "${dir.path}/semester_ticket.dat");
       isImageAvailable = await getIsImageAvailable();
 
       if (isImageAvailable) {
@@ -73,7 +73,7 @@ class TicketOverviewViewModel extends ChangeNotifier {
     });
 
     getApplicationDocumentsDirectory().then((directory) {
-      File(directory.path + "/semester_ticket.dat")
+      File("${directory.path}/semester_ticket.dat")
           .writeAsBytes(rawImageBytes!.buffer.asUint8List(
               rawImageBytes.offsetInBytes, rawImageBytes.lengthInBytes))
           .then((result) {

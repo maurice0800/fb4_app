@@ -20,9 +20,7 @@ class ScheduleOverview extends StatelessWidget {
                   child: SafeArea(child: Builder(builder: (context) {
                     if (viewModel.hasItems) {
                       WidgetsBinding.instance?.addPostFrameCallback((_) async {
-                        if (viewModel.aferNextRender != null) {
-                          viewModel.aferNextRender();
-                        }
+                        viewModel.aferNextRender();
                         viewModel.aferNextRender = () {};
                       });
                       return Column(

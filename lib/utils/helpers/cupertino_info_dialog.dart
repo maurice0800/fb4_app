@@ -16,14 +16,12 @@ class CupertinoInfoDialog {
                 actions: [
                   GestureDetector(
                     behavior: HitTestBehavior.opaque,
-                    child: Container(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Text(
-                          "OK",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 16),
-                        ),
+                    child: const Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Text(
+                        "OK",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 16),
                       ),
                     ),
                     onTap: () {

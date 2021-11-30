@@ -21,45 +21,40 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
+  brightness_volume: ^1.0.3
+  cupertino_icons: ^1.0.3
+  equatable: ^2.0.3
+  file_picker: ^3.0.2+2
+  firebase_core: ^1.2.1
+  firebase_messaging: ^10.0.1
   flutter:
     sdk: flutter
-  provider: ^5.0.0
-  flutter_cupertino_settings: ^0.5.0
-  http: ^0.13.3
-  equatable: ^2.0.3
-  xml: ^5.1.2
-  intl: ^0.17.0
-  firebase_messaging: ^10.0.1
-  firebase_core: ^1.2.1
-  json_store: ^2.0.0-nullsafety.0
-  quiver: ^3.0.1
-  file_picker: ^3.0.2+2
-  pdf_render: ^1.0.11
-  path_provider: ^2.0.2
-  url_launcher: ^6.0.6
-  shared_preferences: ^2.0.6
-  brightness_volume: ^1.0.3
-  flutter_markdown: ^0.6.2
-  quick_actions: ^0.6.0+7
-  modal_bottom_sheet: ^2.0.0
   flutter_colorpicker: ^0.5.0
-  html: ^0.15.0
-  group_list_view: ^1.1.1
+  flutter_cupertino_settings: ^0.5.0
+  flutter_markdown: ^0.6.2
   flutter_secure_storage: ^4.2.0
+  group_list_view: ^1.1.1
+  html: ^0.15.0
+  http: ^0.13.3
+  intl: ^0.17.0
+  json_store: ^2.0.0-nullsafety.0
   kiwi: ^3.0.0
+  modal_bottom_sheet: ^2.0.0
+  path_provider: ^2.0.2
+  pdf_render: ^1.0.11
+  provider: ^5.0.0
+  quick_actions: ^0.6.0+7
+  quiver: ^3.0.1
+  shared_preferences: ^2.0.6
   sqflite: ^2.0.0+3
- 
-
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.3
+  url_launcher: ^6.0.6
+  xml: ^5.1.2
 
 dev_dependencies:
   flutter_oss_licenses: ^1.1.1
-  lint: ^1.5.3
   flutter_test:
     sdk: flutter
+  lint: ^1.5.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
