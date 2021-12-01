@@ -15,7 +15,7 @@ class MainViewModel extends ChangeNotifier {
             false);
 
     if (_settingsService.getString(AppConstants.privacyPolicyAcceptedVersion) !=
-        "1.1") {
+        "1.2") {
       shouldShowPrivacyPolicy = true;
     }
   }
@@ -23,7 +23,7 @@ class MainViewModel extends ChangeNotifier {
   void acceptPrivacyPolicy() {
     _settingsService.saveBool(AppConstants.privacyPolicyAccepted, true);
     _settingsService.saveString(
-        AppConstants.privacyPolicyAcceptedVersion, "1.1");
+        AppConstants.privacyPolicyAcceptedVersion, "1.2");
 
     shouldShowPrivacyPolicy = false;
     notifyListeners();

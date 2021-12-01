@@ -16,6 +16,9 @@ Gruppe erfolgt lokal auf dem Gerät des Endbenutzers. Diese Angabe wird nicht pe
 Die ODS Logindaten werden nicht an uns weitergeleitet. Sollte der Nutzer oder die Nutzerin sich dazu entscheiden die Logindaten zu speichern, werden diese in der iOS Keychain verschlüsselt gespeichert.
 Die Kommunikation findet ausschließlich zwischen App und ODS statt. Eine Beteiligung von dritten findet hierbei nicht statt. Bei der Nutzung von ODS Mobile gelten die Datenschutzbestimmungen des ODS der FH Dortmund.
  
+ ### Mensa:
+ Durch die Nutzung der Mensapläne in der App ist der Nutzer damit einverstanden, dass zum Zwecke der Datenbeschaffung eine Verbindung zu den Server von openmensa.org aufgebaut wird. Durch das Aufrufen der Einstellungen für den Mensaplan wird erstmalig eine Verbindung aufgebaut, um alle Verfügbaren Mensen in Dortmund abzufragen. Sollte der Nutzer eine oder mehrere Mensen auswählen, wird beim Aufrufen des Tabs "Mensa" eine weitere Verbindung aufgebaut, um aktuelle Speisepläne abzurufen. Hierbei werden zu keinem Zeitpunkt persönliches Daten des Nutzers an fremde Systeme übertragen.
+ Weitere Informationen zum OpenMensa Projekt sind hier verfügbar: [https://www.openmensa.org](https://www.openmensa.org)
  
 ### Firebase Cloud Messaging:  
 Sollte der Nutzer die Push-Benachrichtigungen aktivieren, wird von Google eine eindeutige, pseudonymisierte Geräte-ID zugeteilt. Der alleine Zweck dieser ID ist das Zustellen das Push-Benachrichtigungen an die jeweiligen Geräte.
