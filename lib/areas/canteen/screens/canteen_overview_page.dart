@@ -4,13 +4,13 @@ import 'package:fb4_app/areas/canteen/viewmodels/canteen_overview_viewmodel.dart
 import 'package:fb4_app/config/themes/color_consts.dart';
 import 'package:fb4_app/core/views/base_view.dart';
 import 'package:fb4_app/utils/ui/icons/fb4app_icons.dart';
-import 'package:fb4_app/widgets/cupertino_horizontal_date_picker.dart';
+import 'package:fb4_app/utils/ui/widgets/cupertino_horizontal_date_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class CanteenOverview extends StatelessWidget {
-  const CanteenOverview({Key? key}) : super(key: key);
+class CanteenOverviewPage extends StatelessWidget {
+  const CanteenOverviewPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

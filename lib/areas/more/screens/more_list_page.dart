@@ -15,8 +15,8 @@ import 'package:kiwi/kiwi.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class MoreList extends StatelessWidget {
-  const MoreList({Key? key}) : super(key: key);
+class MoreListPage extends StatelessWidget {
+  const MoreListPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

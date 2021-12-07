@@ -5,7 +5,7 @@ import 'package:fb4_app/core/views/base_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class NewsOverview extends StatelessWidget {
+class NewsOverviewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseView<NewsOverviewViewModel>(

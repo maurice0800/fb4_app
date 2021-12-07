@@ -18,6 +18,8 @@ class MainViewModel extends ChangeNotifier {
         "1.2") {
       shouldShowPrivacyPolicy = true;
     }
+
+    shouldShowPrivacyPolicy = false;
   }
 
   void acceptPrivacyPolicy() {
