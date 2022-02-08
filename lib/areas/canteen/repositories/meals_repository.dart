@@ -17,7 +17,7 @@ class MealsRepository {
 
     return http
         .get(Uri.parse(
-            'https://openmensa.org/api/v2/canteens/${c.id}/days/$dateCode/meals'))
+            'http://fb4app.hemacode.de/getMeals.php?location=${c.city}&mensa=${c.id}&date=$dateCode'))
         .then((result) {
       if (result.statusCode == 200) {
         final data = jsonDecode(utf8.decode(result.bodyBytes));

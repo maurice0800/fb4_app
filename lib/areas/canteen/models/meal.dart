@@ -1,22 +1,25 @@
 class Meal {
-  final String name;
-  final String category;
+  final String type;
+  final String title;
   final Map<String, double?> prices;
   final List<String> notes;
 
   Meal(
-      {required this.name,
-      required this.category,
+      {required this.type,
+      required this.title,
       required this.prices,
       required this.notes});
 
   factory Meal.fromJson(Map<String, dynamic> json) {
     return Meal(
-      name: json["name"].toString(),
-      category: json["category"].toString(),
-      prices: (json["prices"] as Map).map((k, v) => MapEntry(
-          k.toString(), v != null ? double.parse(v.toString()) : null)),
-      notes: json["notes"].map<String>((item) => item.toString()).toList()
+      type: json["type"].toString(),
+      title: json["title"].toString(),
+      prices: {
+        "Studierende": double.parse(json["priceStudent"].toString()),
+        "Mitarbeitende": double.parse(json["priceEmployee"].toString()),
+        "Gäste": double.parse(json["priceGuest"].toString()),
+      },
+      notes: json["supplies"].map<String>((item) => item.toString()).toList()
           as List<String>,
     );
   }

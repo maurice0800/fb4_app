@@ -1,5 +1,5 @@
 class Canteen {
-  final int id;
+  final String id;
   final String name;
   final String city;
 
@@ -7,7 +7,7 @@ class Canteen {
 
   factory Canteen.fromJson(Map<String, dynamic> json) {
     return Canteen(
-      id: int.parse(json["id"].toString()),
+      id: json["id"].toString(),
       name: json["name"].toString(),
       city: json["city"].toString(),
     );

@@ -137,8 +137,8 @@ class MealCardInner extends StatelessWidget {
                   .merge(const TextStyle(fontSize: 20.0))),
         ),
         CanteenMealsList(
-            meals: meals.where((m) => m.category != "Beilagen").toList()),
-        if (meals.where((m) => m.category == "Beilagen").isNotEmpty)
+            meals: meals.where((m) => m.type != "Beilagen").toList()),
+        if (meals.where((m) => m.type == "Beilagen").isNotEmpty)
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -153,7 +153,7 @@ class MealCardInner extends StatelessWidget {
                           .textStyle
                           .merge(const TextStyle(fontSize: 20.0)))),
               CanteenMealsList(
-                  meals: meals.where((m) => m.category == "Beilagen").toList(),
+                  meals: meals.where((m) => m.type == "Beilagen").toList(),
                   shrink: true),
             ],
           )
@@ -203,13 +203,13 @@ class CanteenMealsList extends StatelessWidget {
           children: [
             const Text("Name", style: TextStyle(fontWeight: FontWeight.bold)),
             Text(
-              meal.name,
+              meal.title,
               textAlign: TextAlign.start,
             ),
             const SizedBox(height: 12.0),
             const Text("Kategorie",
                 style: TextStyle(fontWeight: FontWeight.bold)),
-            Text(meal.category),
+            Text(meal.type),
             const SizedBox(height: 12.0),
             const Text("Preise", style: TextStyle(fontWeight: FontWeight.bold)),
             ...meal.prices.entries
@@ -269,7 +269,7 @@ class MealItem extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-              child: Text(meal.name,
+              child: Text(meal.title,
                   style: CupertinoTheme.of(context).textTheme.textStyle)),
           Padding(
             padding: const EdgeInsets.only(left: 8.0),
@@ -291,7 +291,7 @@ class MealInfoText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(children: [
       Icon(
-        getCategoryIcon(meal.category),
+        getCategoryIcon(meal.type),
         color: CupertinoTheme.of(context).textTheme.textStyle.color,
       ),
     ]);

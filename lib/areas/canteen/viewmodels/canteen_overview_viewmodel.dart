@@ -55,8 +55,6 @@ class CanteenOverviewViewModel extends ChangeNotifier {
         enabledCanteens = (jsonDecode(settingsString!) as List)
             .map((x) => Canteen.fromJson(x as Map<String, dynamic>))
             .toList();
-
-        enabledCanteens.sort((a, b) => a.id - b.id);
       } finally {}
     } else {
       enabledCanteens = [];
