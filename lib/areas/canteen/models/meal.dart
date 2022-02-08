@@ -17,7 +17,7 @@ class Meal {
       prices: {
         "Studierende": double.parse(json["priceStudent"].toString()),
         "Mitarbeitende": double.parse(json["priceEmployee"].toString()),
-        "Gäste": double.parse(json["priceGuest"].toString()),
+        "Gäste": double.parse(json["priceGuests"].toString()),
       },
       notes: json["supplies"].map<String>((item) => item.toString()).toList()
           as List<String>,

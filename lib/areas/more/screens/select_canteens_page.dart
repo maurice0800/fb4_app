@@ -19,18 +19,16 @@ class SelectCanteensPage extends StatelessWidget {
             ? CupertinoSettings(
                 items: [
                   const CSHeader("Angezeigte Mensen"),
-                  ...viewModel.canteens
-                      .where((c) => c.city == "Dortmund / Nordrhein-Westfalen")
-                      .map(
-                        (c) => CSControl(
-                          nameWidget: Text(c.name),
-                          contentWidget: CupertinoSwitch(
-                              value: viewModel.selectedCanteens
-                                  .any((element) => element.id == c.id),
-                              onChanged: (value) =>
-                                  viewModel.setSelectedState(c, value)),
-                        ),
-                      )
+                  ...viewModel.canteens.map(
+                    (c) => CSControl(
+                      nameWidget: Text(c.name),
+                      contentWidget: CupertinoSwitch(
+                          value: viewModel.selectedCanteenIds
+                              .any((element) => element == c.id),
+                          onChanged: (value) =>
+                              viewModel.setSelectedState(c, value)),
+                    ),
+                  )
                 ],
               )
             : const Center(child: CupertinoActivityIndicator()),

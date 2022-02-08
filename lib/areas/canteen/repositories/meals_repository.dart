@@ -20,10 +20,11 @@ class MealsRepository {
             'http://fb4app.hemacode.de/getMeals.php?location=${c.city}&mensa=${c.id}&date=$dateCode'))
         .then((result) {
       if (result.statusCode == 200) {
-        final data = jsonDecode(utf8.decode(result.bodyBytes));
-        final list = data
-            .map<Meal>((item) => Meal.fromJson(item as Map<String, dynamic>))
-            .toList() as List<Meal>;
+        final data =
+            jsonDecode(utf8.decode(result.bodyBytes)) as Map<String, dynamic>;
+        final meals =
+            (data["meals"] as List).map((e) => e as Map<String, dynamic>);
+        final list = meals.map<Meal>((item) => Meal.fromJson(item)).toList();
 
         cache[hash] = list;
         return list;

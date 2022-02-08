@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:fb4_app/app_constants.dart';
 import 'package:fb4_app/areas/canteen/models/canteen.dart';
 import 'package:fb4_app/areas/canteen/models/meal.dart';
+import 'package:fb4_app/areas/canteen/repositories/canteens_repository.dart';
 import 'package:fb4_app/areas/canteen/repositories/meals_repository.dart';
 import 'package:fb4_app/core/settings/settings_service.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,8 +12,10 @@ import 'package:intl/intl.dart';
 import 'package:kiwi/kiwi.dart';
 
 class CanteenOverviewViewModel extends ChangeNotifier {
-  late List<Canteen> enabledCanteens;
+  late List<String> enabledCanteenIds;
+  late List<Canteen> allCanteens;
   late final MealsRepository _mealsRepository;
+  late final CanteensRepository _canteensRepository;
   late final ValueNotifier<DateTime> currentDate =
       ValueNotifier<DateTime>(DateTime.now());
   late final PageController pageController;
@@ -21,7 +24,9 @@ class CanteenOverviewViewModel extends ChangeNotifier {
   CanteenOverviewViewModel() {
     _settingsService = KiwiContainer().resolve<SettingsService>();
     _mealsRepository = KiwiContainer().resolve<MealsRepository>();
+    _canteensRepository = KiwiContainer().resolve<CanteensRepository>();
     pageController = PageController(initialPage: 7);
+    allCanteens = _canteensRepository.getAll();
 
     _settingsService.settingsChangedEvent.listen((e) {
       if (e.settingName == AppConstants.settingsEnabledCanteens) {
@@ -40,8 +45,10 @@ class CanteenOverviewViewModel extends ChangeNotifier {
 
     final returnMap = <Canteen, List<Meal>>{};
 
-    for (final c in enabledCanteens) {
-      returnMap[c] = await _mealsRepository.getMealsForCanteen(c, dateString);
+    for (final id in enabledCanteenIds) {
+      final canteen = allCanteens.firstWhere((element) => element.id == id);
+      returnMap[canteen] =
+          await _mealsRepository.getMealsForCanteen(canteen, dateString);
     }
 
     return returnMap;
@@ -52,12 +59,12 @@ class CanteenOverviewViewModel extends ChangeNotifier {
       try {
         final settingsString =
             _settingsService.getString(AppConstants.settingsEnabledCanteens);
-        enabledCanteens = (jsonDecode(settingsString!) as List)
-            .map((x) => Canteen.fromJson(x as Map<String, dynamic>))
+        enabledCanteenIds = (jsonDecode(settingsString!) as List)
+            .map((e) => e.toString())
             .toList();
       } finally {}
     } else {
-      enabledCanteens = [];
+      enabledCanteenIds = [];
     }
 
     notifyListeners();

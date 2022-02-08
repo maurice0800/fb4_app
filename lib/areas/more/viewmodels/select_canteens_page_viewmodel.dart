@@ -12,37 +12,37 @@ class SelectCanteensPageViewModel extends ChangeNotifier {
       KiwiContainer().resolve<CanteensRepository>();
   final _settingsService = KiwiContainer().resolve<SettingsService>();
   List<Canteen> canteens = [];
-  List<Canteen> selectedCanteens = [];
+  List<String> selectedCanteenIds = [];
 
   SelectCanteensPageViewModel() {
     if (_settingsService.containsKey(AppConstants.settingsEnabledCanteens)) {
       try {
         final settingsString =
             _settingsService.getString(AppConstants.settingsEnabledCanteens);
-        selectedCanteens = (jsonDecode(settingsString!) as List)
-            .map((x) => Canteen.fromJson(x as Map<String, dynamic>))
+        selectedCanteenIds = (jsonDecode(settingsString!) as List)
+            .map((e) => e.toString())
             .toList();
       } finally {}
     } else {
-      selectedCanteens = [];
+      selectedCanteenIds = [];
     }
   }
 
   Future getAllCanteens() async {
-    canteens = await _canteensRepository.getAll();
+    canteens = _canteensRepository.getAll();
     notifyListeners();
   }
 
   // ignore: avoid_positional_boolean_parameters
   void setSelectedState(Canteen canteen, bool state) {
     if (state) {
-      selectedCanteens.add(canteen);
+      selectedCanteenIds.add(canteen.id);
     } else {
-      selectedCanteens.remove(canteen);
+      selectedCanteenIds.remove(canteen.id);
     }
 
     _settingsService.saveString(
-        AppConstants.settingsEnabledCanteens, jsonEncode(selectedCanteens));
+        AppConstants.settingsEnabledCanteens, jsonEncode(selectedCanteenIds));
 
     notifyListeners();
   }

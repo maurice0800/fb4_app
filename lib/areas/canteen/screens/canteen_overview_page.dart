@@ -25,7 +25,7 @@ class CanteenOverviewPage extends StatelessWidget {
       ),
       child: BaseView<CanteenOverviewViewModel>(
         builder: (context, viewModel, child) => viewModel
-                .enabledCanteens.isNotEmpty
+                .enabledCanteenIds.isNotEmpty
             ? Column(children: [
                 ValueListenableBuilder(
                   valueListenable: viewModel.currentDate,
@@ -47,23 +47,33 @@ class CanteenOverviewPage extends StatelessWidget {
                         future: viewModel.getMealsForCanteensAtDateIndex(index),
                         builder: (context, snapshot) => snapshot.hasData
                             ? ListView.builder(
-                                itemCount: viewModel.enabledCanteens.length,
+                                itemCount: viewModel.enabledCanteenIds.length,
                                 itemBuilder: (context, index) => Card(
-                                    color: CupertinoTheme.of(context)
-                                        .primaryContrastingColor,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0)),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(16.0),
-                                      child: MealCardInner(
-                                        canteenName: viewModel
-                                            .enabledCanteens[index].name,
-                                        meals: snapshot.data![viewModel
-                                                .enabledCanteens[index]] ??
-                                            [],
-                                      ),
-                                    )))
+                                  color: CupertinoTheme.of(context)
+                                      .primaryContrastingColor,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(10.0)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: MealCardInner(
+                                      canteenName: viewModel.allCanteens
+                                          .firstWhere((e) =>
+                                              e.id ==
+                                              viewModel
+                                                  .enabledCanteenIds[index])
+                                          .name,
+                                      meals: snapshot.data![viewModel
+                                              .allCanteens
+                                              .firstWhere((e) =>
+                                                  e.id ==
+                                                  viewModel.enabledCanteenIds[
+                                                      index])] ??
+                                          [],
+                                    ),
+                                  ),
+                                ),
+                              )
                             : const CupertinoActivityIndicator(),
                       ),
                     ),
@@ -72,9 +82,10 @@ class CanteenOverviewPage extends StatelessWidget {
               ])
             : const Center(
                 child: Text(
-                "Noch keine Mensen ausgewählt!\nBitte gehe in die Einstellungen und wähle deine bevorzugten Mensen aus.",
-                textAlign: TextAlign.center,
-              )),
+                  "Noch keine Mensen ausgewählt!\nBitte gehe in die Einstellungen und wähle deine bevorzugten Mensen aus.",
+                  textAlign: TextAlign.center,
+                ),
+              ),
       ),
     );
   }
@@ -108,11 +119,12 @@ class MealCardInner extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 4.0, bottom: 6.0),
             child: Center(
-              child: Text("Keine Daten vorhanden",
-                  style: CupertinoTheme.of(context)
-                      .textTheme
-                      .textStyle
-                      .merge(const TextStyle(fontSize: 20.0))),
+              child: Text(
+                "Keine Daten vorhanden",
+                style: CupertinoTheme.of(context).textTheme.textStyle.merge(
+                      const TextStyle(fontSize: 20.0),
+                    ),
+              ),
             ),
           )
         ],
@@ -153,8 +165,9 @@ class MealCardInner extends StatelessWidget {
                           .textStyle
                           .merge(const TextStyle(fontSize: 20.0)))),
               CanteenMealsList(
-                  meals: meals.where((m) => m.type == "Beilagen").toList(),
-                  shrink: true),
+                meals: meals.where((m) => m.type == "Beilagen").toList(),
+                shrink: true,
+              ),
             ],
           )
       ],
@@ -218,8 +231,10 @@ class CanteenMealsList extends StatelessWidget {
                     "${getLocalizedPriceCategory(entry.key)}: ${numberFormat.format(entry.value)}"))
                 .toList(),
             const SizedBox(height: 12.0),
-            const Text("Anmerkungen",
-                style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text(
+              "Anmerkungen",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
             ...meal.notes.map((m) => Text(m))
           ],
         ),

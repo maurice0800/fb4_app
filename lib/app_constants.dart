@@ -31,5 +31,5 @@ class AppConstants {
 
   static const pinnedNewsItems = "pinnedNewsItems";
 
-  static const settingsEnabledCanteens = "settingsEnabledCanteens";
+  static const settingsEnabledCanteens = "settingsEnabledCanteenIds";
 }
