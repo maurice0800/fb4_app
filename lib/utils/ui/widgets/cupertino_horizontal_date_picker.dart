@@ -39,7 +39,6 @@ class _CupertinoHorizontalDatePickerState
             onTap: () => setState(
               () {
                 date = date.subtract(const Duration(days: 1));
-
                 if (widget.onDateTimeChanged != null) {
                   widget.onDateTimeChanged!(date);
                 }
@@ -50,8 +49,13 @@ class _CupertinoHorizontalDatePickerState
               child: Icon(CupertinoIcons.left_chevron),
             ),
           ),
-          Text(format.format(date),
-              style: const TextStyle(fontWeight: FontWeight.bold)),
+          Text(
+            format.format(date),
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: CupertinoTheme.of(context).textTheme.textStyle.color,
+            ),
+          ),
           GestureDetector(
             onTap: () => setState(
               () {

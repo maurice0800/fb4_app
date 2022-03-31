@@ -15,9 +15,6 @@ class CanteenOverviewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      backgroundColor: CupertinoTheme.of(context).brightness == Brightness.light
-          ? CupertinoColors.extraLightBackgroundGray
-          : CupertinoColors.black,
       navigationBar: const CupertinoNavigationBar(
         backgroundColor: ColorConsts.mainOrange,
         middle: Text("Mensa"),
