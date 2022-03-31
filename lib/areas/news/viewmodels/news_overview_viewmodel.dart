@@ -12,7 +12,9 @@ class NewsOverviewViewModel extends ChangeNotifier {
   NewsRepository repository = NewsRepository();
   late final SettingsService _settingsService;
   bool hasError = false;
-  List<NewsItem> newsItems = [];
+  bool searchIsActive = false;
+  List<NewsItem> allNewsItems = [];
+  List<NewsItem> displayNewsItems = [];
   List<NewsItem> pinnedItems = [];
   bool isLoading = false;
 
@@ -22,12 +24,13 @@ class NewsOverviewViewModel extends ChangeNotifier {
 
   Future fetchNewsItems(
       {required Function(String) onError, bool alwaysRefresh = true}) {
-    if ((alwaysRefresh || newsItems.isEmpty) && !hasError) {
+    if ((alwaysRefresh || allNewsItems.isEmpty) && !hasError) {
       isLoading = true;
       notifyListeners();
 
       return repository.getNewsItems().then((items) {
-        newsItems = items;
+        allNewsItems = items;
+        displayNewsItems = items;
         hasError = false;
         notifyListeners();
       }).onError((error, stackTrace) {
@@ -42,6 +45,12 @@ class NewsOverviewViewModel extends ChangeNotifier {
     }
 
     return Future.value();
+  }
+
+  void switchSearchState() {
+    searchIsActive = !searchIsActive;
+    displayNewsItems = allNewsItems;
+    notifyListeners();
   }
 
   void pinNewsItem(NewsItem item) {
@@ -76,5 +85,10 @@ class NewsOverviewViewModel extends ChangeNotifier {
         }
       }
     }
+  }
+
+  void executeSearch(String text) {
+    displayNewsItems = allNewsItems.where((element) => element.title.contains(text) || element.description.contains(text)).toList();
+    notifyListeners();
   }
 }

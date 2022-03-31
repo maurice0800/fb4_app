@@ -2,6 +2,7 @@ import 'package:fb4_app/config/themes/color_consts.dart';
 import 'package:flutter/cupertino.dart';
 
 CupertinoThemeData lightThemeData = const CupertinoThemeData(
+  scaffoldBackgroundColor: CupertinoColors.extraLightBackgroundGray,
   brightness: Brightness.light,
   primaryColor: ColorConsts.mainOrange,
   primaryContrastingColor: CupertinoColors.white,
