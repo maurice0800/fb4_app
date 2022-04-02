@@ -95,15 +95,13 @@ class NewsOverviewPage extends StatelessWidget {
                                 },
                               ),
                               if (viewModel.pinnedItems.isNotEmpty)
-                                const SliverToBoxAdapter(
+                                SliverToBoxAdapter(
                                   child: Padding(
                                     padding:
-                                        EdgeInsets.only(left: 14.0, top: 12.0),
+                                        const EdgeInsets.only(left: 14.0, top: 12.0),
                                     child: Text(
                                       "Angepinnte Elemente",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                      style: CupertinoTheme.of(context).textTheme.textStyle.copyWith(fontWeight: FontWeight.bold),
                                     ),
                                   ),
                                 ),
