@@ -44,115 +44,121 @@ class NewsOverviewPage extends StatelessWidget {
         child: SafeArea(
           child: Builder(
             builder: (context) {
-              if (!viewModel.isLoading) {
-                return viewModel.hasError
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text("Es ist ein Fehler aufgetreten."),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            CupertinoButton.filled(
-                              child: const Text("Nochmal versuchen"),
-                              onPressed: () {
-                                viewModel.hasError = false;
-                                viewModel.fetchNewsItems(
-                                  onError: (message) =>
-                                      _showErrorDialog(context, message),
-                                );
-                              },
-                            )
-                          ],
-                        ),
-                      )
-                    : Column(
-                        children: [
-                          if (viewModel.searchIsActive)
-                            Container(
-                              color: CupertinoTheme.of(context)
-                                  .primaryContrastingColor,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: CupertinoSearchTextField(
-                                  placeholder: "News suchen",
-                                  onSubmitted: (text) =>
-                                      viewModel.executeSearch(text),
-                                ),
-                              ),
-                            ),
-                          Expanded(
-                            child: CustomScrollView(slivers: [
-                              CupertinoSliverRefreshControl(
-                                onRefresh: () {
-                                  return viewModel.fetchNewsItems(
-                                    onError: (message) => _showErrorDialog(
-                                      context,
-                                      message,
-                                    ),
-                                  );
-                                },
-                              ),
-                              if (viewModel.pinnedItems.isNotEmpty)
-                                SliverToBoxAdapter(
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsets.only(left: 14.0, top: 12.0),
-                                    child: Text(
-                                      "Angepinnte Elemente",
-                                      style: CupertinoTheme.of(context).textTheme.textStyle.copyWith(fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ),
-                              SliverToBoxAdapter(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: ListView.separated(
-                                    shrinkWrap: true,
-                                    physics: const ScrollPhysics(),
-                                    itemBuilder: (context, index) =>
-                                        _buildPinnedNewsItem(
-                                            context, index, viewModel),
-                                    separatorBuilder: (context, index) =>
-                                        const SizedBox(height: 5),
-                                    itemCount: viewModel.pinnedItems.length,
-                                  ),
-                                ),
-                              ),
-                              if (viewModel.pinnedItems.isNotEmpty)
-                                const SliverToBoxAdapter(
-                                  child: Divider(
-                                    color: CupertinoColors.lightBackgroundGray,
-                                    thickness: 2,
-                                  ),
-                                ),
-                              SliverToBoxAdapter(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: ListView.separated(
-                                    shrinkWrap: true,
-                                    physics: const ScrollPhysics(),
-                                    itemBuilder: (context, index) =>
-                                        _buildNewsItem(
-                                            context, index, viewModel),
-                                    separatorBuilder: (context, index) =>
-                                        const SizedBox(height: 5),
-                                    itemCount:
-                                        viewModel.displayNewsItems.length,
-                                  ),
-                                ),
-                              ),
-                            ]),
-                          ),
-                        ],
-                      );
-              } else {
+              if (viewModel.isLoading) {
                 return const Center(child: CupertinoActivityIndicator());
+              }
+
+              if (viewModel.hasError) {
+                return buildNewsError(context, viewModel);
+              } else {
+                return buildNewsList(context, viewModel);
               }
             },
           ),
         ),
+      ),
+    );
+  }
+
+  Widget buildNewsList(BuildContext context, NewsOverviewViewModel viewModel) {
+    return Column(
+      children: [
+        if (viewModel.searchIsActive)
+          Container(
+            color: CupertinoTheme.of(context).primaryContrastingColor,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CupertinoSearchTextField(
+                placeholder: "News suchen",
+                onSubmitted: (text) => viewModel.executeSearch(text),
+              ),
+            ),
+          ),
+        Expanded(
+          child: CustomScrollView(slivers: [
+            CupertinoSliverRefreshControl(
+              onRefresh: () {
+                return viewModel.fetchNewsItems(
+                  onError: (message) => _showErrorDialog(
+                    context,
+                    message,
+                  ),
+                );
+              },
+            ),
+            if (viewModel.pinnedItems.isNotEmpty)
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 14.0, top: 12.0),
+                  child: Text(
+                    "Angepinnte Elemente",
+                    style: CupertinoTheme.of(context)
+                        .textTheme
+                        .textStyle
+                        .copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListView.separated(
+                  shrinkWrap: true,
+                  physics: const ScrollPhysics(),
+                  itemBuilder: (context, index) =>
+                      _buildPinnedNewsItem(context, index, viewModel),
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 5),
+                  itemCount: viewModel.pinnedItems.length,
+                ),
+              ),
+            ),
+            if (viewModel.pinnedItems.isNotEmpty)
+              const SliverToBoxAdapter(
+                child: Divider(
+                  color: CupertinoColors.lightBackgroundGray,
+                  thickness: 2,
+                ),
+              ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListView.separated(
+                  shrinkWrap: true,
+                  physics: const ScrollPhysics(),
+                  itemBuilder: (context, index) =>
+                      _buildNewsItem(context, index, viewModel),
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 5),
+                  itemCount: viewModel.displayNewsItems.length,
+                ),
+              ),
+            ),
+          ]),
+        ),
+      ],
+    );
+  }
+
+  Widget buildNewsError(BuildContext context, NewsOverviewViewModel viewModel) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text("Es ist ein Fehler aufgetreten."),
+          const SizedBox(
+            height: 10,
+          ),
+          CupertinoButton.filled(
+            child: const Text("Nochmal versuchen"),
+            onPressed: () {
+              viewModel.hasError = false;
+              viewModel.fetchNewsItems(
+                onError: (message) => _showErrorDialog(context, message),
+              );
+            },
+          )
+        ],
       ),
     );
   }
