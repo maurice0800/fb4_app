@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 
 class NavigationListItem extends StatelessWidget {
   final Icon icon;
   final GestureTapCallback callback;
 
-  const NavigationListItem(
-      {Key? key, required this.icon, required this.callback})
-      : super(key: key);
+  const NavigationListItem({
+    Key? key,
+    required this.icon,
+    required this.callback,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

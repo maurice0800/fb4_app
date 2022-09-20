@@ -38,7 +38,8 @@ class CanteenOverviewViewModel extends ChangeNotifier {
   }
 
   Future<Map<Canteen, List<Meal>>> getMealsForCanteensAtDateIndex(
-      int index) async {
+    int index,
+  ) async {
     final dateOffset = index - 7;
     final dateString = DateFormat("yyyy-MM-dd")
         .format(DateTime.now().add(Duration(days: dateOffset)));
@@ -73,10 +74,14 @@ class CanteenOverviewViewModel extends ChangeNotifier {
   void onSelectedDateChanged(DateTime newDate) {
     if (newDate.difference(currentDate.value).isNegative) {
       pageController.previousPage(
-          duration: const Duration(milliseconds: 200), curve: Curves.linear);
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.linear,
+      );
     } else {
       pageController.nextPage(
-          duration: const Duration(milliseconds: 200), curve: Curves.linear);
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.linear,
+      );
     }
   }
 

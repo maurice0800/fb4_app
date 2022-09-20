@@ -28,7 +28,8 @@ class PrivacyPage extends StatelessWidget {
                     child: MarkdownBody(
                       data: viewModel.licenseText,
                       styleSheet: MarkdownStyleSheet.fromCupertinoTheme(
-                          CupertinoTheme.of(context)),
+                        CupertinoTheme.of(context),
+                      ),
                     ),
                   ),
                 ),
@@ -36,8 +37,9 @@ class PrivacyPage extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0),
                     child: CupertinoButton.filled(
-                        child: const Text("Akzeptieren"),
-                        onPressed: () => viewModel.acceptPolicy(context)),
+                      child: const Text("Akzeptieren"),
+                      onPressed: () => viewModel.acceptPolicy(context),
+                    ),
                   )
               ],
             ),

@@ -8,8 +8,9 @@ mixin OdsRepository {
   static String cachedToken = "";
   static FlutterSecureStorage secureStorage = const FlutterSecureStorage();
 
-  static Future<Map<int, List<ExamInfoModel>>> getExamInfos(
-      {bool firstTry = true}) async {
+  static Future<Map<int, List<ExamInfoModel>>> getExamInfos({
+    bool firstTry = true,
+  }) async {
     if (cachedToken == "") {
       final username = await secureStorage.read(key: 'odsUsername');
       final password = await secureStorage.read(key: 'odsPassword');
@@ -17,8 +18,11 @@ mixin OdsRepository {
       cachedToken = await getAuthToken(username!, password!);
     }
 
-    final result = await http.get(Uri.parse(
-        'https://ods.fh-dortmund.de/ods?Sicht=DSTL&SIDD=$cachedToken'));
+    final result = await http.get(
+      Uri.parse(
+        'https://ods.fh-dortmund.de/ods?Sicht=DSTL&SIDD=$cachedToken',
+      ),
+    );
 
     final resultHtml = parse(result.body);
     final resultMap = <int, List<ExamInfoModel>>{};
@@ -55,7 +59,9 @@ mixin OdsRepository {
         );
 
         resultMap.putIfAbsent(
-            int.parse(payload[1].text.trim()), () => <ExamInfoModel>[]);
+          int.parse(payload[1].text.trim()),
+          () => <ExamInfoModel>[],
+        );
 
         resultMap[int.parse(payload[1].text.trim())]?.add(result);
       }
@@ -66,7 +72,8 @@ mixin OdsRepository {
         return getExamInfos(firstTry: false);
       } else {
         return Future.error(
-            "Konnte keine Verbindung mit ODS herstellen. Sind die Anmeldedaten korrekt?");
+          "Konnte keine Verbindung mit ODS herstellen. Sind die Anmeldedaten korrekt?",
+        );
       }
     }
   }

@@ -58,12 +58,13 @@ class TicketOverviewViewModel extends ChangeNotifier {
       return file.getPage(1).then((page) {
         return page
             .render(
-                x: 400,
-                y: 200,
-                width: 1800,
-                height: 1300,
-                fullHeight: 5656,
-                fullWidth: 4000)
+          x: 400,
+          y: 200,
+          width: 1800,
+          height: 1300,
+          fullHeight: 5656,
+          fullWidth: 4000,
+        )
             .then((fragment) {
           return fragment
               .createImageIfNotAvailable()
@@ -74,8 +75,12 @@ class TicketOverviewViewModel extends ChangeNotifier {
 
     getApplicationDocumentsDirectory().then((directory) {
       File("${directory.path}/semester_ticket.dat")
-          .writeAsBytes(rawImageBytes!.buffer.asUint8List(
-              rawImageBytes.offsetInBytes, rawImageBytes.lengthInBytes))
+          .writeAsBytes(
+        rawImageBytes!.buffer.asUint8List(
+          rawImageBytes.offsetInBytes,
+          rawImageBytes.lengthInBytes,
+        ),
+      )
           .then((result) {
         loadImageData();
         isImageProcessing = false;

@@ -13,9 +13,10 @@ class QuickActionsManager {
 
     quickActions.setShortcutItems(<ShortcutItem>[
       const ShortcutItem(
-          type: AppConstants.quickActionTicket,
-          localizedTitle: 'Ticket anzeigen',
-          icon: 'ticket'),
+        type: AppConstants.quickActionTicket,
+        localizedTitle: 'Ticket anzeigen',
+        icon: 'ticket',
+      ),
     ]);
   }
 }

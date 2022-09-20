@@ -7,11 +7,13 @@ class LicensesPageViewModel extends ChangeNotifier {
 
   LicensesPageViewModel() {
     for (final license in ossLicenses.entries) {
-      licenses.add(LicenseInfo(
-        title: "${license.value["name"]} ${license.value["version"]}",
-        description: license.value["description"].toString(),
-        licenseText: license.value["license"].toString(),
-      ));
+      licenses.add(
+        LicenseInfo(
+          title: "${license.value["name"]} ${license.value["version"]}",
+          description: license.value["description"].toString(),
+          licenseText: license.value["license"].toString(),
+        ),
+      );
     }
   }
 }

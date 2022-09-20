@@ -1,7 +1,7 @@
 import 'package:fb4_app/app_constants.dart';
+import 'package:fb4_app/core/settings/settings_service.dart';
 import 'package:flutter/material.dart';
 import 'package:kiwi/kiwi.dart';
-import 'core/settings/settings_service.dart';
 
 class MainViewModel extends ChangeNotifier {
   late final SettingsService _settingsService;
@@ -25,7 +25,9 @@ class MainViewModel extends ChangeNotifier {
   void acceptPrivacyPolicy() {
     _settingsService.saveBool(AppConstants.privacyPolicyAccepted, true);
     _settingsService.saveString(
-        AppConstants.privacyPolicyAcceptedVersion, "1.2");
+      AppConstants.privacyPolicyAcceptedVersion,
+      "1.2",
+    );
 
     shouldShowPrivacyPolicy = false;
     notifyListeners();

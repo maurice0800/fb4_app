@@ -17,21 +17,22 @@ class CupertinoCheckBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(right: 8.0),
-        child: GestureDetector(
-          onTap: () => onChanged(!isChecked),
-          child: Row(
-            children: [
-              Icon(
-                isChecked
-                    ? CupertinoIcons.checkmark_circle_fill
-                    : CupertinoIcons.circle,
-                color: fillColor,
-              ),
-              const SizedBox(width: 10),
-              Text(caption),
-            ],
-          ),
-        ));
+      padding: const EdgeInsets.only(right: 8.0),
+      child: GestureDetector(
+        onTap: () => onChanged(!isChecked),
+        child: Row(
+          children: [
+            Icon(
+              isChecked
+                  ? CupertinoIcons.checkmark_circle_fill
+                  : CupertinoIcons.circle,
+              color: fillColor,
+            ),
+            const SizedBox(width: 10),
+            Text(caption),
+          ],
+        ),
+      ),
+    );
   }
 }

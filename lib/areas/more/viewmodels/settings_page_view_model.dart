@@ -18,12 +18,15 @@ class SettingsPageViewModel extends ChangeNotifier {
 
   bool get increaseDisplayBrightnessInTicketview =>
       _settingsService.getBool(
-          AppConstants.settingsIncreaseDisplayBrightnessInTicketview) ??
+        AppConstants.settingsIncreaseDisplayBrightnessInTicketview,
+      ) ??
       false;
 
   set increaseDisplayBrightnessInTicketview(bool val) {
     _settingsService.saveBool(
-        AppConstants.settingsIncreaseDisplayBrightnessInTicketview, val);
+      AppConstants.settingsIncreaseDisplayBrightnessInTicketview,
+      val,
+    );
     notifyListeners();
   }
 
@@ -42,7 +45,9 @@ class SettingsPageViewModel extends ChangeNotifier {
 
   set goToCurrentDayInSchedule(bool val) {
     _settingsService.saveBool(
-        AppConstants.settingsGoToCurrentDayInSchedule, val);
+      AppConstants.settingsGoToCurrentDayInSchedule,
+      val,
+    );
     notifyListeners();
   }
 

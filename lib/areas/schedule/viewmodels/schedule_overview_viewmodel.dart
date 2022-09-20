@@ -67,14 +67,16 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
     });
 
     displayScheduleItems = List.generate(
-        5,
-        (index) => ScheduleList(
-              items: persistentScheduleItems[index].items +
-                  markListForEdit(
-                      generateListFromItems(items, shortWeekDayList[index])),
-              weekday: AppConstants.weekdays[index],
-              controller: internalController,
-            ));
+      5,
+      (index) => ScheduleList(
+        items: persistentScheduleItems[index].items +
+            markListForEdit(
+              generateListFromItems(items, shortWeekDayList[index]),
+            ),
+        weekday: AppConstants.weekdays[index],
+        controller: internalController,
+      ),
+    );
 
     displayScheduleItems.forEach((element) {
       element.items.sort();
@@ -98,18 +100,21 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
       });
 
       persistentScheduleItems = List.generate(
-          5,
-          (index) => ScheduleList(
-                items: generateListFromItems(
-                    lists[index]
-                        .values
-                        .map<ScheduleItem>((e) =>
-                            ScheduleItem.fromJson(e as Map<String, dynamic>))
-                        .toList(),
-                    shortWeekDayList[index]),
-                weekday: shortWeekDayList[index],
-                controller: internalController,
-              ));
+        5,
+        (index) => ScheduleList(
+          items: generateListFromItems(
+            lists[index]
+                .values
+                .map<ScheduleItem>(
+                  (e) => ScheduleItem.fromJson(e as Map<String, dynamic>),
+                )
+                .toList(),
+            shortWeekDayList[index],
+          ),
+          weekday: shortWeekDayList[index],
+          controller: internalController,
+        ),
+      );
       persistentScheduleItems.forEach((element) => element.items.sort());
       displayScheduleItems = persistentScheduleItems.toList();
 
@@ -125,11 +130,12 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
       // There is an error with the database. Initializing new database structure...
       jsonStore.deleteLike("schedule%");
       persistentScheduleItems = List.generate(
-          5,
-          (index) => ScheduleList(
-                weekday: shortWeekDayList[index],
-                controller: ScheduleListController(),
-              ));
+        5,
+        (index) => ScheduleList(
+          weekday: shortWeekDayList[index],
+          controller: ScheduleListController(),
+        ),
+      );
       await resyncWithDatabase();
     }
 
@@ -158,7 +164,8 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
       internalController.selectedItems.forEach((newItem) {
         persistentScheduleItems
             .firstWhere(
-                (scheduleList) => scheduleList.weekday == newItem.weekday)
+              (scheduleList) => scheduleList.weekday == newItem.weekday,
+            )
             .items
             .add(newItem..editMode = false);
       });
@@ -172,7 +179,9 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
   }
 
   List<ScheduleItem> generateListFromItems(
-      List<ScheduleItem> items, String shortWeekday) {
+    List<ScheduleItem> items,
+    String shortWeekday,
+  ) {
     return items.where((element) => element.weekday == shortWeekday).toList();
   }
 

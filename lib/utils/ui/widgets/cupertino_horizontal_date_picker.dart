@@ -5,9 +5,11 @@ class CupertinoHorizontalDatePicker extends StatefulWidget {
   final Function(DateTime)? onDateTimeChanged;
   final DateTime? initialDate;
 
-  const CupertinoHorizontalDatePicker(
-      {Key? key, this.onDateTimeChanged, this.initialDate})
-      : super(key: key);
+  const CupertinoHorizontalDatePicker({
+    Key? key,
+    this.onDateTimeChanged,
+    this.initialDate,
+  }) : super(key: key);
 
   @override
   _CupertinoHorizontalDatePickerState createState() =>

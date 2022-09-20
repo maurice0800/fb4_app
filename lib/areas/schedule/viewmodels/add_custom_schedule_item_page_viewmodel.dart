@@ -13,14 +13,15 @@ class AddCustomScheduleItemPageViewModel extends ChangeNotifier {
 
   ScheduleItem createNewItem() {
     return ScheduleItem(
-        name: nameController.text,
-        courseType: "C",
-        lecturerId: shortlecturerController.text,
-        lecturerName: lecturerController.text,
-        timeBegin: timeBeginController.text.replaceFirst(':', ''),
-        timeEnd: timeEndController.text.replaceFirst(':', ''),
-        weekday: longWeekDays[weekdayController.text]!,
-        roomId: roomController.text);
+      name: nameController.text,
+      courseType: "C",
+      lecturerId: shortlecturerController.text,
+      lecturerName: lecturerController.text,
+      timeBegin: timeBeginController.text.replaceFirst(':', ''),
+      timeEnd: timeEndController.text.replaceFirst(':', ''),
+      weekday: longWeekDays[weekdayController.text]!,
+      roomId: roomController.text,
+    );
   }
 
   bool validate() {

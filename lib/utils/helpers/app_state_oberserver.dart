@@ -15,14 +15,16 @@ class AppStateObserver extends WidgetsBindingObserver {
     controller.addListener(() async {
       if (controller.index == 3) {
         if (_settingsService.getBool(
-                AppConstants.settingsIncreaseDisplayBrightnessInTicketview) ??
+              AppConstants.settingsIncreaseDisplayBrightnessInTicketview,
+            ) ??
             false) {
           _prevBrightness = await BVUtils.brightness;
           BVUtils.setBrightness(100.0);
         }
       } else if (prevIndex == 3) {
         if (_settingsService.getBool(
-                AppConstants.settingsIncreaseDisplayBrightnessInTicketview) ??
+              AppConstants.settingsIncreaseDisplayBrightnessInTicketview,
+            ) ??
             false) {
           BVUtils.setBrightness(_prevBrightness);
         }
@@ -38,7 +40,8 @@ class AppStateObserver extends WidgetsBindingObserver {
       _prevBrightness = await BVUtils.brightness;
 
       if (_settingsService.getBool(
-              AppConstants.settingsIncreaseDisplayBrightnessInTicketview) ??
+            AppConstants.settingsIncreaseDisplayBrightnessInTicketview,
+          ) ??
           false) {
         if (controller.index == 3) {
           BVUtils.setBrightness(100.0);

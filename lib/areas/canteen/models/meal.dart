@@ -4,11 +4,12 @@ class Meal {
   final Map<String, double?> prices;
   final List<String> notes;
 
-  Meal(
-      {required this.type,
-      required this.title,
-      required this.prices,
-      required this.notes});
+  Meal({
+    required this.type,
+    required this.title,
+    required this.prices,
+    required this.notes,
+  });
 
   factory Meal.fromJson(Map<String, dynamic> json) {
     return Meal(

@@ -21,19 +21,25 @@ class MoreListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-        navigationBar: CupertinoNavigationBar(
-          backgroundColor: ColorConsts.mainOrange,
-          transitionBetweenRoutes: false,
-          middle: Text("Mehr",
-              style: CupertinoTheme.of(context).textTheme.navTitleTextStyle),
+      navigationBar: CupertinoNavigationBar(
+        backgroundColor: ColorConsts.mainOrange,
+        transitionBetweenRoutes: false,
+        middle: Text(
+          "Mehr",
+          style: CupertinoTheme.of(context).textTheme.navTitleTextStyle,
         ),
-        child: CupertinoSettings(items: <Widget>[
+      ),
+      child: CupertinoSettings(
+        items: <Widget>[
           const CSHeader("Mehr"),
           CSLink(
             title: 'Links / Downloads',
             onPressed: () {
-              Navigator.of(context).push(CupertinoPageRoute(
-                  builder: (context) => const LinksDownloadsPage()));
+              Navigator.of(context).push(
+                CupertinoPageRoute(
+                  builder: (context) => const LinksDownloadsPage(),
+                ),
+              );
             },
           ),
           CSLink(
@@ -45,8 +51,11 @@ class MoreListPage extends StatelessWidget {
           CSLink(
             title: 'Einstellungen',
             onPressed: () {
-              Navigator.of(context).push(CupertinoPageRoute(
-                  builder: (context) => const SettingsPage()));
+              Navigator.of(context).push(
+                CupertinoPageRoute(
+                  builder: (context) => const SettingsPage(),
+                ),
+              );
             },
           ),
           CSLink(
@@ -56,20 +65,23 @@ class MoreListPage extends StatelessWidget {
           CSLink(
             title: "Lizenzen",
             onPressed: () => Navigator.push(
-                context,
-                CupertinoPageRoute(
-                  builder: (context) => const LicensesPage(),
-                )),
+              context,
+              CupertinoPageRoute(
+                builder: (context) => const LicensesPage(),
+              ),
+            ),
           ),
           CSLink(
             title: "Datenschutz",
             onPressed: () => Navigator.push(
-                context,
-                CupertinoPageRoute(
-                    builder: (context) => ChangeNotifierProvider(
-                          create: (context) => PrivacyPageViewModel()..load(),
-                          child: const PrivacyPage(),
-                        ))),
+              context,
+              CupertinoPageRoute(
+                builder: (context) => ChangeNotifierProvider(
+                  create: (context) => PrivacyPageViewModel()..load(),
+                  child: const PrivacyPage(),
+                ),
+              ),
+            ),
           ),
           const CSHeader("Mobiles ODS"),
           CSLink(
@@ -87,13 +99,17 @@ class MoreListPage extends StatelessWidget {
                 );
               } else {
                 Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                        builder: (context) => const LoginPage()));
+                  context,
+                  CupertinoPageRoute(
+                    builder: (context) => const LoginPage(),
+                  ),
+                );
               }
             },
           ),
-        ]));
+        ],
+      ),
+    );
   }
 
   void showAboutDialog(BuildContext context) {
@@ -101,65 +117,73 @@ class MoreListPage extends StatelessWidget {
       context: context,
       barrierDismissible: true,
       builder: (context) => CupertinoPopupSurface(
-          child: Center(
-        child: Container(
-          decoration: BoxDecoration(
+        child: Center(
+          child: Container(
+            decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15.0),
-              color: CupertinoTheme.of(context).primaryContrastingColor),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
+              color: CupertinoTheme.of(context).primaryContrastingColor,
+            ),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
                 maxHeight: 600,
-                maxWidth: MediaQuery.of(context).size.width - 80),
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
-              child: IntrinsicHeight(
-                child: Column(
-                  children: [
-                    const Text("Über diese App",
+                maxWidth: MediaQuery.of(context).size.width - 80,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0, vertical: 16.0),
+                child: IntrinsicHeight(
+                  child: Column(
+                    children: [
+                      const Text(
+                        "Über diese App",
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18)),
-                    const Padding(
-                      padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
-                      child: Divider(
-                        color: ColorConsts.mainOrange,
-                        thickness: 2,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
                       ),
-                    ),
-                    const Text(
-                      "Fachschaftsrat Informatik",
-                      style: TextStyle(fontSize: 24),
-                      textAlign: TextAlign.center,
-                    ),
-                    const Text(
-                      "FB4",
-                      style: TextStyle(fontSize: 24),
-                    ),
-                    const SizedBox(height: 10),
-                    const Text("Version: 1.2.0"),
-                    const SizedBox(height: 10),
-                    const Padding(
-                      padding: EdgeInsets.only(top: 8.0),
-                      child: Divider(
-                        color: ColorConsts.mainOrange,
-                        thickness: 2,
+                      const Padding(
+                        padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
+                        child: Divider(
+                          color: ColorConsts.mainOrange,
+                          thickness: 2,
+                        ),
                       ),
-                    ),
-                    CupertinoButton(
+                      const Text(
+                        "Fachschaftsrat Informatik",
+                        style: TextStyle(fontSize: 24),
+                        textAlign: TextAlign.center,
+                      ),
+                      const Text(
+                        "FB4",
+                        style: TextStyle(fontSize: 24),
+                      ),
+                      const SizedBox(height: 10),
+                      const Text("Version: 1.2.0"),
+                      const SizedBox(height: 10),
+                      const Padding(
+                        padding: EdgeInsets.only(top: 8.0),
+                        child: Divider(
+                          color: ColorConsts.mainOrange,
+                          thickness: 2,
+                        ),
+                      ),
+                      CupertinoButton(
                         child: const Text(
                           "Schließen",
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         onPressed: () {
                           Navigator.pop(context);
-                        }),
-                  ],
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
         ),
-      )),
+      ),
     );
   }
 }

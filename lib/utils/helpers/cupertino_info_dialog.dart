@@ -9,25 +9,27 @@ class CupertinoInfoDialog {
 
   void show() {
     showCupertinoDialog(
-        context: context,
-        builder: (context) => CupertinoAlertDialog(
-                title: Text(title),
-                content: Text(message),
-                actions: [
-                  GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    child: const Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Text(
-                        "OK",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  )
-                ]));
+      context: context,
+      builder: (context) => CupertinoAlertDialog(
+        title: Text(title),
+        content: Text(message),
+        actions: [
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            child: const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                "OK",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16),
+              ),
+            ),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          )
+        ],
+      ),
+    );
   }
 }

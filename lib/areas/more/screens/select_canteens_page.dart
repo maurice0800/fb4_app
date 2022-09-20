@@ -23,10 +23,11 @@ class SelectCanteensPage extends StatelessWidget {
                     (c) => CSControl(
                       nameWidget: Text(c.name),
                       contentWidget: CupertinoSwitch(
-                          value: viewModel.selectedCanteenIds
-                              .any((element) => element == c.id),
-                          onChanged: (value) =>
-                              viewModel.setSelectedState(c, value)),
+                        value: viewModel.selectedCanteenIds
+                            .any((element) => element == c.id),
+                        onChanged: (value) =>
+                            viewModel.setSelectedState(c, value),
+                      ),
                     ),
                   )
                 ],

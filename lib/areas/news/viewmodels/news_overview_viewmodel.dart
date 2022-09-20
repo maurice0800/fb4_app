@@ -22,8 +22,10 @@ class NewsOverviewViewModel extends ChangeNotifier {
     _settingsService = KiwiContainer().resolve<SettingsService>();
   }
 
-  Future fetchNewsItems(
-      {required Function(String) onError, bool alwaysRefresh = true}) {
+  Future fetchNewsItems({
+    required Function(String) onError,
+    bool alwaysRefresh = true,
+  }) {
     if ((alwaysRefresh || allNewsItems.isEmpty) && !hasError) {
       isLoading = true;
       notifyListeners();
@@ -66,21 +68,24 @@ class NewsOverviewViewModel extends ChangeNotifier {
   }
 
   void _savePinnedItemsCache() {
-    _settingsService.saveString(AppConstants.pinnedNewsItems,
-        jsonEncode(pinnedItems.map((e) => e.toJson()).toList()));
+    _settingsService.saveString(
+      AppConstants.pinnedNewsItems,
+      jsonEncode(pinnedItems.map((e) => e.toJson()).toList()),
+    );
   }
 
   void loadPinnedItemsCache() {
     if (pinnedItems.isEmpty) {
       if (_settingsService.containsKey(AppConstants.pinnedNewsItems)) {
         final itemsMap = jsonDecode(
-                _settingsService.getString(AppConstants.pinnedNewsItems)!)
-            as List<dynamic>;
+          _settingsService.getString(AppConstants.pinnedNewsItems)!,
+        ) as List<dynamic>;
 
         if (itemsMap.isNotEmpty) {
           pinnedItems = itemsMap
               .map<NewsItem>(
-                  (e) => NewsItem.fromJson(e as Map<String, dynamic>))
+                (e) => NewsItem.fromJson(e as Map<String, dynamic>),
+              )
               .toList();
         }
       }
@@ -88,7 +93,10 @@ class NewsOverviewViewModel extends ChangeNotifier {
   }
 
   void executeSearch(String text) {
-    displayNewsItems = allNewsItems.where((element) => element.title.contains(text) || element.description.contains(text)).toList();
+    displayNewsItems = allNewsItems
+        .where((element) =>
+            element.title.contains(text) || element.description.contains(text))
+        .toList();
     notifyListeners();
   }
 }

@@ -2,17 +2,19 @@ import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
 
 Future<String> getAuthToken(String username, String password) async {
-  final loginResult =
-      await http.post(Uri.parse('https://ods.fh-dortmund.de/ods'), body: {
-    'LIMod': '',
-    'HttpRequest_PathFile': '/',
-    'HttpRequest_Path': '/',
-    'RemoteEndPointIP': '10.11.15.121',
-    'User': username,
-    'PWD': password,
-    'x': '0',
-    'y': '0',
-  });
+  final loginResult = await http.post(
+    Uri.parse('https://ods.fh-dortmund.de/ods'),
+    body: {
+      'LIMod': '',
+      'HttpRequest_PathFile': '/',
+      'HttpRequest_Path': '/',
+      'RemoteEndPointIP': '10.11.15.121',
+      'User': username,
+      'PWD': password,
+      'x': '0',
+      'y': '0',
+    },
+  );
 
   final htmlLoginResult = parse(loginResult.body);
   final metaTags = htmlLoginResult.getElementsByTagName('meta');

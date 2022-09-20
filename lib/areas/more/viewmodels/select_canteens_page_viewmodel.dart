@@ -42,7 +42,9 @@ class SelectCanteensPageViewModel extends ChangeNotifier {
     }
 
     _settingsService.saveString(
-        AppConstants.settingsEnabledCanteens, jsonEncode(selectedCanteenIds));
+      AppConstants.settingsEnabledCanteens,
+      jsonEncode(selectedCanteenIds),
+    );
 
     notifyListeners();
   }

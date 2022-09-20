@@ -6,11 +6,12 @@ class NewsItem {
   final String list;
   final String description;
 
-  NewsItem(
-      {required this.title,
-      required this.pubDate,
-      required this.list,
-      required this.description});
+  NewsItem({
+    required this.title,
+    required this.pubDate,
+    required this.list,
+    required this.description,
+  });
 
   static String replaceSpecialChars(String input) {
     return input
@@ -24,10 +25,11 @@ class NewsItem {
   factory NewsItem.fromJson(Map<String, dynamic> json) {
     final timeFormat = DateFormat("dd.MM.yyyy - hh:mm:ss");
     return NewsItem(
-        title: json['header'].toString(),
-        pubDate: timeFormat.parse(json['date'].toString()),
-        description: json['body'].toString(),
-        list: json['list'].toString());
+      title: json['header'].toString(),
+      pubDate: timeFormat.parse(json['date'].toString()),
+      description: json['body'].toString(),
+      list: json['list'].toString(),
+    );
   }
 
   Map<String, dynamic> toJson() {

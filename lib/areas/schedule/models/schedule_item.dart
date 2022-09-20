@@ -16,18 +16,19 @@ class ScheduleItem implements Comparable {
   bool editMode;
   Color color;
 
-  ScheduleItem(
-      {required this.name,
-      required this.courseType,
-      required this.lecturerId,
-      required this.lecturerName,
-      this.studentSet = "",
-      required this.timeBegin,
-      required this.timeEnd,
-      required this.weekday,
-      required this.roomId,
-      this.editMode = false,
-      this.color = ColorConsts.mainOrange});
+  ScheduleItem({
+    required this.name,
+    required this.courseType,
+    required this.lecturerId,
+    required this.lecturerName,
+    this.studentSet = "",
+    required this.timeBegin,
+    required this.timeEnd,
+    required this.weekday,
+    required this.roomId,
+    this.editMode = false,
+    this.color = ColorConsts.mainOrange,
+  });
 
   factory ScheduleItem.fromJson(Map<String, dynamic> json) {
     final color = json['color'];

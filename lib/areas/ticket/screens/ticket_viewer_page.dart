@@ -22,8 +22,10 @@ class _TicketViewerPageState extends State<TicketViewerPage> {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         backgroundColor: ColorConsts.mainOrange,
-        middle: Text("Semesterticket",
-            style: CupertinoTheme.of(context).textTheme.navTitleTextStyle),
+        middle: Text(
+          "Semesterticket",
+          style: CupertinoTheme.of(context).textTheme.navTitleTextStyle,
+        ),
       ),
       child: SafeArea(
         child: buildTicketView(context),
@@ -32,7 +34,9 @@ class _TicketViewerPageState extends State<TicketViewerPage> {
   }
 
   Widget buildSelectTicket(
-      BuildContext context, TicketOverviewViewModel viewModel) {
+    BuildContext context,
+    TicketOverviewViewModel viewModel,
+  ) {
     return SizedBox(
       width: double.infinity,
       child: Column(
@@ -44,17 +48,22 @@ class _TicketViewerPageState extends State<TicketViewerPage> {
           ),
           const SizedBox(height: 20),
           CupertinoButton.filled(
-              child: const Text("Ticket wählen",
-                  style: TextStyle(color: CupertinoColors.white)),
-              onPressed: () {
-                FilePicker.platform.pickFiles().then((result) => {
+            child: const Text(
+              "Ticket wählen",
+              style: TextStyle(color: CupertinoColors.white),
+            ),
+            onPressed: () {
+              FilePicker.platform.pickFiles().then(
+                    (result) => {
                       if (result != null)
                         {
                           viewModel
                               .extractImageFromPdf(result.files.first.path!),
                         }
-                    });
-              })
+                    },
+                  );
+            },
+          )
         ],
       ),
     );
@@ -62,32 +71,33 @@ class _TicketViewerPageState extends State<TicketViewerPage> {
 
   Widget buildTicketView(BuildContext context) {
     return BaseView<TicketOverviewViewModel>(
-        onViewModelCreated: (viewModel) => viewModel.init(),
-        builder: (context, viewModel, child) {
-          if (viewModel.isImageProcessing) {
-            return const Center(
-              child: CupertinoActivityIndicator(),
-            );
-          }
+      onViewModelCreated: (viewModel) => viewModel.init(),
+      builder: (context, viewModel, child) {
+        if (viewModel.isImageProcessing) {
+          return const Center(
+            child: CupertinoActivityIndicator(),
+          );
+        }
 
-          if (viewModel.isImageAvailable) {
-            return Center(
-              child: GestureDetector(
-                onDoubleTap: _handleDoubleTap,
-                onDoubleTapDown: (details) => _tapDownDetails = details,
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(minHeight: 1000),
-                  child: InteractiveViewer(
-                    transformationController: _transformationController,
-                    child: Image.memory(viewModel.imageBytes!),
-                  ),
+        if (viewModel.isImageAvailable) {
+          return Center(
+            child: GestureDetector(
+              onDoubleTap: _handleDoubleTap,
+              onDoubleTapDown: (details) => _tapDownDetails = details,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(minHeight: 1000),
+                child: InteractiveViewer(
+                  transformationController: _transformationController,
+                  child: Image.memory(viewModel.imageBytes!),
                 ),
               ),
-            );
-          }
+            ),
+          );
+        }
 
-          return buildSelectTicket(context, viewModel);
-        });
+        return buildSelectTicket(context, viewModel);
+      },
+    );
   }
 
   void _handleDoubleTap() {
@@ -96,8 +106,10 @@ class _TicketViewerPageState extends State<TicketViewerPage> {
       _isZoomed = false;
     } else {
       _transformationController.value = Matrix4.identity()
-        ..translate(-_tapDownDetails!.localPosition.dx,
-            -_tapDownDetails!.localPosition.dy)
+        ..translate(
+          -_tapDownDetails!.localPosition.dx,
+          -_tapDownDetails!.localPosition.dy,
+        )
         ..scale(2.2);
       _isZoomed = true;
     }

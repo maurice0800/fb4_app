@@ -16,8 +16,11 @@ class MealsRepository {
     }
 
     return http
-        .get(Uri.parse(
-            'http://fb4app.hemacode.de/getMeals.php?location=${c.city}&mensa=${c.id}&date=$dateCode'))
+        .get(
+      Uri.parse(
+        'http://fb4app.hemacode.de/getMeals.php?location=${c.city}&mensa=${c.id}&date=$dateCode',
+      ),
+    )
         .then((result) {
       if (result.statusCode == 200) {
         final data =

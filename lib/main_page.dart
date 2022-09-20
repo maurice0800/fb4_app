@@ -1,11 +1,10 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:fb4_app/areas/more/screens/privacy_page.dart';
 import 'package:fb4_app/core/routing/route_generator.gr.dart';
 import 'package:fb4_app/core/views/base_view.dart';
 import 'package:fb4_app/main_view_model.dart';
 import 'package:fb4_app/utils/ui/icons/fb4app_icons.dart';
 import 'package:flutter/cupertino.dart';
-
-import 'areas/more/screens/privacy_page.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -29,20 +28,28 @@ class MainPage extends StatelessWidget {
                 onTap: router.setActiveIndex,
                 items: const [
                   BottomNavigationBarItem(
-                      icon: Icon(CupertinoIcons.calendar),
-                      label: 'Stundenplan'),
+                    icon: Icon(CupertinoIcons.calendar),
+                    label: 'Stundenplan',
+                  ),
                   BottomNavigationBarItem(
-                      icon: Icon(CupertinoIcons.news), label: 'News'),
+                    icon: Icon(CupertinoIcons.news),
+                    label: 'News',
+                  ),
                   BottomNavigationBarItem(
-                      icon: Padding(
-                          padding: EdgeInsets.only(top: 6.0),
-                          child: Icon(FB4Icons.food, size: 25)),
-                      label: 'Mensa'),
+                    icon: Padding(
+                      padding: EdgeInsets.only(top: 6.0),
+                      child: Icon(FB4Icons.food, size: 25),
+                    ),
+                    label: 'Mensa',
+                  ),
                   BottomNavigationBarItem(
-                      icon: Icon(CupertinoIcons.ticket),
-                      label: 'Semesterticket'),
+                    icon: Icon(CupertinoIcons.ticket),
+                    label: 'Semesterticket',
+                  ),
                   BottomNavigationBarItem(
-                      icon: Icon(CupertinoIcons.ellipsis), label: 'Mehr'),
+                    icon: Icon(CupertinoIcons.ellipsis),
+                    label: 'Mehr',
+                  ),
                 ],
               ),
             ),

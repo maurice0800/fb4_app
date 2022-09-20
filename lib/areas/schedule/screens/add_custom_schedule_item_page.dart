@@ -11,222 +11,227 @@ class AddCustomScheduleItemPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BaseView<AddCustomScheduleItemPageViewModel>(
-        builder: (context, viewModel, child) => CupertinoPageScaffold(
-              navigationBar: CupertinoNavigationBar(
-                backgroundColor: ColorConsts.mainOrange,
-                leading: Padding(
-                  padding: const EdgeInsets.only(top: 14.0),
-                  child: GestureDetector(
-                      onTap: Navigator.of(context).pop,
-                      child: const Text("Abbrechen",
-                          style: TextStyle(
-                            color: CupertinoColors.white,
-                          ))),
-                ),
-                middle: const Text("Eigener Eintrag",
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                trailing: GestureDetector(
-                  onTap: () {
-                    if (viewModel.validate()) {
-                      Navigator.pop(context, viewModel.createNewItem());
-                    } else {
-                      showCupertinoDialog(
-                          context: context,
-                          builder: (context) => CupertinoAlertDialog(
-                                title: const Text("Fehler"),
-                                content: const Text(
-                                    "Es wurden nicht alle erforderlichen Felder ausgefüllt."),
-                                actions: [
-                                  GestureDetector(
-                                    child: const Padding(
-                                      padding: EdgeInsets.all(16.0),
-                                      child: Text(
-                                        "Schließen",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(fontSize: 16),
-                                      ),
-                                    ),
-                                    onTap: () => Navigator.pop(context),
-                                  )
-                                ],
-                              ));
-                    }
-                  },
-                  child: const Text(
-                    "Speichern",
-                    style: TextStyle(
-                      color: CupertinoColors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+      builder: (context, viewModel, child) => CupertinoPageScaffold(
+        navigationBar: CupertinoNavigationBar(
+          backgroundColor: ColorConsts.mainOrange,
+          leading: Padding(
+            padding: const EdgeInsets.only(top: 14.0),
+            child: GestureDetector(
+              onTap: Navigator.of(context).pop,
+              child: const Text(
+                "Abbrechen",
+                style: TextStyle(
+                  color: CupertinoColors.white,
                 ),
               ),
-              child: CupertinoFormSection(
-                  backgroundColor: CupertinoColors.tertiarySystemBackground,
-                  header: const Padding(
-                    padding: EdgeInsets.only(left: 8.0),
+            ),
+          ),
+          middle: const Text(
+            "Eigener Eintrag",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          trailing: GestureDetector(
+            onTap: () {
+              if (viewModel.validate()) {
+                Navigator.pop(context, viewModel.createNewItem());
+              } else {
+                showCupertinoDialog(
+                  context: context,
+                  builder: (context) => CupertinoAlertDialog(
+                    title: const Text("Fehler"),
+                    content: const Text(
+                      "Es wurden nicht alle erforderlichen Felder ausgefüllt.",
+                    ),
+                    actions: [
+                      GestureDetector(
+                        child: const Padding(
+                          padding: EdgeInsets.all(16.0),
+                          child: Text(
+                            "Schließen",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                        onTap: () => Navigator.pop(context),
+                      )
+                    ],
+                  ),
+                );
+              }
+            },
+            child: const Text(
+              "Speichern",
+              style: TextStyle(
+                color: CupertinoColors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+        child: CupertinoFormSection(
+          backgroundColor: CupertinoColors.tertiarySystemBackground,
+          header: const Padding(
+            padding: EdgeInsets.only(left: 8.0),
+            child: Text(
+              'Kursdetails',
+              style: TextStyle(fontSize: 16.0),
+            ),
+          ),
+          children: [
+            CupertinoTextFormFieldRow(
+              controller: viewModel.nameController,
+              placeholder: "Kursname",
+              validator: (value) => value == "" ? "Pflichtfeld" : null,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              style: const TextStyle(fontSize: 16.0),
+            ),
+            Row(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(left: 26.0),
+                  child: SizedBox(
+                    width: 100,
                     child: Text(
-                      'Kursdetails',
+                      "Wochentag",
                       style: TextStyle(fontSize: 16.0),
                     ),
                   ),
-                  children: [
-                    CupertinoTextFormFieldRow(
-                      controller: viewModel.nameController,
-                      placeholder: "Kursname",
-                      validator: (value) => value == "" ? "Pflichtfeld" : null,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      style: const TextStyle(fontSize: 16.0),
+                ),
+                Container(
+                  height: 42,
+                  width: 1,
+                  color:
+                      CupertinoTheme.of(context).brightness == Brightness.light
+                          ? CupertinoColors.systemGrey5
+                          : CupertinoColors.secondaryLabel,
+                ),
+                Expanded(
+                  child: CupertinoTextFormFieldRow(
+                    placeholder: "Auswählen",
+                    controller: viewModel.weekdayController,
+                    readOnly: true,
+                    onTap: () => _showWeekdayPicker(context).then(
+                      (result) =>
+                          viewModel.weekdayController.text = result ?? "",
                     ),
-                    Row(
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.only(left: 26.0),
-                          child: SizedBox(
-                            width: 100,
-                            child: Text(
-                              "Wochentag",
-                              style: TextStyle(fontSize: 16.0),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          height: 42,
-                          width: 1,
-                          color: CupertinoTheme.of(context).brightness ==
-                                  Brightness.light
-                              ? CupertinoColors.systemGrey5
-                              : CupertinoColors.secondaryLabel,
-                        ),
-                        Expanded(
-                          child: CupertinoTextFormFieldRow(
-                            placeholder: "Auswählen",
-                            controller: viewModel.weekdayController,
-                            readOnly: true,
-                            onTap: () => _showWeekdayPicker(context).then(
-                                (result) => viewModel.weekdayController.text =
-                                    result ?? ""),
-                            validator: (value) =>
-                                value == "" ? "Pflichtfeld" : null,
-                            style: const TextStyle(fontSize: 16.0),
-                          ),
-                        ),
-                      ],
+                    validator: (value) => value == "" ? "Pflichtfeld" : null,
+                    style: const TextStyle(fontSize: 16.0),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(left: 26.0),
+                  child: SizedBox(
+                    width: 100,
+                    child: Text(
+                      "Startzeit",
+                      style: TextStyle(fontSize: 16.0),
                     ),
-                    Row(
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.only(left: 26.0),
-                          child: SizedBox(
-                            width: 100,
-                            child: Text(
-                              "Startzeit",
-                              style: TextStyle(fontSize: 16.0),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          height: 42,
-                          width: 1,
-                          color: CupertinoTheme.of(context).brightness ==
-                                  Brightness.light
-                              ? CupertinoColors.systemGrey5
-                              : CupertinoColors.secondaryLabel,
-                        ),
-                        Expanded(
-                          child: CupertinoTextFormFieldRow(
-                            placeholder: "Auswählen",
-                            readOnly: true,
-                            controller: viewModel.timeBeginController,
-                            style: const TextStyle(fontSize: 16.0),
-                            validator: (value) =>
-                                value == "" ? "Pflichtfeld" : null,
-                            onTap: () => _showTimePicker(context).then(
-                                (result) => viewModel.setTimeBegin(result!)),
-                          ),
-                        ),
-                      ],
+                  ),
+                ),
+                Container(
+                  height: 42,
+                  width: 1,
+                  color:
+                      CupertinoTheme.of(context).brightness == Brightness.light
+                          ? CupertinoColors.systemGrey5
+                          : CupertinoColors.secondaryLabel,
+                ),
+                Expanded(
+                  child: CupertinoTextFormFieldRow(
+                    placeholder: "Auswählen",
+                    readOnly: true,
+                    controller: viewModel.timeBeginController,
+                    style: const TextStyle(fontSize: 16.0),
+                    validator: (value) => value == "" ? "Pflichtfeld" : null,
+                    onTap: () => _showTimePicker(context).then(
+                      (result) => viewModel.setTimeBegin(result!),
                     ),
-                    Row(
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.only(left: 26.0),
-                          child: SizedBox(
-                            width: 100,
-                            child: Text(
-                              "Endzeit",
-                              style: TextStyle(fontSize: 16.0),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          height: 42,
-                          width: 1,
-                          color: CupertinoTheme.of(context).brightness ==
-                                  Brightness.light
-                              ? CupertinoColors.systemGrey5
-                              : CupertinoColors.secondaryLabel,
-                        ),
-                        Expanded(
-                          child: CupertinoTextFormFieldRow(
-                            placeholder: "Auswählen",
-                            readOnly: true,
-                            controller: viewModel.timeEndController,
-                            style: const TextStyle(fontSize: 16.0),
-                            validator: (value) =>
-                                value == "" ? "Pflichtfeld" : null,
-                            onTap: () => _showTimePicker(context).then(
-                                (result) => viewModel.setTimeEnd(result!)),
-                          ),
-                        ),
-                      ],
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(left: 26.0),
+                  child: SizedBox(
+                    width: 100,
+                    child: Text(
+                      "Endzeit",
+                      style: TextStyle(fontSize: 16.0),
                     ),
-                    CupertinoTextFormFieldRow(
-                      placeholder: "Raum",
-                      controller: viewModel.roomController,
-                      style: const TextStyle(fontSize: 16.0),
-                      validator: (value) => value == "" ? "Pflichtfeld" : null,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                  ),
+                ),
+                Container(
+                  height: 42,
+                  width: 1,
+                  color:
+                      CupertinoTheme.of(context).brightness == Brightness.light
+                          ? CupertinoColors.systemGrey5
+                          : CupertinoColors.secondaryLabel,
+                ),
+                Expanded(
+                  child: CupertinoTextFormFieldRow(
+                    placeholder: "Auswählen",
+                    readOnly: true,
+                    controller: viewModel.timeEndController,
+                    style: const TextStyle(fontSize: 16.0),
+                    validator: (value) => value == "" ? "Pflichtfeld" : null,
+                    onTap: () => _showTimePicker(context).then(
+                      (result) => viewModel.setTimeEnd(result!),
                     ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 12,
-                          child: CupertinoTextFormFieldRow(
-                            placeholder: "Lehrender",
-                            controller: viewModel.lecturerController,
-                            style: const TextStyle(fontSize: 16.0),
-                            validator: (value) =>
-                                value == "" ? "Pflichtfeld" : null,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                          ),
-                        ),
-                        Container(
-                          height: 42,
-                          width: 1,
-                          color: CupertinoTheme.of(context).brightness ==
-                                  Brightness.light
-                              ? CupertinoColors.systemGrey5
-                              : CupertinoColors.secondaryLabel,
-                        ),
-                        Expanded(
-                          flex: 7,
-                          child: CupertinoTextFormFieldRow(
-                            placeholder: "Kürzel",
-                            controller: viewModel.shortlecturerController,
-                            style: const TextStyle(fontSize: 16.0),
-                            validator: (value) =>
-                                value == "" ? "Pflichtfeld" : null,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            maxLength: 5,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ]),
-            ));
+                  ),
+                ),
+              ],
+            ),
+            CupertinoTextFormFieldRow(
+              placeholder: "Raum",
+              controller: viewModel.roomController,
+              style: const TextStyle(fontSize: 16.0),
+              validator: (value) => value == "" ? "Pflichtfeld" : null,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  flex: 12,
+                  child: CupertinoTextFormFieldRow(
+                    placeholder: "Lehrender",
+                    controller: viewModel.lecturerController,
+                    style: const TextStyle(fontSize: 16.0),
+                    validator: (value) => value == "" ? "Pflichtfeld" : null,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                  ),
+                ),
+                Container(
+                  height: 42,
+                  width: 1,
+                  color:
+                      CupertinoTheme.of(context).brightness == Brightness.light
+                          ? CupertinoColors.systemGrey5
+                          : CupertinoColors.secondaryLabel,
+                ),
+                Expanded(
+                  flex: 7,
+                  child: CupertinoTextFormFieldRow(
+                    placeholder: "Kürzel",
+                    controller: viewModel.shortlecturerController,
+                    style: const TextStyle(fontSize: 16.0),
+                    validator: (value) => value == "" ? "Pflichtfeld" : null,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    maxLength: 5,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Future<DateTime?> _showTimePicker(BuildContext context) async {

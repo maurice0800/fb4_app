@@ -13,7 +13,8 @@ class NewsRepository {
         final data = jsonDecode(utf8.decode(result.bodyBytes));
         final List<NewsItem> items = data
             .map<NewsItem>(
-                (item) => NewsItem.fromJson(item as Map<String, dynamic>))
+              (item) => NewsItem.fromJson(item as Map<String, dynamic>),
+            )
             .toList() as List<NewsItem>;
         return items;
       } else {

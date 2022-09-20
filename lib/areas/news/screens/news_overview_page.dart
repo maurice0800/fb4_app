@@ -75,66 +75,68 @@ class NewsOverviewPage extends StatelessWidget {
             ),
           ),
         Expanded(
-          child: CustomScrollView(slivers: [
-            CupertinoSliverRefreshControl(
-              onRefresh: () {
-                return viewModel.fetchNewsItems(
-                  onError: (message) => _showErrorDialog(
-                    context,
-                    message,
+          child: CustomScrollView(
+            slivers: [
+              CupertinoSliverRefreshControl(
+                onRefresh: () {
+                  return viewModel.fetchNewsItems(
+                    onError: (message) => _showErrorDialog(
+                      context,
+                      message,
+                    ),
+                  );
+                },
+              ),
+              if (viewModel.pinnedItems.isNotEmpty)
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 14.0, top: 12.0),
+                    child: Text(
+                      "Angepinnte Elemente",
+                      style: CupertinoTheme.of(context)
+                          .textTheme
+                          .textStyle
+                          .copyWith(fontWeight: FontWeight.bold),
+                    ),
                   ),
-                );
-              },
-            ),
-            if (viewModel.pinnedItems.isNotEmpty)
+                ),
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 14.0, top: 12.0),
-                  child: Text(
-                    "Angepinnte Elemente",
-                    style: CupertinoTheme.of(context)
-                        .textTheme
-                        .textStyle
-                        .copyWith(fontWeight: FontWeight.bold),
+                  padding: const EdgeInsets.all(8.0),
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    physics: const ScrollPhysics(),
+                    itemBuilder: (context, index) =>
+                        _buildPinnedNewsItem(context, index, viewModel),
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: 5),
+                    itemCount: viewModel.pinnedItems.length,
                   ),
                 ),
               ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ListView.separated(
-                  shrinkWrap: true,
-                  physics: const ScrollPhysics(),
-                  itemBuilder: (context, index) =>
-                      _buildPinnedNewsItem(context, index, viewModel),
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(height: 5),
-                  itemCount: viewModel.pinnedItems.length,
+              if (viewModel.pinnedItems.isNotEmpty)
+                const SliverToBoxAdapter(
+                  child: Divider(
+                    color: CupertinoColors.lightBackgroundGray,
+                    thickness: 2,
+                  ),
+                ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    physics: const ScrollPhysics(),
+                    itemBuilder: (context, index) =>
+                        _buildNewsItem(context, index, viewModel),
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: 5),
+                    itemCount: viewModel.displayNewsItems.length,
+                  ),
                 ),
               ),
-            ),
-            if (viewModel.pinnedItems.isNotEmpty)
-              const SliverToBoxAdapter(
-                child: Divider(
-                  color: CupertinoColors.lightBackgroundGray,
-                  thickness: 2,
-                ),
-              ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ListView.separated(
-                  shrinkWrap: true,
-                  physics: const ScrollPhysics(),
-                  itemBuilder: (context, index) =>
-                      _buildNewsItem(context, index, viewModel),
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(height: 5),
-                  itemCount: viewModel.displayNewsItems.length,
-                ),
-              ),
-            ),
-          ]),
+            ],
+          ),
         ),
       ],
     );
@@ -189,7 +191,10 @@ class NewsOverviewPage extends StatelessWidget {
   }
 
   Widget _buildNewsItem(
-      BuildContext context, int index, NewsOverviewViewModel viewModel) {
+    BuildContext context,
+    int index,
+    NewsOverviewViewModel viewModel,
+  ) {
     return GestureDetector(
       onLongPress: () {
         showCupertinoModalPopup(
@@ -212,7 +217,10 @@ class NewsOverviewPage extends StatelessWidget {
   }
 
   Widget _buildPinnedNewsItem(
-      BuildContext context, int index, NewsOverviewViewModel viewModel) {
+    BuildContext context,
+    int index,
+    NewsOverviewViewModel viewModel,
+  ) {
     return GestureDetector(
       onLongPress: () {
         showCupertinoModalPopup(
