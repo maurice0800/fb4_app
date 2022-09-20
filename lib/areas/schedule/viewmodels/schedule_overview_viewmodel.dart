@@ -22,10 +22,11 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
   final ValueNotifier<int> controllerPageNotifier = ValueNotifier(0);
   late final SettingsService _settingsService;
   // ignore: prefer_function_declarations_over_variables
-  Function() aferNextRender = () {};
+  Function() afterNextRender = () {};
   bool editMode = false;
   bool isLoading = false;
   bool hasItems = false;
+  bool preventJumpToCurrentDayOnNextRender = false;
   List<ScheduleList> persistentScheduleItems = [];
   List<ScheduleList> displayScheduleItems = [];
 
@@ -33,19 +34,21 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
     _settingsService = KiwiContainer().resolve<SettingsService>();
 
     getScheduleListsFromDatabase();
-    internalController.onItemRemoved = (item) {
+
+    internalController.onItemRemoved = (item) async {
       final currentPage = pageViewController.page!.floor();
-      resyncWithDatabase();
-      aferNextRender = () {
+      await resyncWithDatabase();
+      afterNextRender = () {
         pageViewController.jumpToPage(currentPage);
         controllerPageNotifier.value = currentPage;
       };
     };
 
-    internalController.onItemChanged = (item) {
+    internalController.onItemChanged = (item) async {
       final currentPage = pageViewController.page!.floor();
-      resyncWithDatabase();
-      aferNextRender = () {
+      preventJumpToCurrentDayOnNextRender = true;
+      await resyncWithDatabase();
+      afterNextRender = () {
         pageViewController.jumpToPage(currentPage);
         controllerPageNotifier.value = currentPage;
       };
@@ -82,7 +85,7 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
       element.items.sort();
     });
 
-    aferNextRender = () => pageViewController.jumpToPage(0);
+    afterNextRender = () => pageViewController.jumpToPage(0);
     isLoading = false;
     notifyListeners();
   }
@@ -122,8 +125,12 @@ class ScheduleOverviewViewModel extends ChangeNotifier {
               .getBool(AppConstants.settingsGoToCurrentDayInSchedule) ??
           false) {
         if (!editMode) {
-          aferNextRender = () =>
-              pageViewController.jumpToPage(min(DateTime.now().weekday - 1, 5));
+          if (preventJumpToCurrentDayOnNextRender) {
+            preventJumpToCurrentDayOnNextRender = false;
+          } else {
+            afterNextRender = () => pageViewController
+                .jumpToPage(min(DateTime.now().weekday - 1, 5));
+          }
         }
       }
     } else {

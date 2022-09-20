@@ -21,8 +21,8 @@ class ScheduleOverviewPage extends StatelessWidget {
               builder: (context) {
                 if (viewModel.hasItems) {
                   WidgetsBinding.instance.addPostFrameCallback((_) async {
-                    viewModel.aferNextRender();
-                    viewModel.aferNextRender = () {};
+                    viewModel.afterNextRender();
+                    viewModel.afterNextRender = () {};
                   });
                   return Column(
                     children: [
