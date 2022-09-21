@@ -12,6 +12,12 @@ class TicketOverviewViewModel extends ChangeNotifier {
   bool isImageProcessing = false;
   Uint8List? imageBytes;
   double? prevBrightness;
+  bool isZoomed = false;
+
+  final TransformationController transformationController =
+      TransformationController();
+
+  TapDownDetails? tapDownDetails;
 
   Future init() async {
     if (imageBytes == null) {

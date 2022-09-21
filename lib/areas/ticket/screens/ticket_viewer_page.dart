@@ -4,19 +4,7 @@ import 'package:fb4_app/core/views/base_view.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 
-class TicketViewerPage extends StatefulWidget {
-  @override
-  State<TicketViewerPage> createState() => _TicketViewerPageState();
-}
-
-class _TicketViewerPageState extends State<TicketViewerPage> {
-  final TransformationController _transformationController =
-      TransformationController();
-
-  late TapDownDetails? _tapDownDetails;
-
-  bool _isZoomed = false;
-
+class TicketViewerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
@@ -82,12 +70,12 @@ class _TicketViewerPageState extends State<TicketViewerPage> {
         if (viewModel.isImageAvailable) {
           return Center(
             child: GestureDetector(
-              onDoubleTap: _handleDoubleTap,
-              onDoubleTapDown: (details) => _tapDownDetails = details,
+              onDoubleTap: () => _handleDoubleTap(viewModel),
+              onDoubleTapDown: (details) => viewModel.tapDownDetails = details,
               child: ConstrainedBox(
                 constraints: const BoxConstraints(minHeight: 1000),
                 child: InteractiveViewer(
-                  transformationController: _transformationController,
+                  transformationController: viewModel.transformationController,
                   child: Image.memory(viewModel.imageBytes!),
                 ),
               ),
@@ -100,18 +88,18 @@ class _TicketViewerPageState extends State<TicketViewerPage> {
     );
   }
 
-  void _handleDoubleTap() {
-    if (_isZoomed) {
-      _transformationController.value = Matrix4.identity();
-      _isZoomed = false;
+  void _handleDoubleTap(TicketOverviewViewModel viewModel) {
+    if (viewModel.isZoomed) {
+      viewModel.transformationController.value = Matrix4.identity();
+      viewModel.isZoomed = false;
     } else {
-      _transformationController.value = Matrix4.identity()
+      viewModel.transformationController.value = Matrix4.identity()
         ..translate(
-          -_tapDownDetails!.localPosition.dx,
-          -_tapDownDetails!.localPosition.dy,
+          -viewModel.tapDownDetails!.localPosition.dx,
+          -viewModel.tapDownDetails!.localPosition.dy,
         )
         ..scale(2.2);
-      _isZoomed = true;
+      viewModel.isZoomed = true;
     }
   }
 }
