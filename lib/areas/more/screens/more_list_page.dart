@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:fb4_app/areas/more/screens/licenses_page.dart';
 import 'package:fb4_app/areas/more/screens/links_downloads_page.dart';
 import 'package:fb4_app/areas/more/screens/privacy_page.dart';
@@ -7,6 +8,7 @@ import 'package:fb4_app/areas/ods/viewmodels/grades_overview_page_viewmodel.dart
 import 'package:fb4_app/areas/ods/views/grade_overview_page.dart';
 import 'package:fb4_app/areas/ods/views/login_page.dart';
 import 'package:fb4_app/config/themes/color_consts.dart';
+import 'package:fb4_app/core/routing/route_generator.gr.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cupertino_settings/flutter_cupertino_settings.dart';
@@ -50,13 +52,7 @@ class MoreListPage extends StatelessWidget {
           ),
           CSLink(
             title: 'Einstellungen',
-            onPressed: () {
-              Navigator.of(context).push(
-                CupertinoPageRoute(
-                  builder: (context) => const SettingsPage(),
-                ),
-              );
-            },
+            onPressed: () => context.pushRoute(const SettingsRoute()),
           ),
           CSLink(
             title: 'Über',

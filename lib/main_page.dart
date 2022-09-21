@@ -20,7 +20,7 @@ class MainPage extends StatelessWidget {
                 NewsOverviewRoute(),
                 CanteenOverviewRoute(),
                 TicketViewerRoute(),
-                MoreListRoute(),
+                MoreRoute(),
               ],
               builder: (context, child, animation) => child,
               bottomNavigationBuilder: (context, router) => CupertinoTabBar(
