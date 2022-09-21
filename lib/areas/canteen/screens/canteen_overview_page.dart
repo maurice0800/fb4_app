@@ -84,10 +84,11 @@ class CanteenOverviewPage extends StatelessWidget {
                   ),
                 ],
               )
-            : const Center(
+            : Center(
                 child: Text(
                   "Noch keine Mensen ausgewählt!\nBitte gehe in die Einstellungen und wähle deine bevorzugten Mensen aus.",
                   textAlign: TextAlign.center,
+                  style: CupertinoTheme.of(context).textTheme.textStyle,
                 ),
               ),
       ),
