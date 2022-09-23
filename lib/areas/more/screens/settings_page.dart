@@ -39,10 +39,12 @@ class SettingsPage extends StatelessWidget {
                 context,
                 "Soll der Stundenplan wirklich gelöscht werden?",
               );
+
               if (result) {
                 viewModel.deleteSchedule(context);
               }
-              Navigator.pop(context);
+
+              Navigator.of(context, rootNavigator: true).pop(context);
             }),
             const CSHeader("NRW-Ticket"),
             CSControl(
@@ -65,7 +67,8 @@ class SettingsPage extends StatelessWidget {
               if (result) {
                 viewModel.deleteTicket(context);
               }
-              Navigator.pop(context);
+
+              Navigator.of(context, rootNavigator: true).pop(context);
             }),
             const CSHeader("Mensa"),
             CSButton(
